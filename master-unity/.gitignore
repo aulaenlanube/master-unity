@@ -1,0 +1,36 @@
+# Archivos de proyecto de Unity
+[Ll]ibrary/
+[Tt]emp/
+[Oo]bj/
+[Bb]uild/
+[Bb]uilds/
+[Ll]ogs/
+[Uu]ser[Ss]ettings/
+
+# Archivos de la Memoria
+*.bak
+
+# Otros
+*.swp
+*.bak
+*.tmp
+*.swp
+*.swo
+*.rar
+*.zip
+
+# Archivos generados por Visual Studio
+*.userprefs
+*.csproj
+*.pidb
+*.suo
+*.sln*
+*.user
+*.unityproj
+*.booproj
+
+# Archivos generados por JetBrains Rider
+.idea/
+
+# Archivos generados por macOS
+.DS_Store
