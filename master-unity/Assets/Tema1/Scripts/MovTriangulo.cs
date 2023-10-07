@@ -6,8 +6,9 @@ public class MovTriangulo : MonoBehaviour
 {
     public float velocidad = 5f;
     public float lado = 10f;
-    
-    private const int DERECHA = 0, ARRIBA_IZQUIERDA = 1, ABAJO_IZQUIERDA = 2;   //constantes para la dirección 
+
+    //constantes para la dirección 
+    private const int DERECHA = 0, ARRIBA_IZQUIERDA = 1, ABAJO_IZQUIERDA = 2;   
     private int direccion = DERECHA;
     private Vector3 inicio;
     private Vector3 puntoObjetivo;
@@ -18,8 +19,8 @@ public class MovTriangulo : MonoBehaviour
         inicio = transform.position;
 
         puntoA = inicio;
-        puntoB = inicio + new Vector3(lado, 0, 0);
-        puntoC = puntoB + new Vector3(-lado / 2, 0, Mathf.Sqrt(3) * lado / 2);
+        puntoB = new Vector3(lado, 0, 0);
+        puntoC = new Vector3(lado / 2, 0, Mathf.Sqrt(3) * lado / 2);
 
         puntoObjetivo = puntoB; // se inicia con movimiento hacia la derecha
     }
