@@ -16,7 +16,7 @@ public class MovTriangulo : MonoBehaviour
 
     void Start()
     {
-        inicio = transform.position;
+        inicio = Vector3.zero;
 
         puntoA = inicio;
         puntoB = new Vector3(lado, 0, 0);
