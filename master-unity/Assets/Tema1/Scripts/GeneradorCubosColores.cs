@@ -2,7 +2,6 @@ using UnityEngine;
 
 public class GeneradorCubosColores : MonoBehaviour
 {
-    // Start is called before the first frame update
     void Start()
     {
         int x = 0;
