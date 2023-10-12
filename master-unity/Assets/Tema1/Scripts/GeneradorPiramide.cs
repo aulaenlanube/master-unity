@@ -17,10 +17,7 @@ public class GeneradorPiramide : MonoBehaviour
                     GameObject cubo = GameObject.CreatePrimitive(PrimitiveType.Cube);
                     cubo.transform.position = inicio + new Vector3(x * separacion, y, z * separacion);
                 }
-            }
-            // calculamos la posición inicial para el nuevo nivel
-            inicio.x += separacion / 2;
-            inicio.z += separacion / 2;
+            }            
         }
     }
 }

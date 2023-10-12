@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class GeneradorEspiral : MonoBehaviour
 {    
-    public float radio = 2.0f; // radio de la espiral    
+    public float radio = 10f; // radio de la espiral    
     public int vueltas = 3; // cantidad de vueltas    
     public int puntosPorVuelta = 100; // cantidad de puntos por vuelta
     public float indiceSubida = 0.1f;
@@ -20,10 +20,9 @@ public class GeneradorEspiral : MonoBehaviour
             GameObject nuevoCubo = GameObject.CreatePrimitive(PrimitiveType.Cube);
             nuevoCubo.transform.position = new Vector3(x, y, z);
 
-            radio += 0.05f;
+            radio = (radio <= 5) ? 5 : radio - 0.05f;
             i++;
 
         } while (i < vueltas * puntosPorVuelta);
-
     }
 }

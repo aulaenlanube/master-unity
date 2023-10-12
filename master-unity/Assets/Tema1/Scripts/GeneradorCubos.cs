@@ -2,8 +2,8 @@ using UnityEngine;
 
 public class GeneradorCubos : MonoBehaviour
 {
-    private int ancho = 10;           // cantidad de cubos de lado
-    private float separacion = 1.1f;  // distancia entre cubos
+    public int ancho = 10;           // cantidad de cubos de lado
+    public float separacion = 1.1f;  // distancia entre cubos
 
     void Start()
     {
