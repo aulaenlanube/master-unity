@@ -18,11 +18,11 @@ public class GeneradorTrianguloCubos : MonoBehaviour
             Vector3 posCubo = Vector3.zero;
 
             // lados del triángulo: 1, 2 y 3
-            if (posActual < lado)
+            if (posActual <= lado)
             {
                 posCubo.x = posActual;
             }
-            else if (posActual < 2 * lado)
+            else if (posActual <= 2 * lado)
             {
                 posCubo.x = lado - (posActual - lado) * 0.5f;
                 posCubo.z = (posActual - lado) * altura / lado;
