@@ -8,7 +8,7 @@ public class EjemplosCorrutinas : MonoBehaviour
     void Start()
     {
         Coroutine c1 = StartCoroutine(CambiarColor(1));
-        Coroutine c2 = StartCoroutine(MoverObjetoLerp(new Vector3(3,3,3), 3f));  
+        Coroutine c2 = StartCoroutine(MoverObjetoLerp(new Vector3(3,3,3), 3f));
     }
 
     IEnumerator MiCorrutina()
@@ -84,5 +84,6 @@ public class EjemplosCorrutinas : MonoBehaviour
             yield return null;
         }
     }
+
 
 }
