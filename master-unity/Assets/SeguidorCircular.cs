@@ -39,8 +39,6 @@ public class SeguidorCircular : MonoBehaviour
         if (distanciaAlObjetivo < distanciaEvasion) // evitar al objetivo
         {
             transform.position = Vector3.MoveTowards(pos, pos - objetivo.position, velocidad * Time.deltaTime);
-            //Vector3 direccion = (transform.position - objetivo.transform.position).normalized;
-            //transform.position += direccion * velocidad * Time.deltaTime;
             GetComponent<Renderer>().material.color = Color.blue;
         }
         else if (distanciaAlObjetivo < distanciaSeguimiento) // seguir al objetivo
