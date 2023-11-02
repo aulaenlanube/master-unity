@@ -35,7 +35,7 @@ Veremos cómo crear juegos multi jugador en red.
 
 ## 👨‍💻 Uso
 
-Para comenzar, simplemente navega a la carpeta del tema que deseas estudiar. Dentro de cada carpeta encontrarás archivos y subcarpetas relacionados con el tema. Los archivos `.cs` son códigos fuente que puedes abrir con cualquier editor de código. Los archivos `.pdf` son documentos en formato presentación que explican el tema en detalle.  
+Para comenzar, simplemente clona el repositorio y abre el proyecto desde Unity haciendo refencia a la carpeta master-unity interna, no la externa con los archivos i carpeta de git. A partir de ahí, dentro de Assets, selecciona el tema que deseas estudiar. Dentro de cada tema encontrarás archivos y subcarpetas relacionados con el tema. Los archivos `.cs` son códigos fuente que puedes abrir con cualquier editor de código. Los archivos `.pdf` son documentos en formato presentación que explican el tema en detalle.  
 
 ## 🌱 Pre-requisitos
 
