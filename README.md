@@ -3,8 +3,13 @@
 
 Este repositorio contiene todos los recursos y materiales utilizados en 2 de los módulos de progrmación de [**Curso de especialización en desarrollo de videojuegos y realidad virtual**](https://www.todofp.es/que-estudiar/loe/informatica-comunicaciones/ce-desarrollo-videojuegos-realidad-virtual.html). Dicho curso pertenece a la formación profesional reglada en España. Los módulos incluidos en el máster son los siguientes:
 
-###   ✅ Programación y motores de videojuegos   
-###   ✅ Programación en red e inteligencia artificial
+### ✅ Programación y motores de videojuegos   
+### ✅ Programación en red e inteligencia artificial
+
+La documentación oficial del CE la puedes encontrar [aquí](https://www.boe.es/diario_boe/txt.php?id=BOE-A-2021-7555)
+
+
+---
 
 ## 📚 Índice de Temas
 
@@ -26,6 +31,7 @@ Aprenderemos a generar y a aplicar algoritmos de inteligencia artificial dentro 
 ### 6️⃣ &#8658; [**`Multijugador`**](master-unity/Assets/tema6)
 Veremos cómo crear juegos multi jugador en red.
 
+---
 
 ## 👨‍💻 Uso
 
@@ -43,6 +49,3 @@ Se recomienda tener experiencia en programación orientada a objetos.
 
 Este proyecto es Open Source y está bajo la Licencia [MIT](https://es.wikipedia.org/wiki/Licencia_MIT).
 
-
-
-...el máster se encuentra actualmente en desarrollo
