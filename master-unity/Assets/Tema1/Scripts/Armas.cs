@@ -27,19 +27,19 @@ public enum TipoArma
 public struct DatosArma
 {
     public string nombre;
-    public int daño;
+    public int poder;
     public TipoArma tipo;
 
-    public DatosArma(string nombre, int daño, TipoArma tipo)
+    public DatosArma(string nombre, int poder, TipoArma tipo)
     {
         this.nombre = nombre;
-        this.daño = daño;
+        this.poder = poder;
         this.tipo = tipo;
     }
 
     public override string ToString()
     {
-        return $"Nombre del arma: {nombre}, Daño: {daño}, Tipo: {tipo}";
+        return $"Nombre del arma: {nombre}, poder: {poder}, Tipo: {tipo}";
     }
 }
 
@@ -60,12 +60,12 @@ public class Armas : MonoBehaviour
         Debug.Log("Arma antes: " + miArma);         // Arma antes: Espada
 
         CambiarTipoArma(miArma);                    // Arma actual: Arco
-        Debug.Log("Arma después: " + miArma);	    // Arma después: Espada
+        Debug.Log("Arma despu?s: " + miArma);	    // Arma despu?s: Espada
 
         DatosArma arma1 = new DatosArma("Cimitarra de la ira", 28, TipoArma.Espada);
 
         CambiarDatosArma(arma1);                    //Cimitarra de la ira X 2:56
-        Debug.Log($"{arma1.nombre}:{arma1.daño}"); 	//Cimitarra de la ira:28
+        Debug.Log($"{arma1.nombre}:{arma1.poder}"); 	//Cimitarra de la ira:28
 
         (int p, string n, Vector3 v) = ObtenerDatosJugador();
         Debug.Log($"{p}:{n}:{v}");  // 100:aula en la nube:(0.0, 0.0, 0.0)
@@ -87,20 +87,20 @@ public class Armas : MonoBehaviour
 
     public void CambiarDatosArma(DatosArma datos)
     {
-        datos.daño *= 2;
+        datos.poder *= 2;
         datos.nombre += " X 2";
-        Debug.Log($"{datos.nombre}:{datos.daño}");
+        Debug.Log($"{datos.nombre}:{datos.poder}");
     }
 
     public void ModificarObjeto(Vector3 pos)
     {
         pos.x += 10;
-        Debug.Log($"Posición en el método ModificarObjeto:{pos}");
+        Debug.Log($"Posici?n en el m?todo ModificarObjeto:{pos}");
     }
     public void ModificarObjeto(Posicion pos)
     {
         pos.x += 10;
-        Debug.Log($"Posición en el método ModificarObjeto:{pos}");
+        Debug.Log($"Posici?n en el m?todo ModificarObjeto:{pos}");
     }
 
     public (int, string, Vector3) ObtenerDatosJugador()

@@ -1,0 +1,23 @@
+﻿<Properties StartupConfiguration="{42808845-D1AB-11E9-4111-8860C1C164C9}|">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Tema1/Scripts/SeguidorRespawn.cs">
+    <Files>
+      <File FileName="Assets/InterfazUsuario.cs" Line="6" Column="1" />
+      <File FileName="Assets/InterfazConsola.cs" Line="5" Column="1" />
+      <File FileName="Assets/Tema1/Scripts/SeguidorRespawn.cs" Line="28" Column="95" />
+    </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="master-unity" expanded="True" selected="True" />
+        </State>
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="99331ed4-a5b5-4579-9817-982f84d8c11f" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MultiItemStartupConfigurations />
+</Properties>

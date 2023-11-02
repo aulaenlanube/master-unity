@@ -8,7 +8,7 @@ public class GeneradorLaberinto : MonoBehaviour
     public GameObject suelo;
     public int filas = 21; // Debe ser impar
     public int columnas = 21; // Debe ser impar
-    public float tamañoCelda = 1.0f;
+    public float dimensionCelda = 1.0f;
 
     private int[,] laberinto;
 
@@ -74,7 +74,7 @@ public class GeneradorLaberinto : MonoBehaviour
         {
             for (int j = 0; j < columnas; j++)
             {
-                Vector3 posicion = new Vector3(i * tamañoCelda, 0, j * tamañoCelda);
+                Vector3 posicion = new Vector3(i * dimensionCelda, 0, j * dimensionCelda);
                 GameObject aInstanciar = laberinto[i, j] == 1 ? cubo : suelo;
                 if(laberinto[i, j] != 1) { posicion += new Vector3(0, -0.55f, 0);  }
 
