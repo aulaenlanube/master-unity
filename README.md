@@ -17,7 +17,7 @@ La documentación oficial del CE la puedes encontrar [aquí](https://www.boe.es/
 Haremos una introducción al lenguaje de programación C# a través de ejemplos dentro de Unity.
 
 ### 2️⃣ &#8658; [**`Espacio 3D en Unity`**](master-unity/Assets/tema2) 
-Veremos a fondo el espacio 3D en Unity. Además dedicaremos una parte importante a las matemáticas para videojuegos
+Veremos a fondo el espacio 3D en Unity. Además dedicaremos una parte importante a las matemáticas para videojuegos.
 
 ### 3️⃣ &#8658; [**`Gameobjects, componentes y prefabs`**](master-unity/Assets/tema3)
 Profundiza en el desarrollo de videojuegos en Unity viendo en profundidad cada componente. 
@@ -35,7 +35,7 @@ Veremos cómo crear juegos multi jugador en red.
 
 ## 👨‍💻 Uso
 
-Para comenzar, simplemente navega a la carpeta del tema que deseas estudiar. Dentro de cada carpeta encontrarás archivos y subcarpetas relacionados con el tema. Los archivos `.java` son códigos fuente que puedes abrir con cualquier editor de código. Los archivos `.pdf` son documentos en formato presentación que explican el tema en detalle.  
+Para comenzar, simplemente navega a la carpeta del tema que deseas estudiar. Dentro de cada carpeta encontrarás archivos y subcarpetas relacionados con el tema. Los archivos `.cs` son códigos fuente que puedes abrir con cualquier editor de código. Los archivos `.pdf` son documentos en formato presentación que explican el tema en detalle.  
 
 ## 🌱 Pre-requisitos
 
