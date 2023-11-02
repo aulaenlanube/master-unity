@@ -1,27 +1,30 @@
-# Máster de UNITY 🕹 [CE Desarrollo de videojuegso]
+# Máster de UNITY 🕹 [CE Desarrollo de videojuegos]
 ![UNITY-AULAENLANUBE-1024x576](https://github.com/aulaenlanube/master-unity/assets/15714409/8e8a3843-e403-47f2-949e-e4287ea9686e)
-Este repositorio contiene todos los recursos y materiales utilizados en 2 de los módulos de Curso de especialización en desarrollo de videojuegos y realidad virtual
+
+Este repositorio contiene todos los recursos y materiales utilizados en 2 de los módulos de progrmación de [**Curso de especialización en desarrollo de videojuegos y realidad virtual**](https://www.todofp.es/que-estudiar/loe/informatica-comunicaciones/ce-desarrollo-videojuegos-realidad-virtual.html). Dicho curso pertenece a la formación profesional reglada en España. Los módulos incluidos en el máster son los siguientes:
+
+###   ✅ Programación y motores de videojuegos   
+###   ✅ Programación en red e inteligencia artificial
 
 ## 📚 Índice de Temas
 
 ### 1️⃣ &#8658; [**`Introducción a Unity y C#`**](master-unity/Assets/tema1) 
-Veremos una introducción al lenguaje de programación C# a través de ejemplos dentro de Unity.
+Haremos una introducción al lenguaje de programación C# a través de ejemplos dentro de Unity.
 
 ### 2️⃣ &#8658; [**`Espacio 3D en Unity`**](master-unity/Assets/tema2) 
 Veremos a fondo el espacio 3D en Unity. Además dedicaremos una parte importante a las matemáticas para videojuegos
 
 ### 3️⃣ &#8658; [**`Gameobjects, componentes y prefabs`**](master-unity/Assets/tema3)
-Profundiza en los bloques de construcción de cualquier programa: métodos y funciones. 
+Profundiza en el desarrollo de videojuegos en Unity viendo en profundidad cada componente. 
 
 ### 4️⃣ &#8658; [**`API de Unity`**](master-unity/Assets/tema4) 
-Aprende a crear las colecciones de datos más basicas en JAVA: arrays y matrices.
+Aprende a utilizar la APi de Unity para optimizar y agilizar el desarrollo de videojuegos.
 
 ### 5️⃣ &#8658; [**`Inteligencia artificial`**](master-unity/Assets/tema5)
-Descubre el paradigma de la Programación Orientada a Objetos, una pieza clave de JAVA.
+Aprenderemos a generar y a aplicar algoritmos de inteligencia artificial dentro de videojuegos.
 
 ### 6️⃣ &#8658; [**`Multijugador`**](master-unity/Assets/tema6)
-Comprende cómo la herencia y el manejo de excepciones ayudan a crear código eficiente y robusto.
-
+Veremos cómo crear juegos multi jugador en red.
 
 
 ## 👨‍💻 Uso
