@@ -5,11 +5,12 @@ public class InterfazUsuario : MonoBehaviour
 {
     [SerializeField] private Text cantidadRespawns;
 
-    private void OnEnable()     { SeguidorRespawn.ActualizarCantidadRespawns += ActualizarCantidadRespawns; }
-    private void OnDisable()    { SeguidorRespawn.ActualizarCantidadRespawns -= ActualizarCantidadRespawns; }
+    private void OnEnable()     { SeguidorRespawn.respawn += ActualizarRespawns; }
+    private void OnDisable()    { SeguidorRespawn.respawn -= ActualizarRespawns; }
 
-    private void ActualizarCantidadRespawns(int cantidadRespawns)
+    private void ActualizarRespawns(int cantidadRespawns, Vector3 posicionRespawn)
     {
         this.cantidadRespawns.text = $"Respawns: {cantidadRespawns}";
+        Debug.Log($"Respawn en : {posicionRespawn}");
     }
 }
