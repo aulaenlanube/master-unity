@@ -11,10 +11,8 @@ public class SeguidorRespawn : MonoBehaviour
     public Vector3[] posicionesRespawn;
 
     //eventos para actualizar la cantidad de respawns y la posición de respawn
-    public delegate void EventoCantidadRespawn(int n);
-    public static event EventoCantidadRespawn ActualizarCantidadRespawns;
-    public delegate void EventoPosicionRespawn(Vector3 v);
-    public static event EventoPosicionRespawn ActualizarPosicionRespawns;
+    public delegate void EventoRespawn(int n, Vector3 v);
+    public static event EventoRespawn respawn;
     private int cantidadRespawns = 0;
 
     void Update()
@@ -28,8 +26,7 @@ public class SeguidorRespawn : MonoBehaviour
             transform.position = posicionesRespawn[Random.Range(0, posicionesRespawn.Length)];
 
             //lanzamos los eventos al actualizar la cantidad de respawns
-            ActualizarCantidadRespawns?.Invoke(++cantidadRespawns);
-            ActualizarPosicionRespawns?.Invoke(transform.position);
+            respawn?.Invoke(++cantidadRespawns, transform.position);
         }
         // seguir
         else if (distanciaObjetivo < distanciaSeguimiento) 
