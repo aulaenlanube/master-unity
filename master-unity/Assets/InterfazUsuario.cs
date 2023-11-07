@@ -2,8 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class InterfazUsuario : MonoBehaviour
-{
-    [SerializeField] private Text cantidadRespawns;
+{    [SerializeField] private Text cantidadRespawns;
 
     private void OnEnable()     { SeguidorRespawn.ActualizarCantidadRespawns += ActualizarCantidadRespawns; }
     private void OnDisable()    { SeguidorRespawn.ActualizarCantidadRespawns -= ActualizarCantidadRespawns; }
