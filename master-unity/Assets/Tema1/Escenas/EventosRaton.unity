@@ -212,13 +212,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 204507453}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.13917309, y: 0, z: 0, w: 0.9902681}
-  m_LocalPosition: {x: 0, y: 1.67, z: -10}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 2, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 16, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &204507457
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -226,7 +226,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 204507453}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: de72cf61eebe4475ba8f58e519a8c27e, type: 3}
   m_Name: 
@@ -247,6 +247,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   multipleRayCast: 0
+  longitudRayo: 10
 --- !u!114 &204507459
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -259,6 +260,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 337a3a894b6c17347b76828acd82dab6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  z: 15
 --- !u!114 &204507460
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -266,7 +268,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 204507453}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 370ac6be06b75e1448e3fef934429b6c, type: 3}
   m_Name: 
@@ -955,6 +957,7 @@ GameObject:
   - component: {fileID: 920234299}
   - component: {fileID: 920234298}
   - component: {fileID: 920234297}
+  - component: {fileID: 920234302}
   - component: {fileID: 920234301}
   m_Layer: 0
   m_Name: CuboRojo
@@ -1058,16 +1061,22 @@ MonoBehaviour:
   m_GameObject: {fileID: 920234295}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 370ac6be06b75e1448e3fef934429b6c, type: 3}
+  m_Script: {fileID: 11500000, guid: 85ed95e671e974ae0883c24e40296648, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  objetivo: {fileID: 920234300}
   velocidad: 5
-  duracion: 1
-  botonArriba: {fileID: 0}
-  botonAbajo: {fileID: 0}
-  botonIzquierda: {fileID: 0}
-  botonDerecha: {fileID: 0}
+--- !u!114 &920234302
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 920234295}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bb36c6ffe91420641809daced1f9bb56, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1060809261
 GameObject:
   m_ObjectHideFlags: 0
