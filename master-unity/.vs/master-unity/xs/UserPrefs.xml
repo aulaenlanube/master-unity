@@ -1,27 +1,16 @@
 ﻿<Properties StartupConfiguration="{42808845-D1AB-11E9-4111-8860C1C164C9}|">
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/MoverPersonaje.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/ControladorPuntuacionDianas.cs">
     <Files>
-      <File FileName="Assets/InterfazUsuario.cs" Line="5" Column="2" />
-      <File FileName="Assets/InterfazConsola.cs" />
-      <File FileName="Assets/Tema1/Scripts/SeguidorRespawn.cs" />
-      <File FileName="Assets/MoverConFlechas.cs" Line="24" Column="6" />
-      <File FileName="Assets/SeguimientoCamara.cs" Line="17" Column="2" />
-      <File FileName="Assets/SeguimientoCamaraPrimeraPersona.cs" Line="34" Column="1" />
-      <File FileName="Assets/SeguimientoCamaraTerceraPersona.cs" Line="6" Column="2" />
-      <File FileName="Assets/EventosRaton.cs" Line="19" Column="55" />
-      <File FileName="Assets/MoverPersonaje.cs" Line="35" Column="55" />
+      <File FileName="Assets/Tema1/Scripts/SeguidorRespawn.cs" Line="1" Column="1" />
+      <File FileName="Assets/Tema1/Scripts/ArrastrarObjeto.cs" Line="11" Column="86" />
+      <File FileName="Assets/PuntuacionDiana.cs" Line="12" Column="50" />
+      <File FileName="Assets/ControladorPuntuacionDianas.cs" Line="14" Column="6" />
+      <File FileName="Assets/DetectarImpactos.cs" Line="20" Column="23" />
     </Files>
-    <Pads>
-      <Pad Id="ProjectPad">
-        <State name="__root__">
-          <Node name="master-unity" expanded="True" selected="True" />
-        </State>
-      </Pad>
-    </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="1bd53e77-d7ae-40f3-a298-015060de56cb" />
+  <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="b936cea6-5280-4c45-8a7e-eb3c098e17fd" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>

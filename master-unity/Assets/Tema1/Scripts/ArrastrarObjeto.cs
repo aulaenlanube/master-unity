@@ -7,7 +7,7 @@ public class ArrastrarObjeto : MonoBehaviour
 
     void OnMouseDown()
     {
-        // calcular la coordenada Z de la cámara al objeto
+        // calcular la coordenada Z de la c?mara al objeto
         coordenadaZ = Camera.main.WorldToScreenPoint(gameObject.transform.position).z;
 
         // almacenar desplazamiento entre el objeto y el punto de clic
@@ -16,16 +16,16 @@ public class ArrastrarObjeto : MonoBehaviour
 
     private Vector3 ObtenerMouseAsWorldPoint()
     {
-        // coordenada del ratón en pantalla
+        // coordenada del rat?n en pantalla
         Vector3 puntoRatonEnPantalla = new Vector3(Input.mousePosition.x, Input.mousePosition.y, coordenadaZ);
 
-        // convertir a posición del mundo
+        // convertir a posici?n del mundo
         return Camera.main.ScreenToWorldPoint(puntoRatonEnPantalla);
     }
 
     void OnMouseDrag()
     {
-        // mover el objeto a la nueva posición del ratón manteniendo el desplazamiento
+        // mover el objeto a la nueva posici?n del rat?n manteniendo el desplazamiento
         transform.position = ObtenerMouseAsWorldPoint() + desplazamiento;
     }
 }
