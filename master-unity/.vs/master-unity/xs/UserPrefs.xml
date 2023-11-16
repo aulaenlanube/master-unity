@@ -1,16 +1,19 @@
 ﻿<Properties StartupConfiguration="{42808845-D1AB-11E9-4111-8860C1C164C9}|">
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/ControladorPuntuacionDianas.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/CamaraDosCubos.cs">
     <Files>
       <File FileName="Assets/Tema1/Scripts/SeguidorRespawn.cs" Line="1" Column="1" />
-      <File FileName="Assets/Tema1/Scripts/ArrastrarObjeto.cs" Line="11" Column="86" />
-      <File FileName="Assets/PuntuacionDiana.cs" Line="12" Column="50" />
+      <File FileName="Assets/Tema1/Scripts/ArrastrarObjeto.cs" />
+      <File FileName="Assets/PuntuacionDiana.cs" />
       <File FileName="Assets/ControladorPuntuacionDianas.cs" Line="14" Column="6" />
-      <File FileName="Assets/DetectarImpactos.cs" Line="20" Column="23" />
+      <File FileName="Assets/DetectarImpactos.cs" />
+      <File FileName="Assets/Tema1/Scripts/MoverConFlechas.cs" Line="7" Column="1" />
+      <File FileName="Assets/MoverConFlechasPersonalizable.cs" Line="11" Column="28" />
+      <File FileName="Assets/CamaraDosCubos.cs" Line="18" Column="52" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="b936cea6-5280-4c45-8a7e-eb3c098e17fd" />
+  <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="150c43f2-65d4-4b2b-8350-569b25a58bc2" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
