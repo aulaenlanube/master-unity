@@ -1,20 +1,17 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class CamaraDosCubos : MonoBehaviour
 {
-
-    public GameObject cubo1;
-    public GameObject cubo2;
-    public float margen = 5f;
+    public Transform cubo1;
+    public Transform cubo2;
+    public float distanciaMinima;
 
     // Update is called once per frame
     void Update()
     {
-        Vector3 puntoMedio = (cubo1.transform.position + cubo2.transform.position) / 2;
-        float distancia = (cubo1.transform.position - cubo2.transform.position).magnitude + margen;
-        distancia = Mathf.Max(distancia, 10f);
+        Vector3 puntoMedio = (cubo1.position + cubo2.position) / 2;
+        float distancia = (cubo1.position - cubo2.position).magnitude;
+        distancia = Mathf.Max(distancia, distanciaMinima);
         transform.position = puntoMedio - transform.forward * distancia;        
     }
 }

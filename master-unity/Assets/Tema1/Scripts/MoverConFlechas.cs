@@ -11,9 +11,9 @@ public class MoverConFlechas : MonoBehaviour
         float despHorizontal = 0;
         float despVertical = 0;
         if (Input.GetKey(KeyCode.UpArrow)) despVertical = 1;
-        else if (Input.GetKey(KeyCode.DownArrow)) despVertical = -1;
-        else if (Input.GetKey(KeyCode.LeftArrow)) despHorizontal = -1;
-        else if (Input.GetKey(KeyCode.RightArrow)) despHorizontal = 1;
+        if (Input.GetKey(KeyCode.DownArrow)) despVertical = -1;
+        if (Input.GetKey(KeyCode.LeftArrow)) despHorizontal = -1;
+        if (Input.GetKey(KeyCode.RightArrow)) despHorizontal = 1;
         else if (Input.GetKey(KeyCode.Space)) gameObject.GetComponent<Renderer>().material.color = Random.ColorHSV();
 
         // calcular el vector de desplazamiento
