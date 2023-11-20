@@ -8,8 +8,8 @@ public enum TipoMoneda
 }
 
 public class Moneda : MonoBehaviour
-{    
-    private static int puntuacionMaxima = 30;
+{
+    private static int puntuacionMaxima = 1000;
     private static bool juegoFinalizado = false;
     private static int cantidadMonedas = 1;
     private TipoMoneda tipoMoneda;
@@ -19,10 +19,10 @@ public class Moneda : MonoBehaviour
     public Transform cubo1;
     public Transform cubo2;
     public float distanciaParaRecoger = 1f;
-    public float distanciaMaximaMoneda = 10f;
+    public float distanciaMaximaMoneda = 50f;
     public int cantidadMaximaMonedas = 5;
 
-    [Range(0,100)]
+    [Range(0, 100)]
     public int probabilidadNuevaMoneda;
 
     private void Start()
@@ -33,11 +33,11 @@ public class Moneda : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.Rotate(new Vector3(0, 0, velocidad*Time.deltaTime));
+        transform.Rotate(new Vector3(0, 0, velocidad * Time.deltaTime));
 
-        if(Vector3.Distance(transform.position, cubo1.position) < distanciaParaRecoger)
+        if (Vector3.Distance(transform.position, cubo1.position) < distanciaParaRecoger)
         {
-            if (tipoMoneda == TipoMoneda.oro) cubo1.GetComponent<MoverConFlechasPersonalizable>().RalentizarCubo();
+            //if (tipoMoneda == TipoMoneda.oro) cubo1.GetComponent<MoverConFlechasPersonalizable>().RalentizarCubo();
             cubo1.GetComponent<PuntuacionCubo>().AumentarPuntuacion(puntosMoneda);
             MoverMoneda();
             ActualizarTipoMoneda();
@@ -45,26 +45,29 @@ public class Moneda : MonoBehaviour
 
         if (Vector3.Distance(transform.position, cubo2.position) < distanciaParaRecoger)
         {
-            if (tipoMoneda == TipoMoneda.oro) cubo2.GetComponent<MoverConFlechasPersonalizable>().RalentizarCubo();
+            //if (tipoMoneda == TipoMoneda.oro) cubo2.GetComponent<MoverConFlechasPersonalizable>().RalentizarCubo();
             cubo2.GetComponent<PuntuacionCubo>().AumentarPuntuacion(puntosMoneda);
             MoverMoneda();
             ActualizarTipoMoneda();
         }
-        if(juegoFinalizado) Destroy(gameObject);
+        if (juegoFinalizado) Destroy(gameObject);
     }
 
     private void MoverMoneda()
     {
-        Vector3 posicionAleatoria = new Vector3(Random.Range(-distanciaMaximaMoneda, distanciaMaximaMoneda-1), 0, Random.Range(-distanciaMaximaMoneda, distanciaMaximaMoneda-1));
-        transform.position = posicionAleatoria;
+        for (int i = 0; i < 10; i++)
+        {      
+            if (Random.Range(0, 100) < probabilidadNuevaMoneda && cantidadMonedas < cantidadMaximaMonedas)
+            {
+                Vector3 posicionAleatoria = new Vector3(Random.Range(-distanciaMaximaMoneda, distanciaMaximaMoneda - 1), 0, Random.Range(-distanciaMaximaMoneda, distanciaMaximaMoneda - 1));
+                transform.position = posicionAleatoria;
+                Quaternion rotacionInicial = Quaternion.Euler(90, 0, 0);
+                Instantiate(gameObject, posicionAleatoria, rotacionInicial);
+                cantidadMonedas++;
+            }
 
-        if(Random.Range(0,100) < probabilidadNuevaMoneda && cantidadMonedas < cantidadMaximaMonedas)
-        {
-            posicionAleatoria = new Vector3(Random.Range(-10, 11), 0, Random.Range(-10, 11));
-            Quaternion rotacionInicial = Quaternion.Euler(90,0,0);
-            Instantiate(gameObject, posicionAleatoria, rotacionInicial);
-            cantidadMonedas++;
         }
+
     }
 
     private void ActualizarTipoMoneda()

@@ -327,6 +327,8 @@ MonoBehaviour:
   abajo: 115
   izquierda: 97
   derecha: 100
+  duplicarVelocidad: 0
+  dividirVelocidad: 0
 --- !u!114 &340972949
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -938,6 +940,8 @@ MonoBehaviour:
   abajo: 274
   izquierda: 276
   derecha: 275
+  duplicarVelocidad: 270
+  dividirVelocidad: 269
 --- !u!65 &1846069474
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1162,8 +1166,8 @@ MonoBehaviour:
   cubo1: {fileID: 340972947}
   cubo2: {fileID: 1846069477}
   distanciaParaRecoger: 1
-  distanciaMaximaMoneda: 10
-  cantidadMaximaMonedas: 10
+  distanciaMaximaMoneda: 30
+  cantidadMaximaMonedas: 100
   probabilidadNuevaMoneda: 100
 --- !u!1660057539 &9223372036854775807
 SceneRoots:

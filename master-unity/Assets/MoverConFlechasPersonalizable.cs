@@ -12,6 +12,9 @@ public class MoverConFlechasPersonalizable : MonoBehaviour
     public KeyCode abajo;
     public KeyCode izquierda;
     public KeyCode derecha;
+    public KeyCode duplicarVelocidad;
+    public KeyCode dividirVelocidad;
+
 
     void Update()
     {
@@ -21,6 +24,9 @@ public class MoverConFlechasPersonalizable : MonoBehaviour
         if (Input.GetKey(abajo)) despVertical = -1;
         if (Input.GetKey(izquierda)) despHorizontal = -1;
         if (Input.GetKey(derecha)) despHorizontal = 1;
+
+        if (Input.GetKeyDown(duplicarVelocidad)) velocidad*=2;
+        if (Input.GetKeyDown(dividirVelocidad)) velocidad/=2;
 
         // calcular el vector de desplazamiento
         Vector3 desplazamiento = new Vector3(despHorizontal, 0, despVertical);

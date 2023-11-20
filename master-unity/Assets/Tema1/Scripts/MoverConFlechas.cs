@@ -22,5 +22,10 @@ public class MoverConFlechas : MonoBehaviour
         // mover el GameObject
         transform.Translate(desplazamiento * velocidad * Time.deltaTime);
     }
+
+    public void MoverRandom()
+    {
+        transform.Translate(new Vector3(Random.Range(-1,2),0,Random.Range(-1,2)));
+    }
 }
 

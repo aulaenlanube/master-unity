@@ -9,17 +9,17 @@ public class EventosRaton : MonoBehaviour
     void Update()
     {
         if (Input.GetMouseButton(0))
-        {   
+        {
             Ray rayo = Camera.main.ScreenPointToRay(Input.mousePosition);
 
             //raycast múltiple
-            if(multipleRayCast)
+            if (multipleRayCast)
             {
                 // lanzamos un raycast que detecte todos los colliders en la dirección del rayo
                 RaycastHit[] impactos = Physics.RaycastAll(rayo, Mathf.Infinity);
 
                 // ordenamos de menor a mayor distancia
-                System.Array.Sort(impactos,(impacto1, impacto2) => impacto1.distance.CompareTo(impacto2.distance));
+                System.Array.Sort(impactos, (impacto1, impacto2) => impacto1.distance.CompareTo(impacto2.distance));
 
                 foreach (RaycastHit impacto in impactos)
                 {
@@ -31,40 +31,23 @@ public class EventosRaton : MonoBehaviour
             else
             {
                 RaycastHit hitInfo;
-
                 if (Physics.Raycast(rayo, out hitInfo))
                 {
                     GameObject obj = hitInfo.collider.gameObject;
                     if (obj != null)
                     {
-                        //Debug.Log($"Has hecho click en: {obj.name}");
+                        Debug.Log($"Has hecho click en: {obj.name}");
                         Debug.DrawRay(rayo.origin, rayo.direction * longitudRayo, Color.red);
 
-                        //mal planteado
                         Vector3 posicionRaton = Input.mousePosition;
-                        posicionRaton.z = 0;
-                        Vector3 direccion = posicionRaton - Camera.main.transform.position;
-                        Debug.DrawRay(Camera.main.transform.position, direccion * 10f, Color.green);
+                        posicionRaton.z = Camera.main.nearClipPlane;
 
-                        //bien planteado de forma más abreviada
-                        
-                        Vector3 direccion2 = (hitInfo.point - Camera.main.transform.position).normalized;
-                        //movemos un poco arriba
-                        Vector3 posCamaraUnPocoArriba = Camera.main.transform.position;
-                        posCamaraUnPocoArriba.y += 0.1f;
-                        Debug.DrawRay(posCamaraUnPocoArriba, direccion2 * longitudRayo, Color.green);
-
-                        // calculas punto del ratón en pantalla, respecto al mundo
-                        Vector3 direccionValida = (hitInfo.point - Camera.main.transform.position).normalized;
-                        Debug.DrawRay(Camera.main.transform.position, direccionValida * 10f, Color.green);
-                        Debug.Log("click en pantalla: "+Input.mousePosition+" posicion en mundo debe ser 0,0,0"+Camera.main.ScreenToWorldPoint(Input.mousePosition));
-
-
-                        //Ampliación en el Tema 2 donde veremos el cálculo de la intersección donde impacta sobre el objeto 3D
-
+                        Vector3 posCamaraUnPocoArriba = Camera.main.transform.position + new Vector3(0, 0.1f, 0);
+                        Vector3 direccion = (Camera.main.ScreenToWorldPoint(posicionRaton) - Camera.main.transform.position).normalized;
+                        Debug.DrawRay(posCamaraUnPocoArriba, direccion * longitudRayo, Color.green);
                     }
                 }
-            } 
+            }
         }
     }
 }
