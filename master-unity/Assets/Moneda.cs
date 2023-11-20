@@ -9,11 +9,9 @@ public enum TipoMoneda
 
 public class Moneda : MonoBehaviour
 {
-    private static int puntuacionMaxima = 1000;
-    private static bool juegoFinalizado = false;
+    private static bool partidaFinalizada = false;
+    private static int puntuacionMaxima = 100;
     private static int cantidadMonedas = 1;
-    private TipoMoneda tipoMoneda;
-    private int puntosMoneda;
 
     public float velocidad = 300f;
     public Transform cubo1;
@@ -24,50 +22,54 @@ public class Moneda : MonoBehaviour
 
     [Range(0, 100)]
     public int probabilidadNuevaMoneda;
+    public Color colorOro;
+    public Color colorPlata;
+    public Color colorBronce;
+
+    private TipoMoneda tipoMoneda;
+    private int puntosMoneda;
 
     private void Start()
     {
         ActualizarTipoMoneda();
     }
 
-    // Update is called once per frame
     void Update()
     {
         transform.Rotate(new Vector3(0, 0, velocidad * Time.deltaTime));
-
-        if (Vector3.Distance(transform.position, cubo1.position) < distanciaParaRecoger)
-        {
-            //if (tipoMoneda == TipoMoneda.oro) cubo1.GetComponent<MoverConFlechasPersonalizable>().RalentizarCubo();
-            cubo1.GetComponent<PuntuacionCubo>().AumentarPuntuacion(puntosMoneda);
-            MoverMoneda();
-            ActualizarTipoMoneda();
-        }
-
-        if (Vector3.Distance(transform.position, cubo2.position) < distanciaParaRecoger)
-        {
-            //if (tipoMoneda == TipoMoneda.oro) cubo2.GetComponent<MoverConFlechasPersonalizable>().RalentizarCubo();
-            cubo2.GetComponent<PuntuacionCubo>().AumentarPuntuacion(puntosMoneda);
-            MoverMoneda();
-            ActualizarTipoMoneda();
-        }
-        if (juegoFinalizado) Destroy(gameObject);
+        ComprobarCogerMoneda(cubo1.gameObject);
+        ComprobarCogerMoneda(cubo2.gameObject);
+        if (partidaFinalizada) Destroy(gameObject);
     }
 
+    private void ComprobarCogerMoneda(GameObject cubo)
+    {
+        if (Vector3.Distance(transform.position, cubo.transform.position) < distanciaParaRecoger)
+        {
+            cubo.GetComponent<PuntuacionCubo>().AumentarPuntuacion(puntosMoneda);
+            if (tipoMoneda == TipoMoneda.oro) Ralentizar(cubo);                
+            MoverMoneda();
+            ActualizarTipoMoneda();
+        }
+    }
+
+    private void Ralentizar(GameObject cubo)
+    {
+        cubo.GetComponent<MoverConFlechasPersonalizable>().RalentizarCubo();
+    }
     private void MoverMoneda()
     {
-        for (int i = 0; i < 10; i++)
-        {      
-            if (Random.Range(0, 100) < probabilidadNuevaMoneda && cantidadMonedas < cantidadMaximaMonedas)
-            {
-                Vector3 posicionAleatoria = new Vector3(Random.Range(-distanciaMaximaMoneda, distanciaMaximaMoneda - 1), 0, Random.Range(-distanciaMaximaMoneda, distanciaMaximaMoneda - 1));
-                transform.position = posicionAleatoria;
-                Quaternion rotacionInicial = Quaternion.Euler(90, 0, 0);
-                Instantiate(gameObject, posicionAleatoria, rotacionInicial);
-                cantidadMonedas++;
-            }
+        Vector3 posicionAleatoria = new Vector3(Random.Range(-distanciaMaximaMoneda, distanciaMaximaMoneda - 1), 0, Random.Range(-distanciaMaximaMoneda, distanciaMaximaMoneda - 1));
+        transform.position = posicionAleatoria;
 
+        //duplicar moneda
+        if (Random.Range(0, 100) < probabilidadNuevaMoneda && cantidadMonedas < cantidadMaximaMonedas)
+        {
+            posicionAleatoria = new Vector3(Random.Range(-distanciaMaximaMoneda, distanciaMaximaMoneda + 1), 0, Random.Range(-distanciaMaximaMoneda, distanciaMaximaMoneda + 1));
+            Quaternion rotacionInicial = Quaternion.Euler(90, 0, 0);
+            Instantiate(gameObject, posicionAleatoria, rotacionInicial);
+            cantidadMonedas++;
         }
-
     }
 
     private void ActualizarTipoMoneda()
@@ -75,15 +77,13 @@ public class Moneda : MonoBehaviour
         System.Array valores = System.Enum.GetValues(typeof(TipoMoneda));
         tipoMoneda = (TipoMoneda)valores.GetValue(new System.Random().Next(valores.Length));
 
-        Color colorMoneda = tipoMoneda switch
+        GetComponent<Renderer>().material.color = tipoMoneda switch
         {
-            TipoMoneda.oro => Color.yellow,
-            TipoMoneda.plata => Color.grey,
-            TipoMoneda.bronce => new Color(0.6f, 0.3f, 0.1f),
-            _ => Color.black
+            TipoMoneda.oro => colorOro,
+            TipoMoneda.plata => colorPlata,
+            TipoMoneda.bronce => colorBronce,
+            _ => colorOro
         };
-
-        GetComponent<Renderer>().material.color = colorMoneda;
 
         puntosMoneda = tipoMoneda switch
         {
@@ -94,9 +94,8 @@ public class Moneda : MonoBehaviour
         };
     }
 
-    public static void ComprobarPuntuacionMaxima(int cantidadPuntos)
+    public static void ComprobarPartidaFinalizada(int puntos)
     {
-        if (cantidadPuntos >= puntuacionMaxima) juegoFinalizado = true;
+        if (puntos >= puntuacionMaxima) partidaFinalizada = true;
     }
-
 }

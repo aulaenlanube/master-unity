@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657826, g: 0.49641263, b: 0.57481676, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -182,16 +182,16 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 20
+    m_FontSize: 30
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 2
     m_MaxSize: 40
-    m_Alignment: 5
+    m_Alignment: 2
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
-    m_VerticalOverflow: 0
+    m_VerticalOverflow: 1
     m_LineSpacing: 1
   m_Text: Jugador2
 --- !u!222 &96354802
@@ -322,13 +322,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   velocidad: 10
-  duracionRalentizacion: 5
+  duracionRalentizacion: 20
   arriba: 119
   abajo: 115
   izquierda: 97
   derecha: 100
-  duplicarVelocidad: 0
-  dividirVelocidad: 0
 --- !u!114 &340972949
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -856,8 +854,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 103.2, y: -18.800003}
-  m_SizeDelta: {x: 200, y: 30}
+  m_AnchoredPosition: {x: 156.18, y: -33.7}
+  m_SizeDelta: {x: 300, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1668728233
 MonoBehaviour:
@@ -881,16 +879,16 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 20
+    m_FontSize: 30
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 2
-    m_MaxSize: 40
-    m_Alignment: 3
+    m_MaxSize: 50
+    m_Alignment: 0
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
-    m_VerticalOverflow: 0
+    m_VerticalOverflow: 1
     m_LineSpacing: 1
   m_Text: Jugador1
 --- !u!222 &1668728234
@@ -935,13 +933,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   velocidad: 10
-  duracionRalentizacion: 5
+  duracionRalentizacion: 10
   arriba: 273
   abajo: 274
   izquierda: 276
   derecha: 275
-  duplicarVelocidad: 270
-  dividirVelocidad: 269
 --- !u!65 &1846069474
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1169,6 +1165,9 @@ MonoBehaviour:
   distanciaMaximaMoneda: 30
   cantidadMaximaMonedas: 100
   probabilidadNuevaMoneda: 100
+  colorOro: {r: 1, g: 1, b: 0, a: 0}
+  colorPlata: {r: 0.5566038, g: 0.5566038, b: 0.5566038, a: 0}
+  colorBronce: {r: 0.6603774, g: 0.2201258, b: 0, a: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

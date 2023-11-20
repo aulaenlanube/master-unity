@@ -1,20 +1,21 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.UIElements;
 
 public class MoverConFlechasPersonalizable : MonoBehaviour
 {
     private const int VELOCIDAD_POR_DEFECTO = 10;
+
     public float velocidad = 10f;
-    public float duracionRalentizacion = 5;
+    public float duracionRalentizacion = 10;
     public KeyCode arriba;
     public KeyCode abajo;
     public KeyCode izquierda;
     public KeyCode derecha;
-    public KeyCode duplicarVelocidad;
-    public KeyCode dividirVelocidad;
 
+    private Coroutine corrutinaActual;
 
     void Update()
     {
@@ -25,9 +26,6 @@ public class MoverConFlechasPersonalizable : MonoBehaviour
         if (Input.GetKey(izquierda)) despHorizontal = -1;
         if (Input.GetKey(derecha)) despHorizontal = 1;
 
-        if (Input.GetKeyDown(duplicarVelocidad)) velocidad*=2;
-        if (Input.GetKeyDown(dividirVelocidad)) velocidad/=2;
-
         // calcular el vector de desplazamiento
         Vector3 desplazamiento = new Vector3(despHorizontal, 0, despVertical);
 
@@ -37,7 +35,8 @@ public class MoverConFlechasPersonalizable : MonoBehaviour
 
     public void RalentizarCubo()
     {
-        StartCoroutine(Ralentizar());
+        if (corrutinaActual != null) StopCoroutine(corrutinaActual);
+        corrutinaActual = StartCoroutine(Ralentizar());
     }
 
     private IEnumerator Ralentizar()

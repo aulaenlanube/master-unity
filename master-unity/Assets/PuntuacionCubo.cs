@@ -18,7 +18,7 @@ public class PuntuacionCubo : MonoBehaviour
     {
         puntos += n;
         ActualizarPuntuacion();
-        Moneda.ComprobarPuntuacionMaxima(puntos);
+        Moneda.ComprobarPartidaFinalizada(puntos);
     }
 
     private void ActualizarPuntuacion()
