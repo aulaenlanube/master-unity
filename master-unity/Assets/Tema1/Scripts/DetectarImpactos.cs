@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class DetectarImpactos : MonoBehaviour
@@ -12,12 +11,20 @@ public class DetectarImpactos : MonoBehaviour
             RaycastHit hit;
             if (Physics.Raycast(rayo, out hit))
             {
-                // Comprobar si el objeto impactado tiene el script PuntuacionObjetivo
                 PuntuacionDiana puntuacionObjetivo = hit.collider.GetComponent<PuntuacionDiana>();
                 puntuacionObjetivo?.Impacto();
-
+                StartCoroutine(GirarDiana(hit.collider.gameObject.transform.parent.gameObject));
             }
-            else Debug.Log("Nada");
+            else Debug.Log("Mejora tu punteria");
+        }
+    }
+
+    IEnumerator GirarDiana(GameObject diana)
+    {
+        for(int i = 0; i<18; i++)
+        {
+            diana.transform.Rotate(0f, 100f, 0f);
+            yield return null;
         }
     }
 }

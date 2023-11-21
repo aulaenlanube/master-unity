@@ -11,6 +11,7 @@ public class MovimientoArray : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+
         StartCoroutine(MoverEntrePuntos(puntos, velocidad));
         //StartCoroutine(MoverEntrePuntosDuracion(puntos, duracion));
     }
