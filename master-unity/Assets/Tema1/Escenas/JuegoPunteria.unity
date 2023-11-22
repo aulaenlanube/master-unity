@@ -466,6 +466,7 @@ GameObject:
   - component: {fileID: 429850036}
   - component: {fileID: 429850038}
   - component: {fileID: 429850037}
+  - component: {fileID: 429850039}
   m_Layer: 5
   m_Name: Puntuacion
   m_TagString: Untagged
@@ -534,6 +535,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 429850035}
   m_CullTransparentMesh: 1
+--- !u!114 &429850039
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 429850035}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: caff61bd73d337b44b23960ad42058fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &458419546
 GameObject:
   m_ObjectHideFlags: 0
@@ -665,6 +678,7 @@ GameObject:
   - component: {fileID: 505485940}
   - component: {fileID: 505485943}
   - component: {fileID: 505485942}
+  - component: {fileID: 505485944}
   m_Layer: 5
   m_Name: Disparos
   m_TagString: Untagged
@@ -733,6 +747,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 505485939}
   m_CullTransparentMesh: 1
+--- !u!114 &505485944
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 505485939}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 778ff40df7c5313459b9b028488c354b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &532692349
 GameObject:
   m_ObjectHideFlags: 0
@@ -744,6 +770,7 @@ GameObject:
   - component: {fileID: 532692350}
   - component: {fileID: 532692352}
   - component: {fileID: 532692351}
+  - component: {fileID: 532692353}
   m_Layer: 5
   m_Name: Tiempo
   m_TagString: Untagged
@@ -812,6 +839,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 532692349}
   m_CullTransparentMesh: 1
+--- !u!114 &532692353
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 532692349}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 215ff8150d805cd43a4ef03570261ff7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1171675408
 GameObject:
   m_ObjectHideFlags: 0
@@ -864,9 +903,6 @@ MonoBehaviour:
   velocidad: 20
   cantidadDisparos: 20
   duracionPartida: 20
-  textoPuntuacionActual: {fileID: 429850037}
-  textoDisparosRestantes: {fileID: 505485942}
-  textoTiempoRestante: {fileID: 532692351}
 --- !u!1 &1191599867
 GameObject:
   m_ObjectHideFlags: 0

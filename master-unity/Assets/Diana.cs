@@ -7,21 +7,31 @@ public class Diana : MonoBehaviour
     public float velocidad = 20;
     public int cantidadDisparos = 20;
     public float duracionPartida = 20;
-    public Text textoPuntuacionActual;
-    public Text textoDisparosRestantes;
-    public Text textoTiempoRestante;
 
     private int puntuacionActual;
     private Vector3[][] posiciones;
     private Coroutine corrutinaMovimientoActual;
     private float duracionActual;
 
+    public delegate void textoPuntuacion(int puntuacion);
+    public static event textoPuntuacion puntuacionActualizada;
+
+    public delegate void textoDisparos(int disparos);
+    public static event textoDisparos disparosActualizados;
+
+    public delegate void textoTiempo(float duracion);
+    public static event textoTiempo tiempoActualizado;
+
     void Start()
     {
         puntuacionActual = 0;
         duracionActual = 0;
 
-        ActualizarTextos();
+        //actualizar los marcadores
+        puntuacionActualizada?.Invoke(puntuacionActual);
+        disparosActualizados?.Invoke(cantidadDisparos);
+        tiempoActualizado?.Invoke(duracionPartida - duracionActual);
+
         EstablecerPatronesMovimiento();
         PatronMovimientoAleatorio();
     }
@@ -29,10 +39,13 @@ public class Diana : MonoBehaviour
     void Update()
     {        
         duracionActual += Time.deltaTime;
+        tiempoActualizado?.Invoke(duracionPartida - duracionActual);
 
         if (Input.GetMouseButtonDown(0))
         {            
             cantidadDisparos--;
+            disparosActualizados?.Invoke(cantidadDisparos);
+
             Ray rayo = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
             if (Physics.Raycast(rayo, out hit)) // si hay algún impacto
@@ -41,24 +54,22 @@ public class Diana : MonoBehaviour
                 int puntosImpacto = hit.collider.GetComponent<PuntuacionDiana>()?.puntosPorImpacto ?? 0;
                 puntuacionActual += puntosImpacto;
                                          
-                if (puntosImpacto > 0) PatronMovimientoAleatorio();     //cambiamos el patrón de movimiento                  
+                if (puntosImpacto > 0)
+                {
+                    PatronMovimientoAleatorio();     //cambiamos el patrón de movimiento
+                    puntuacionActualizada?.Invoke(puntuacionActual);
+                }
                 if (puntosImpacto == 25) StartCoroutine(GirarDiana());  //giramos la diana si hemos dado en el centro
             }
         }        
-        ActualizarTextos(); 
+
         if (cantidadDisparos == 0 || duracionActual >= duracionPartida)
         {
-            textoTiempoRestante.text = "Fin de la partida";
+            tiempoActualizado?.Invoke(0);
             Destroy(gameObject);
         }
     }
 
-    private void ActualizarTextos()
-    {
-        textoDisparosRestantes.text = $"Disparos restantes: {cantidadDisparos}";
-        textoPuntuacionActual.text = $"Puntuación: {puntuacionActual}";
-        textoTiempoRestante.text = $"Tiempo restante: {(duracionPartida - duracionActual):F2}";
-    }
 
     private void EstablecerPatronesMovimiento()
     {
