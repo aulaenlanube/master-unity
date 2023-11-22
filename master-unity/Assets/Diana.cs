@@ -38,11 +38,11 @@ public class Diana : MonoBehaviour
             if (Physics.Raycast(rayo, out hit)) // si hay algún impacto
             {
                 //establemos el impacto y se actualiza la puntuación
-                int puntoImpaco = hit.collider.GetComponent<PuntuacionDiana>().puntosPorImpacto;
-                puntuacionActual += puntoImpaco;
+                int puntosImpacto = hit.collider.GetComponent<PuntuacionDiana>()?.puntosPorImpacto ?? 0;
+                puntuacionActual += puntosImpacto;
                                          
-                PatronMovimientoAleatorio(); //cambiamos el patrón de movimiento                  
-                if (puntoImpaco == 25) StartCoroutine(GirarDiana());//giramos la diana si hemos dado en el centro
+                if (puntosImpacto > 0) PatronMovimientoAleatorio();     //cambiamos el patrón de movimiento                  
+                if (puntosImpacto == 25) StartCoroutine(GirarDiana());  //giramos la diana si hemos dado en el centro
             }
         }        
         ActualizarTextos(); 
