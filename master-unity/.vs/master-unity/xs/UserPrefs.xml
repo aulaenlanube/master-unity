@@ -1,25 +1,17 @@
 ﻿<Properties StartupConfiguration="{42808845-D1AB-11E9-4111-8860C1C164C9}|">
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Tema1/Scripts/MovimientoArray.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/JuegoRecursividad.cs">
     <Files>
-      <File FileName="Assets/Tema1/Scripts/ControladorPuntuacionDianas.cs" Line="23" Column="1" />
-      <File FileName="Assets/Tema1/Scripts/PuntuacionDiana.cs" Line="1" Column="1" />
-      <File FileName="Assets/Tema1/Scripts/DetectarImpactos.cs" Line="24" Column="28" />
-      <File FileName="Assets/Diana.cs" Line="7" Column="1" />
       <File FileName="Assets/Tema1/Scripts/MovTriangulo.cs" Line="1" Column="1" />
       <File FileName="Assets/Tema1/Scripts/MovimientoArray.cs" Line="14" Column="1" />
       <File FileName="Assets/Tema1/Scripts/GeneradorCirculoCubos.cs" Line="1" Column="1" />
+      <File FileName="Assets/Tema1/Scripts/Juego Diana/PuntuacionDiana.cs" Line="1" Column="1" />
+      <File FileName="Assets/Tema1/Scripts/Juego Diana/DianaPuntuacion.cs" Line="18" Column="45" />
+      <File FileName="Assets/JuegoRecursividad.cs" Line="101" Column="14" />
     </Files>
-    <Pads>
-      <Pad Id="ProjectPad">
-        <State name="__root__">
-          <Node name="master-unity" expanded="True" selected="True" />
-        </State>
-      </Pad>
-    </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="50d48885-18bd-4d35-a940-1c56b06bdf15" />
+  <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="d995ffe8-3412-41f2-898c-28247a9b2b06" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>

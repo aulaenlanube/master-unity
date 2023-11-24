@@ -1,6 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class JuegoRecursividad : MonoBehaviour
 {
@@ -8,7 +7,11 @@ public class JuegoRecursividad : MonoBehaviour
     public int dimension;
     [Range(0f, 0.1f)]
     public float separacion;
+
+    public Text textoPuntuacion;
     private GameObject[,] cuadriculaCubos;
+
+    private int puntuacion = 0;
 
     void Start()
     {
@@ -28,9 +31,20 @@ public class JuegoRecursividad : MonoBehaviour
                 GameObject cubo = GameObject.CreatePrimitive(PrimitiveType.Cube);
                 cubo.transform.position = posicion;
                 cubo.name = $"Cubo_{x}_{y}";
-                //cubo.AddComponent<Cubo>();
+                
                 cuadriculaCubos[x, y] = cubo;
                 CambiarColorCubo(cubo);
+            }
+        }
+    }
+
+    void DestruirCuadricula()
+    {
+        for (int x = 0; x < dimension; x++)
+        {
+            for (int y = 0; y < dimension; y++)
+            {
+                if(cuadriculaCubos[x,y] != null) Destroy(cuadriculaCubos[x, y]);
             }
         }
     }
@@ -43,20 +57,23 @@ public class JuegoRecursividad : MonoBehaviour
             RaycastHit hit;
             if (Physics.Raycast(rayo, out hit))
             {
-                GameObject cuboSeleccionado = hit.collider.gameObject;
-                int conteo = ContarCubosMismoColor(cuboSeleccionado);
-                Debug.Log($"Cubos del mismo color alrededor: {conteo}");
+                GameObject cuboSeleccionado = hit.collider.gameObject;                
+                ContarCubosMismoColor(cuboSeleccionado);
                 CambiarColoresAleatoriamente();
+
+
+                textoPuntuacion.text = $"Puntos: {puntuacion}";
+                DestruirCuadricula();
+                GenerarCuadricula();
             }
+            
         }
+        
     }
 
-    int ContarCubosMismoColor(GameObject cuboSeleccionado)
+    void ContarCubosMismoColor(GameObject cuboSeleccionado)
     {
-        int conteo = 0;
-        Color colorCuboSeleccionado = cuboSeleccionado.GetComponent<Renderer>().material.color;
-
-        // Encuentra la posición del cubo en la cuadrícula
+        // Encuentra la posici?n del cubo en la cuadr?cula
         int posX = 0, posY = 0;
         bool encontrado = false;
         for (int x = 0; x < dimension && !encontrado; x++)
@@ -71,26 +88,33 @@ public class JuegoRecursividad : MonoBehaviour
                 }
             }
         }
+        ContarCubosMismoColor(posX, posY, cuboSeleccionado.GetComponent<Renderer>().material.color);
+    }
 
-        // Verifica los cubos adyacentes
-        for (int x = Mathf.Max(0, posX - 1); x <= Mathf.Min(dimension - 1, posX + 1); x++)
+    void ContarCubosMismoColor(int x, int y, Color color)
+    {
+        //comprobamos si los ?ndices son v?lidos
+        if(IndicesValidos(x,y) && cuadriculaCubos[x, y] != null)
         {
-            for (int y = Mathf.Max(0, posY - 1); y <= Mathf.Min(dimension - 1, posY + 1); y++)
+            //si el color coincide
+            if (cuadriculaCubos[x, y].GetComponent<Renderer>().material.color == color)
             {
-                // Ignora el cubo seleccionado
-                if (x == posX && y == posY) continue;
+                //incrementamos puntos
+                puntuacion++;
+                Destroy(cuadriculaCubos[x, y]);
 
-                GameObject cuboAdyacente = cuadriculaCubos[x, y];
-                Color colorCuboAdyacente = cuboAdyacente.GetComponent<Renderer>().material.color;
-
-                if (colorCuboAdyacente == colorCuboSeleccionado)
-                {
-                    conteo++;
-                }
-            }
+                //buscamos recursivamente
+                if (IndicesValidos(x+1, y)) ContarCubosMismoColor(x + 1, y, color); //arriba
+                if (IndicesValidos(x-1, y)) ContarCubosMismoColor(x - 1, y, color); //abajo
+                if (IndicesValidos(x, y-1)) ContarCubosMismoColor(x, y - 1, color); //izquierda
+                if (IndicesValidos(x, y+1)) ContarCubosMismoColor(x, y + 1, color); //derecha
+            }   
         }
+    }
 
-        return conteo;
+    bool IndicesValidos(int x, int y)
+    {
+        return x >= 0 && x <= cuadriculaCubos.Length - 1 && y >= 0 && y <= cuadriculaCubos.Length - 1;
     }
 
 
@@ -111,7 +135,7 @@ public class JuegoRecursividad : MonoBehaviour
 
     Color ObtenerColorAleatorio()
     {
-        Color[] colores = { Color.green, Color.red, Color.blue, Color.yellow, Color.magenta, Color.gray, new Color(0.5f, 0, 0.5f) }; // Magenta para morado, gris para marrón
+        Color[] colores = { Color.green, Color.red, Color.blue, Color.yellow, Color.cyan, Color.gray, Color.white }; 
         return colores[Random.Range(0, colores.Length)];
     }
 }

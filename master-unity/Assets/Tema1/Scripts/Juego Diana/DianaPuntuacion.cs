@@ -15,6 +15,6 @@ public class DianaPuntuacion : MonoBehaviour
 
     private void ActualizarPuntuacion(int puntos)
     {
-        GetComponent<Text>().text = $"Puntuación: {puntos}";
+        GetComponent<Text>().text = $"Puntos: {puntos}";
     }
 }
