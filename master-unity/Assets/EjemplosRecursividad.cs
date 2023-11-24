@@ -6,9 +6,10 @@ public class EjemplosRecursividad : MonoBehaviour
 {
     private void Start()
     {
-        GenerarEscalera(Vector3.zero, 1, 20);
         Saludar(5);
-
+        DesactivarHijosRecursivamente(transform);
+        if(BuscarObjetoRecursivamente(transform, "aulaenlanube") != null) Debug.Log("aulaenlanube.com encontrado");
+        GenerarEscalera(Vector3.zero, 1, 20);        
     }
 
     void Saludar(int n)
@@ -21,7 +22,7 @@ public class EjemplosRecursividad : MonoBehaviour
         // caso recursivo 
         else 
         {
-            Debug.Log($"Visita aulaenlanube.com, {n} ");
+            Debug.Log($"n:{n}");
             Saludar(--n);  
         }
     }
@@ -41,5 +42,27 @@ public class EjemplosRecursividad : MonoBehaviour
         // llamada recursiva para crear el siguiente escalón
         GenerarEscalera(posInicial, alturaEscalon + 1, escalones);
     }
+    void DesactivarHijosRecursivamente(Transform padre)
+    {
+        foreach (Transform hijo in padre)
+        {
+            hijo.gameObject.SetActive(false);
+            DesactivarHijosRecursivamente(hijo);
+        }
+    }
+
+    GameObject BuscarObjetoRecursivamente(Transform padre, string nombreBuscado)
+    {
+        if (padre.name == nombreBuscado) return padre.gameObject;
+        foreach (Transform hijo in padre)
+        {
+            GameObject encontrado = BuscarObjetoRecursivamente(hijo, nombreBuscado);
+            if (encontrado != null) return encontrado;
+        }
+        return null;
+    }
+
+
+
 
 }

@@ -4,16 +4,19 @@ using UnityEngine;
 
 public class GeneradorLaberinto : MonoBehaviour
 {
-    public GameObject cubo;
-    public GameObject suelo;
-    public int filas = 21; // Debe ser impar
-    public int columnas = 21; // Debe ser impar
-    public float dimensionCelda = 1.0f;
+    [Tooltip("El valor controla el tamaño del laberinto")]
+    [Range(1,10)]
+    public int dimension;
 
+    private int filas;
+    private int columnas; 
+    private float dimensionCelda = 1f;
     private int[,] laberinto;
 
     void Start()
     {
+        filas = dimension*10+1;
+        columnas = dimension*10+1;
         laberinto = new int[filas, columnas];
         InicializarLaberinto();
         GenerarLaberinto(2, 2);
@@ -23,13 +26,9 @@ public class GeneradorLaberinto : MonoBehaviour
 
     void InicializarLaberinto()
     {
-        for (int i = 0; i < filas; i++)
-        {
-            for (int j = 0; j < columnas; j++)
-            {
-                laberinto[i, j] = 1;
-            }
-        }
+        for (int i = 0; i < filas; i++)        
+            for (int j = 0; j < columnas; j++)            
+                laberinto[i, j] = 1;  
     }
 
     void GenerarLaberinto(int x, int y)
@@ -40,7 +39,7 @@ public class GeneradorLaberinto : MonoBehaviour
             new int[] {0, -1},
             new int[] {-1, 0}
         };
-        
+
         Shuffle(direcciones);
 
         foreach (int[] direccion in direcciones)
@@ -74,12 +73,13 @@ public class GeneradorLaberinto : MonoBehaviour
         {
             for (int j = 0; j < columnas; j++)
             {
-                Vector3 posicion = new Vector3(i * dimensionCelda, 0, j * dimensionCelda);
-                GameObject aInstanciar = laberinto[i, j] == 1 ? cubo : suelo;
-                if(laberinto[i, j] != 1) { posicion += new Vector3(0, -0.55f, 0);  }
-
-                GameObject instancia = Instantiate(aInstanciar, posicion, Quaternion.identity);
-                instancia.transform.parent = this.transform;
+                if (laberinto[i, j] == 1)
+                {
+                    Vector3 posicion = new Vector3(i * dimensionCelda, 0, j * dimensionCelda);                    
+                    GameObject instancia = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                    instancia.transform.position = posicion;
+                    instancia.transform.parent = this.transform;
+                }
             }
         }
     }
