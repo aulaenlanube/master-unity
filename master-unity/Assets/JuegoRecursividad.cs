@@ -3,82 +3,116 @@ using UnityEngine.UI;
 
 public class JuegoRecursividad : MonoBehaviour
 {
-    [Range(5, 10)]
-    public int dimension;
+    [Range(3, 10)]
+    public int escala;
+
     [Range(0f, 0.1f)]
     public float separacion;
 
-    public Text textoPuntuacion;
-    private GameObject[,] cuadriculaCubos;
+    [Range(5, 20)]
+    public int cantidadClics;
 
-    private int puntuacion = 0;
+    public Color[] coloresCubos;
+
+    private GameObject[,] cuadriculaCubos;
+    private int puntuacionAcual = 0;
+    private float duracionActual = 0f;
+    private int cantidadClicsActual = 0;
+    private int comboActual = 0;
+    private int lado;
+
+    public delegate void actualizarPuntuacion(int puntos);
+    public static event actualizarPuntuacion puntuacionActualizada;
+
+    public delegate void actualizarTiempo(float tiempo);
+    public static event actualizarTiempo tiempoActualizado;
+
+    public delegate void actualizarClics(int clicsActuales, int clicsTotales);
+    public static event actualizarClics clicsActualizados;
+
+    public delegate void actualizarCombo(int combo);
+    public static event actualizarCombo comboActualizado;
 
     void Start()
     {
-        dimension = dimension * 2 + 1;
-        cuadriculaCubos = new GameObject[dimension, dimension];
-        GenerarCuadricula();
-        Camera.main.transform.position = cuadriculaCubos[dimension / 2, dimension / 2].transform.position - Vector3.forward * dimension;
+        lado = escala * 2 + 1;
+        cuadriculaCubos = new GameObject[lado, lado];
+        RegenerarCuadricula();
+        AjustarCamara();
+
+        //publicamos los 4 eventos al inicio
+        puntuacionActualizada?.Invoke(puntuacionAcual);
+        tiempoActualizado?.Invoke(duracionActual);
+        clicsActualizados?.Invoke(cantidadClicsActual, cantidadClics);
+        comboActualizado?.Invoke(0);
     }
 
-    void GenerarCuadricula()
+    void RegenerarCuadricula()
     {
-        for (int x = 0; x < dimension; x++)
+        for (int x = 0; x < lado; x++)
         {
-            for (int y = 0; y < dimension; y++)
+            for (int y = 0; y < lado; y++)
             {
-                Vector3 posicion = new Vector3(x + x * separacion, y + y * separacion, 0);
-                GameObject cubo = GameObject.CreatePrimitive(PrimitiveType.Cube);
-                cubo.transform.position = posicion;
-                cubo.name = $"Cubo_{x}_{y}";
-                
-                cuadriculaCubos[x, y] = cubo;
-                CambiarColorCubo(cubo);
+                if (cuadriculaCubos[x, y] == null)
+                {
+                    GameObject cubo = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                    cubo.transform.position = new Vector3(x + x * separacion, y + y * separacion, 0);
+                    cubo.name = $"cubo_{x}_{y}";
+                    cuadriculaCubos[x, y] = cubo;
+                }
             }
+        }
+        //cambiamos los colores de todos los cubos
+        foreach (GameObject cubo in cuadriculaCubos)
+        {
+            cubo.GetComponent<Renderer>().material.color = coloresCubos[Random.Range(0, coloresCubos.Length)];
         }
     }
 
-    void DestruirCuadricula()
+    private void AjustarCamara()
     {
-        for (int x = 0; x < dimension; x++)
-        {
-            for (int y = 0; y < dimension; y++)
-            {
-                if(cuadriculaCubos[x,y] != null) Destroy(cuadriculaCubos[x, y]);
-            }
-        }
+        Vector3 posicionCamara = cuadriculaCubos[lado / 2, lado / 2].transform.position;        
+        float distanciaCamara = lado + (lado / Camera.main.aspect);
+        Camera.main.transform.position = posicionCamara - Vector3.forward * distanciaCamara;
     }
 
     void Update()
     {
+        AjustarCamara();
+
+        // partida finalizada
+        if (cantidadClicsActual == cantidadClics) return;
+
+        duracionActual += Time.deltaTime;
+        tiempoActualizado?.Invoke(duracionActual); //  actualizamos duración con evento
+
         if (Input.GetMouseButtonDown(0))
-        {
+        {            
+            clicsActualizados?.Invoke(++cantidadClicsActual, cantidadClics); //  actualizamos clics con evento
+
             Ray rayo = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
             if (Physics.Raycast(rayo, out hit))
             {
-                GameObject cuboSeleccionado = hit.collider.gameObject;                
-                ContarCubosMismoColor(cuboSeleccionado);
-                CambiarColoresAleatoriamente();
+                GameObject cuboSeleccionado = hit.collider.gameObject;
+                DestruirCubosMismoColor(cuboSeleccionado);
 
-
-                textoPuntuacion.text = $"Puntos: {puntuacion}";
-                DestruirCuadricula();
-                GenerarCuadricula();
+                puntuacionActualizada?.Invoke(puntuacionAcual); // actualizamos puntuación con evento
+                comboActualizado?.Invoke(comboActual);          // actualizamos combo con evento
+                comboActual = 0;
+                RegenerarCuadricula();
             }
-            
         }
-        
     }
 
-    void ContarCubosMismoColor(GameObject cuboSeleccionado)
+    private void DestruirCubosMismoColor(GameObject cuboSeleccionado)
     {
-        // Encuentra la posici?n del cubo en la cuadr?cula
+        // buscamos la posición del cubo en la cuadrícula
         int posX = 0, posY = 0;
         bool encontrado = false;
-        for (int x = 0; x < dimension && !encontrado; x++)
+        for (int x = 0; x < lado && !encontrado; x++)
         {
-            for (int y = 0; y < dimension && !encontrado; y++)
+            for (int y = 0; y < lado && !encontrado; y++)
             {
                 if (cuadriculaCubos[x, y] == cuboSeleccionado)
                 {
@@ -88,54 +122,34 @@ public class JuegoRecursividad : MonoBehaviour
                 }
             }
         }
-        ContarCubosMismoColor(posX, posY, cuboSeleccionado.GetComponent<Renderer>().material.color);
+        DestruirCubosMismoColor(posX, posY, cuboSeleccionado.GetComponent<Renderer>().material.color);
     }
 
-    void ContarCubosMismoColor(int x, int y, Color color)
+    private void DestruirCubosMismoColor(int x, int y, Color color)
     {
-        //comprobamos si los ?ndices son v?lidos
-        if(IndicesValidos(x,y) && cuadriculaCubos[x, y] != null)
+        //si el color coincide
+        if (cuadriculaCubos[x, y].GetComponent<Renderer>().material.color == color)
         {
-            //si el color coincide
-            if (cuadriculaCubos[x, y].GetComponent<Renderer>().material.color == color)
-            {
-                //incrementamos puntos
-                puntuacion++;
-                Destroy(cuadriculaCubos[x, y]);
+            //incrementamos puntos
+            puntuacionAcual++;
+            comboActual++;
+            Destroy(cuadriculaCubos[x, y]);
+            cuadriculaCubos[x, y] = null;
 
-                //buscamos recursivamente
-                if (IndicesValidos(x+1, y)) ContarCubosMismoColor(x + 1, y, color); //arriba
-                if (IndicesValidos(x-1, y)) ContarCubosMismoColor(x - 1, y, color); //abajo
-                if (IndicesValidos(x, y-1)) ContarCubosMismoColor(x, y - 1, color); //izquierda
-                if (IndicesValidos(x, y+1)) ContarCubosMismoColor(x, y + 1, color); //derecha
-            }   
+            //buscamos recursivamente
+            if (IndicesValidos(x + 1, y)) DestruirCubosMismoColor(x + 1, y, color); //arriba
+            if (IndicesValidos(x - 1, y)) DestruirCubosMismoColor(x - 1, y, color); //abajo
+            if (IndicesValidos(x, y - 1)) DestruirCubosMismoColor(x, y - 1, color); //izquierda
+            if (IndicesValidos(x, y + 1)) DestruirCubosMismoColor(x, y + 1, color); //derecha
         }
     }
 
-    bool IndicesValidos(int x, int y)
+    private bool IndicesValidos(int x, int y)
     {
-        return x >= 0 && x <= cuadriculaCubos.Length - 1 && y >= 0 && y <= cuadriculaCubos.Length - 1;
-    }
-
-
-    void CambiarColoresAleatoriamente()
-    {
-        foreach (GameObject cubo in cuadriculaCubos)
-        {
-            CambiarColorCubo(cubo);
-        }
-    }
-
-    void CambiarColorCubo(GameObject cubo)
-    {
-        Renderer rendererCubo = cubo.GetComponent<Renderer>();
-        Color colorAleatorio = ObtenerColorAleatorio();
-        rendererCubo.material.color = colorAleatorio;
-    }
-
-    Color ObtenerColorAleatorio()
-    {
-        Color[] colores = { Color.green, Color.red, Color.blue, Color.yellow, Color.cyan, Color.gray, Color.white }; 
-        return colores[Random.Range(0, colores.Length)];
+        return x >= 0
+            && x < cuadriculaCubos.GetLength(0)
+            && y >= 0
+            && y < cuadriculaCubos.GetLength(1)
+            && cuadriculaCubos[x, y] != null;
     }
 }
