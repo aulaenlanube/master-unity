@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 public class Guerrero : Personaje
@@ -11,8 +10,7 @@ public class Guerrero : Personaje
     }
     public override void RecibirGolpe(int n) // sobrescritura
     {
-        this.Vida -= (int)(n * 0.9f); // usa el setter con validación
-        
+        this.Vida -= Mathf.RoundToInt(n * 0.9f); // usa el setter con validación
         Debug.Log($"{Nombre} ha recibido {n * 0.9f} puntos de daño");
     }
 }

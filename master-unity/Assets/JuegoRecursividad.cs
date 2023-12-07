@@ -127,8 +127,8 @@ public class JuegoRecursividad : MonoBehaviour
 
     private void DestruirCubosMismoColor(int x, int y, Color color)
     {
-        //si el color coincide
-        if (cuadriculaCubos[x, y].GetComponent<Renderer>().material.color == color)
+        //si los índices son válidos y el color coincide
+        if (IndicesValidos(x,y) && cuadriculaCubos[x, y].GetComponent<Renderer>().material.color == color)
         {
             //incrementamos puntos
             puntuacionAcual++;
@@ -136,11 +136,11 @@ public class JuegoRecursividad : MonoBehaviour
             Destroy(cuadriculaCubos[x, y]);
             cuadriculaCubos[x, y] = null;
 
-            //buscamos recursivamente
-            if (IndicesValidos(x + 1, y)) DestruirCubosMismoColor(x + 1, y, color); //arriba
-            if (IndicesValidos(x - 1, y)) DestruirCubosMismoColor(x - 1, y, color); //abajo
-            if (IndicesValidos(x, y - 1)) DestruirCubosMismoColor(x, y - 1, color); //izquierda
-            if (IndicesValidos(x, y + 1)) DestruirCubosMismoColor(x, y + 1, color); //derecha
+            //destruimos recursivamente
+            DestruirCubosMismoColor(x + 1, y, color); //derecha
+            DestruirCubosMismoColor(x - 1, y, color); //izquierda
+            DestruirCubosMismoColor(x, y - 1, color); //abajo
+            DestruirCubosMismoColor(x, y + 1, color); //arriba
         }
     }
 
