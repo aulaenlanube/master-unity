@@ -32,20 +32,21 @@ public class Inventario
 
         foreach (var objeto in objetosFiltrados)
         {
-            Debug.Log($"Nombre: {objeto.Nombre}, Valor: {objeto.CosteOro} oro, {objeto.CostePlata} plata, {objeto.CosteBronce} bronce, Descripción: {objeto.Descripcion}");
+            Debug.Log(objeto.ToString());
         }
     }
 
     public void MostrarInventarioPorRareza(Rareza rareza)
     {
-        var objetosFiltrados = inventario.SelectMany(par => par.Value).ToList().Where(objeto => objeto.Rareza == rareza)
+        var objetosFiltrados = inventario.SelectMany(par => par.Value).ToList()
+                                      .Where(objeto => objeto.Rareza == rareza)
                                       .OrderByDescending(objeto => objeto.CosteOro)
                                       .ThenByDescending(objeto => objeto.CostePlata)
                                       .ThenByDescending(objeto => objeto.CosteBronce);
 
         foreach (var objeto in objetosFiltrados)
         {
-            Debug.Log($"Nombre: {objeto.Nombre}, Rareza: {objeto.Rareza}, Valor: {objeto.CosteOro} oro, {objeto.CostePlata} plata, {objeto.CosteBronce} bronce, Descripción: {objeto.Descripcion}");
+            Debug.Log(objeto.ToString());
         }
     }
 
@@ -53,7 +54,6 @@ public class Inventario
     {
         if (inventario.ContainsKey(objetoNuevo.Nombre)) inventario[objetoNuevo.Nombre].Add(objetoNuevo);
         else inventario.Add(objetoNuevo.Nombre, new List<ObjetoInventario>() { objetoNuevo });
-
     }
 
     public void EliminarObjeto(ObjetoInventario objetoBorrado)

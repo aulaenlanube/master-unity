@@ -14,9 +14,9 @@ public class EjemploInventario : MonoBehaviour
 
         Consumible pocionSalud = new Consumible("Poción de Salud", "Poción que permite recuperar puntos de salud", Rareza.Comun, null, 2, 1, 0, "Restaurar Salud", 10f, 100f);
         Consumible pocionSaludRara = new Consumible("Poción de Salud", "Poción que permite recuperar puntos de salud", Rareza.Raro, null, 4, 0, 0, "Restaurar Salud", 20f, 100f);
-        Consumible pociconFuerza = new Consumible("Poción de Fuerza", "Poción que aumenta temporalmente la fuerza", Rareza.Raro, null, 5, 2, 0, "Aumentar Fuerza", 10f, 100f);
+        Consumible pocionFuerza = new Consumible("Poción de Fuerza", "Poción que aumenta temporalmente la fuerza", Rareza.Raro, null, 5, 2, 0, "Aumentar Fuerza", 10f, 100f);
 
-        ObjetoEspecial amuletoMisterioso = new ObjetoEspecial("Amuleto Misterioso", "Amuleto de plata con mucho detalle, forma una estrella de 5 puntas", Rareza.Epico, null, 50, 25, 5, "Aumenta la suerte");
+        Artefacto amuletoMisterioso = new Artefacto("Amuleto Misterioso", "Amuleto de plata con mucho detalle, forma una estrella de 5 puntas", Rareza.Epico, null, 50, 25, 5, "Aumenta la suerte");
 
 
         // añadir objetos
@@ -25,22 +25,24 @@ public class EjemploInventario : MonoBehaviour
         inventario.AgregarObjeto(arcoLargo);
         inventario.AgregarObjeto(armaduraCuero);
         inventario.AgregarObjeto(pocionSalud);
-        inventario.AgregarObjeto(pocionSalud);
         inventario.AgregarObjeto(pocionSaludRara);
-        inventario.AgregarObjeto(pociconFuerza);
+        inventario.AgregarObjeto(pocionFuerza);
         inventario.AgregarObjeto(amuletoMisterioso);
         Debug.Log("INVENTARIO ANTES:");
         inventario.MostrarInventario();
 
 
         // eliminar objetos
-        inventario.EliminarObjeto(espadaAcero);
+        inventario.EliminarObjeto(espadaAceroEpica);
         inventario.EliminarObjeto(pocionSalud);
         inventario.EliminarObjeto(pocionSalud);
         inventario.EliminarObjeto(pocionSalud);
+
         // mostrar el inventario después de eliminar objetos
         Debug.Log("INVENTARIO DESPUÉS:");
         inventario.MostrarInventarioPorValor();
+
+        // mostrar el inventario filtrado por rareza - objetos épicos
         Debug.Log("OBJETOS ÉPICOS:");
         inventario.MostrarInventarioPorRareza(Rareza.Epico);
     }
