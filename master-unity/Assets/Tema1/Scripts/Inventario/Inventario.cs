@@ -5,30 +5,26 @@ using UnityEngine;
 
 public class Inventario : IInventario
 {
-    private Dictionary<string, List<ObjetoInventario>> inventario;
+    private Dictionary<string, ObjetoInventario> inventario;
 
-    public List<ObjetoInventario> Objetos => inventario.SelectMany(par => par.Value).ToList();
+    public List<ObjetoInventario> Objetos => inventario.Values.ToList();
 
     public Inventario()
     {
-        inventario = new Dictionary<string, List<ObjetoInventario>>();
+        inventario = new Dictionary<string, ObjetoInventario>();
     }
 
     public void MostrarInventario()
     {
-        foreach (var listaActualObjetos in inventario.Values)
-        {
-            foreach (var objetoActualLista in listaActualObjetos)
-            {
-                Debug.Log(objetoActualLista.ToString());
-            }
+        foreach (var objetoActualLista in inventario.Values)
+        {    
+            Debug.Log(objetoActualLista.ToString());            
         }
     }
 
     public void MostrarInventarioPorValor()
     {
-        var objetosFiltrados = inventario.SelectMany(par => par.Value).ToList()
-                                      .OrderByDescending(objeto => objeto.CosteOro)
+        var objetosFiltrados = Objetos.OrderByDescending(objeto => objeto.CosteOro)
                                       .ThenByDescending(objeto => objeto.CostePlata)
                                       .ThenByDescending(objeto => objeto.CosteBronce);
 
@@ -40,8 +36,7 @@ public class Inventario : IInventario
 
     public void MostrarInventarioPorRareza(Rareza rareza)
     {
-        var objetosFiltrados = inventario.SelectMany(par => par.Value).ToList()
-                                      .Where(objeto => objeto.Rareza == rareza)
+        var objetosFiltrados = Objetos.Where(objeto => objeto.Rareza == rareza)
                                       .OrderByDescending(objeto => objeto.CosteOro)
                                       .ThenByDescending(objeto => objeto.CostePlata)
                                       .ThenByDescending(objeto => objeto.CosteBronce);
@@ -54,19 +49,19 @@ public class Inventario : IInventario
 
     public void AgregarObjeto(ObjetoInventario objetoNuevo)
     {
-        if (inventario.ContainsKey(objetoNuevo.Nombre)) inventario[objetoNuevo.Nombre].Add(objetoNuevo);
-        else inventario.Add(objetoNuevo.Nombre, new List<ObjetoInventario>() { objetoNuevo });
+        //if (inventario.ContainsKey(objetoNuevo.Nombre)) inventario[objetoNuevo.Nombre].Add(objetoNuevo);
+        //else inventario.Add(objetoNuevo.Nombre, new List<ObjetoInventario>() { objetoNuevo });
     }
 
     public void EliminarObjeto(ObjetoInventario objetoBorrado)
     {
-        if (inventario.ContainsKey(objetoBorrado.Nombre))
+        /*if (inventario.ContainsKey(objetoBorrado.Nombre))
         {
             if (inventario[objetoBorrado.Nombre].Count > 1) inventario[objetoBorrado.Nombre].Remove(objetoBorrado);
             else if (inventario[objetoBorrado.Nombre].Count == 1) inventario.Remove(objetoBorrado.Nombre);
             return;
         }
-        Debug.Log("El objeto con el Nombre proporcionado no existe en el inventario.");
+        Debug.Log("El objeto con el Nombre proporcionado no existe en el inventario.");*/
     }
 }
 

@@ -20,7 +20,9 @@ public class EjemploInterfaces : MonoBehaviour
         GolpearEnemigos(50);
         Debug.Log($"Cantidad de zombis: {Zombi.cantidadZombis}");
         GolpearEnemigos(90);
-        Debug.Log($"Cantidad de zombis: {Zombi.cantidadZombis}");        
+        Debug.Log($"Cantidad de zombis: {Zombi.cantidadZombis}");
+
+    
         
     }
 
@@ -33,4 +35,6 @@ public class EjemploInterfaces : MonoBehaviour
     {
         foreach (var enemigo in enemigosGolpeables) enemigo.RecibirGolpe(fuerza);
     }
+
+
 }

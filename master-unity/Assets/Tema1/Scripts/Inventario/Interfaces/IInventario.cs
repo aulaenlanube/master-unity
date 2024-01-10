@@ -8,5 +8,4 @@ public interface IInventario
     void MostrarInventario();
     void MostrarInventarioPorValor();
     void MostrarInventarioPorRareza(Rareza rareza);
-
 }

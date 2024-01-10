@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public enum Rareza
@@ -10,6 +11,7 @@ public enum Rareza
 
 public abstract class ObjetoInventario
 {
+    private string id;
     private string nombre;
     private string descripcion;
     private Rareza rareza;
@@ -17,6 +19,12 @@ public abstract class ObjetoInventario
     private int costeOro;
     private int costePlata;
     private int costeBronce;
+
+    public string Id
+    {
+        get => id;
+        private set => id = value;
+    }
 
     public string Nombre
     {
@@ -62,6 +70,7 @@ public abstract class ObjetoInventario
 
     protected ObjetoInventario(string nombre, string descripcion, Rareza rareza, GameObject objetoVisual, int costeOro, int costePlata, int costeBronce)
     {
+        Id = Guid.NewGuid().ToString();
         Nombre = nombre;
         Descripcion = descripcion;
         Rareza = rareza;
@@ -84,7 +93,7 @@ public abstract class ObjetoInventario
 
     public override string ToString()
     {
-        return  $"Nombre del objeto: {Nombre}\n" +
+        return $"Nombre del objeto: {Nombre}\n" +
                 $"Rareza: {Rareza}\n" +
                 $"Descripción: {Descripcion}\n" +
                 $"Coste: {CosteOro}oro, {CostePlata}plata, {CosteBronce}bronce\n";
