@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class Inventario
+public class Inventario : IInventario
 {
     private Dictionary<string, List<ObjetoInventario>> inventario;
+
+    public List<ObjetoInventario> Objetos => inventario.SelectMany(par => par.Value).ToList();
 
     public Inventario()
     {
