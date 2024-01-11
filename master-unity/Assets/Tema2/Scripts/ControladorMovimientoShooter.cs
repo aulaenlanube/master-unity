@@ -6,18 +6,27 @@ public class ControladorMovimientoShooter : MonoBehaviour
     public float sensibilidadRaton = 10f;
     private float rotacionVertical = 0f;
     public float limiteRotacionVertical = 45.0f; // límite de rotación vertical
+    private Rigidbody rb;
+
+    void Start()
+    {
+        rb = GetComponent<Rigidbody>();
+    }
 
     void Update()
     {
         // movimiento adelante-atrás
-        float movimientoAdelanteAtras = Input.GetAxis("Vertical") * velocidadMovimiento;
-        movimientoAdelanteAtras *= Time.deltaTime;
-
+        float movimientoAdelanteAtras = Input.GetAxis("Vertical") * velocidadMovimiento * Time.deltaTime;
         // movimiento izquierda-derecha
-        float movimientoIzquierdaDerecha = Input.GetAxis("Horizontal") * velocidadMovimiento;        
-        movimientoIzquierdaDerecha *= Time.deltaTime;
+        float movimientoIzquierdaDerecha = Input.GetAxis("Horizontal") * velocidadMovimiento * Time.deltaTime;        
 
+        // mover personaje
         transform.Translate(movimientoIzquierdaDerecha, 0, movimientoAdelanteAtras);
+
+        rb.velocity = Vector3.zero;
+        rb.angularVelocity = Vector3.zero;
+
+
 
         // rotación horizontal
         float rotacionRatonHorizontal = Input.GetAxis("Mouse X") * sensibilidadRaton;
@@ -27,6 +36,9 @@ public class ControladorMovimientoShooter : MonoBehaviour
         rotacionVertical -= Input.GetAxis("Mouse Y") * sensibilidadRaton;
         rotacionVertical = Mathf.Clamp(rotacionVertical, -limiteRotacionVertical, limiteRotacionVertical);        
         Camera.main.transform.localRotation = Quaternion.Euler(rotacionVertical, 0, 0);
-    }
 
+        
+
+        
+    }
 }
