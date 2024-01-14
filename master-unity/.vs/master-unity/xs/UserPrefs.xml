@@ -1,15 +1,27 @@
 ﻿<Properties StartupConfiguration="{42808845-D1AB-11E9-4111-8860C1C164C9}|">
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Tema1/Scripts/EjemplosOO/EjemploOO.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/PosicionesCamara.cs">
     <Files>
+      <File FileName="Assets/Tema2/Scripts/ControladorMovimientoShooter.cs" Line="48" Column="10" />
       <File FileName="Assets/Tema1/Scripts/EjemplosOO/Personaje.cs" Line="13" Column="70" />
-      <File FileName="Assets/Tema1/Scripts/EjemplosOO/Guerrero.cs" />
-      <File FileName="Assets/Tema1/Scripts/EjemplosOO/Mago.cs" Line="12" Column="1" />
-      <File FileName="Assets/Tema1/Scripts/EjemplosOO/EjemploOO.cs" Line="72" Column="66" />
+      <File FileName="Assets/Tema1/Scripts/Juego Diana/Diana.cs" Line="18" Column="1" />
+      <File FileName="Assets/PosicionesCamara.cs" Line="17" Column="6" />
     </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="master-unity" expanded="True" selected="True" />
+        </State>
+      </Pad>
+      <Pad Id="MonoDevelop.UnitTesting.TestPad">
+        <State name="__root__">
+          <Node name="Unity" expanded="True" selected="True" />
+        </State>
+      </Pad>
+    </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="ea0d53a8-3653-4d1c-9877-69c616a804d3" />
+  <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="3f2f0305-e46f-44c2-988a-8ae500f12f8d" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>

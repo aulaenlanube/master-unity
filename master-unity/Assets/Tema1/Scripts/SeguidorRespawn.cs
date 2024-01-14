@@ -1,14 +1,14 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class SeguidorRespawn : MonoBehaviour
 {
     public Transform objetivo;
     public float velocidad = 5.0f;
-    public float distanciaSeguimiento = 5.0f;
+    public float distanciaSeguimiento = 100f;
     public float distanciaRespawn = 1f;
     public Vector3[] posicionesRespawn;
+    public TextMeshProUGUI textoFinPartida; 
 
     //eventos para actualizar la cantidad de respawns y la posición de respawn
     public delegate void EventoRespawn(int n, Vector3 v);
@@ -26,7 +26,8 @@ public class SeguidorRespawn : MonoBehaviour
             transform.position = posicionesRespawn[Random.Range(0, posicionesRespawn.Length)];
 
             //lanzamos los eventos al actualizar la cantidad de respawns
-            respawn?.Invoke(++cantidadRespawns, transform.position);
+            respawn?.Invoke(++cantidadRespawns, transform.position);            
+          
         }
         // seguir
         else if (distanciaObjetivo < distanciaSeguimiento) 

@@ -7,7 +7,6 @@ public class PosicionesCamara : MonoBehaviour
     [SerializeField] private Vector3[] posicionesCamara;
     private int posicionActual = 0;
 
-
     // Update is called once per frame
     void Update()
     {
@@ -15,6 +14,5 @@ public class PosicionesCamara : MonoBehaviour
         {
             transform.position = posicionesCamara[++posicionActual % posicionesCamara.Length];            
         }
-    }
-        
+    }        
 }
