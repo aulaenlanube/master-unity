@@ -1,18 +1,11 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+public interface IComerciante 
+{  
+    string Nombre { get; }
+    int Oro { get; }
+    int Plata { get; }
+    int Bronce { get; }
 
-public class IComerciante : MonoBehaviour
-{
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    void Comprar(IComerciable objeto);
+    void Vender(IComerciable objeto);
+    void ListarInventario();   
 }

@@ -1,18 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public class IComerciable : MonoBehaviour
+public interface IComerciable 
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    bool EsComerciable { get; }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    void Comprar();
+    void Vender();   
 }

@@ -1,4 +1,5 @@
 public interface IInteractuable
 {
-    void Utilizar();   
+    void Equipar();  
+    void Desequipar();
 }

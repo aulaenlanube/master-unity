@@ -79,18 +79,6 @@ public abstract class ObjetoInventario
         CostePlata = costePlata;
         CosteBronce = costeBronce;
     }
-
-
-    public override bool Equals(object obj)
-    {
-        return obj is ObjetoInventario objInventario && Nombre == objInventario.Nombre;
-    }
-
-    public override int GetHashCode()
-    {
-        return Nombre.GetHashCode();
-    }
-
     public override string ToString()
     {
         return $"Nombre del objeto: {Nombre}\n" +

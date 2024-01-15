@@ -1,18 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+// permite combinar materiales basicos para obtener materiales de mayor rareza, armas y armaduras
+public interface ICombinable 
+{    
+    bool PuedeCombinarse { get; }
 
-public class ICombinable : MonoBehaviour
-{
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    void Combinar(ICombinable objeto);  
+    
+    bool EsCombinable(ICombinable objeto);
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }
