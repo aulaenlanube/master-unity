@@ -123,7 +123,10 @@ public class Comerciante : IComerciante
         MostrarSaldo();
     }
 
-    public void ListarInventario()    {     inventario.MostrarInventario();    } 
+    public void ListarInventario()    
+    {     
+        inventario.MostrarInventario();    
+    } 
     
     public bool MaterialSuficienteVenta(TipoMaterialBasico tipoMaterialBasico, int cantidad)
     {
@@ -140,7 +143,7 @@ public class Comerciante : IComerciante
         {             
             inventario.AgregarMaterialBasico(tipoMaterialBasico, cantidad);
             RestarSaldo(tipoMaterialBasico, cantidad);
-            inventario.ObtenerMaterialBasico(tipoMaterialBasico)?.Comprar(); //revisar
+            inventario.ObtenerMaterialBasico(tipoMaterialBasico)?.Comprar(); 
             return;
         }
         Debug.Log($"No se puede comprar {tipoMaterialBasico} porque no hay suficiente dinero");                
@@ -152,7 +155,7 @@ public class Comerciante : IComerciante
         {            
             inventario.EliminarMaterialBasico(tipoMaterialBasico, cantidad);
             SumarSaldo(tipoMaterialBasico, cantidad);
-            inventario.ObtenerMaterialBasico(tipoMaterialBasico)?.Vender(); //revisar
+            inventario.ObtenerMaterialBasico(tipoMaterialBasico)?.Vender();
             return;
         }
         Debug.Log($"No se puede vender {tipoMaterialBasico} porque no hay suficientes unidades");        
@@ -167,64 +170,9 @@ public class Comerciante : IComerciante
 
     private void SumarSaldo(TipoMaterialBasico tipoMaterialBasico, int cantidad)
     {
-        switch (tipoMaterialBasico)
-        {
-            case TipoMaterialBasico.Oro:
-                SumarSaldo(PreciosMaterialesBasicos.ObtenerPrecio(TipoMaterialBasico.Oro).CosteOro * cantidad,
-                            PreciosMaterialesBasicos.ObtenerPrecio(TipoMaterialBasico.Oro).CostePlata * cantidad,
-                            PreciosMaterialesBasicos.ObtenerPrecio(TipoMaterialBasico.Oro).CosteBronce * cantidad);
-                break;
-            case TipoMaterialBasico.Plata:
-                SumarSaldo(PreciosMaterialesBasicos.ObtenerPrecio(TipoMaterialBasico.Plata).CosteOro * cantidad,
-                           PreciosMaterialesBasicos.ObtenerPrecio(TipoMaterialBasico.Plata).CostePlata * cantidad,
-                           PreciosMaterialesBasicos.ObtenerPrecio(TipoMaterialBasico.Plata).CosteBronce * cantidad);
-                break;
-            case TipoMaterialBasico.Bronce:
-                SumarSaldo(PreciosMaterialesBasicos.ObtenerPrecio(TipoMaterialBasico.Bronce).CosteOro * cantidad,
-                           PreciosMaterialesBasicos.ObtenerPrecio(TipoMaterialBasico.Bronce).CostePlata * cantidad,
-                           PreciosMaterialesBasicos.ObtenerPrecio(TipoMaterialBasico.Bronce).CosteBronce * cantidad);
-                break;
-            case TipoMaterialBasico.Hierro:
-                SumarSaldo(PreciosMaterialesBasicos.ObtenerPrecio(TipoMaterialBasico.Hierro).CosteOro * cantidad,
-                           PreciosMaterialesBasicos.ObtenerPrecio(TipoMaterialBasico.Hierro).CostePlata * cantidad,
-                           PreciosMaterialesBasicos.ObtenerPrecio(TipoMaterialBasico.Hierro).CosteBronce * cantidad);
-                break;
-            case TipoMaterialBasico.Acero:
-                SumarSaldo(PreciosMaterialesBasicos.ObtenerPrecio(TipoMaterialBasico.Acero).CosteOro * cantidad,
-                           PreciosMaterialesBasicos.ObtenerPrecio(TipoMaterialBasico.Acero).CostePlata * cantidad,
-                           PreciosMaterialesBasicos.ObtenerPrecio(TipoMaterialBasico.Acero).CosteBronce * cantidad);
-                break;
-            case TipoMaterialBasico.Aluminio:
-                SumarSaldo(PreciosMaterialesBasicos.ObtenerPrecio(TipoMaterialBasico.Aluminio).CosteOro * cantidad,
-                           PreciosMaterialesBasicos.ObtenerPrecio(TipoMaterialBasico.Aluminio).CostePlata * cantidad,
-                           PreciosMaterialesBasicos.ObtenerPrecio(TipoMaterialBasico.Aluminio).CosteBronce * cantidad);
-                break;
-            case TipoMaterialBasico.Cobre:
-                SumarSaldo(PreciosMaterialesBasicos.ObtenerPrecio(TipoMaterialBasico.Cobre).CosteOro * cantidad,
-                           PreciosMaterialesBasicos.ObtenerPrecio(TipoMaterialBasico.Cobre).CostePlata * cantidad,
-                           PreciosMaterialesBasicos.ObtenerPrecio(TipoMaterialBasico.Cobre).CosteBronce * cantidad);
-                break;
-            case TipoMaterialBasico.Madera:
-                SumarSaldo(PreciosMaterialesBasicos.ObtenerPrecio(TipoMaterialBasico.Madera).CosteOro * cantidad,
-                           PreciosMaterialesBasicos.ObtenerPrecio(TipoMaterialBasico.Madera).CostePlata * cantidad,
-                           PreciosMaterialesBasicos.ObtenerPrecio(TipoMaterialBasico.Madera).CosteBronce * cantidad);
-                break;
-            case TipoMaterialBasico.Cuero:
-                SumarSaldo(PreciosMaterialesBasicos.ObtenerPrecio(TipoMaterialBasico.Cuero).CosteOro * cantidad,
-                           PreciosMaterialesBasicos.ObtenerPrecio(TipoMaterialBasico.Cuero).CostePlata * cantidad,
-                           PreciosMaterialesBasicos.ObtenerPrecio(TipoMaterialBasico.Cuero).CosteBronce * cantidad);
-                break;
-            case TipoMaterialBasico.Piedra:
-                SumarSaldo(PreciosMaterialesBasicos.ObtenerPrecio(TipoMaterialBasico.Piedra).CosteOro * cantidad,
-                           PreciosMaterialesBasicos.ObtenerPrecio(TipoMaterialBasico.Piedra).CostePlata * cantidad,
-                           PreciosMaterialesBasicos.ObtenerPrecio(TipoMaterialBasico.Piedra).CosteBronce * cantidad);
-                break;
-            case TipoMaterialBasico.Diamante:
-                SumarSaldo(PreciosMaterialesBasicos.ObtenerPrecio(TipoMaterialBasico.Diamante).CosteOro * cantidad,
-                           PreciosMaterialesBasicos.ObtenerPrecio(TipoMaterialBasico.Diamante).CostePlata * cantidad,
-                           PreciosMaterialesBasicos.ObtenerPrecio(TipoMaterialBasico.Diamante).CosteBronce * cantidad);
-                break;
-        }
+        SumarSaldo(PreciosMaterialesBasicos.ObtenerPrecio(tipoMaterialBasico).CosteOro * cantidad,
+                   PreciosMaterialesBasicos.ObtenerPrecio(tipoMaterialBasico).CostePlata * cantidad,
+                   PreciosMaterialesBasicos.ObtenerPrecio(tipoMaterialBasico).CosteBronce * cantidad);       
     }
 
     private void RestarSaldo(int oro, int plata, int bronce)
@@ -236,70 +184,15 @@ public class Comerciante : IComerciante
 
     private void RestarSaldo(TipoMaterialBasico tipoMaterialBasico, int cantidad)
     {
-        switch (tipoMaterialBasico)
-        {
-            case TipoMaterialBasico.Oro:
-                RestarSaldo(PreciosMaterialesBasicos.ObtenerPrecio(TipoMaterialBasico.Oro).CosteOro * cantidad,
-                            PreciosMaterialesBasicos.ObtenerPrecio(TipoMaterialBasico.Oro).CostePlata * cantidad,
-                            PreciosMaterialesBasicos.ObtenerPrecio(TipoMaterialBasico.Oro).CosteBronce * cantidad);
-                break;
-            case TipoMaterialBasico.Plata:
-                RestarSaldo(PreciosMaterialesBasicos.ObtenerPrecio(TipoMaterialBasico.Plata).CosteOro * cantidad,
-                           PreciosMaterialesBasicos.ObtenerPrecio(TipoMaterialBasico.Plata).CostePlata * cantidad,
-                           PreciosMaterialesBasicos.ObtenerPrecio(TipoMaterialBasico.Plata).CosteBronce * cantidad);
-                break;
-            case TipoMaterialBasico.Bronce:
-                RestarSaldo(PreciosMaterialesBasicos.ObtenerPrecio(TipoMaterialBasico.Bronce).CosteOro * cantidad,
-                           PreciosMaterialesBasicos.ObtenerPrecio(TipoMaterialBasico.Bronce).CostePlata * cantidad,
-                           PreciosMaterialesBasicos.ObtenerPrecio(TipoMaterialBasico.Bronce).CosteBronce * cantidad);
-                break;
-            case TipoMaterialBasico.Hierro:
-                RestarSaldo(PreciosMaterialesBasicos.ObtenerPrecio(TipoMaterialBasico.Hierro).CosteOro * cantidad,
-                           PreciosMaterialesBasicos.ObtenerPrecio(TipoMaterialBasico.Hierro).CostePlata * cantidad,
-                           PreciosMaterialesBasicos.ObtenerPrecio(TipoMaterialBasico.Hierro).CosteBronce * cantidad);
-                break;
-            case TipoMaterialBasico.Acero:
-                RestarSaldo(PreciosMaterialesBasicos.ObtenerPrecio(TipoMaterialBasico.Acero).CosteOro * cantidad,
-                           PreciosMaterialesBasicos.ObtenerPrecio(TipoMaterialBasico.Acero).CostePlata * cantidad,
-                           PreciosMaterialesBasicos.ObtenerPrecio(TipoMaterialBasico.Acero).CosteBronce * cantidad);
-                break;
-            case TipoMaterialBasico.Aluminio:
-                RestarSaldo(PreciosMaterialesBasicos.ObtenerPrecio(TipoMaterialBasico.Aluminio).CosteOro * cantidad,
-                           PreciosMaterialesBasicos.ObtenerPrecio(TipoMaterialBasico.Aluminio).CostePlata * cantidad,
-                           PreciosMaterialesBasicos.ObtenerPrecio(TipoMaterialBasico.Aluminio).CosteBronce * cantidad);
-                break;
-            case TipoMaterialBasico.Cobre:
-                RestarSaldo(PreciosMaterialesBasicos.ObtenerPrecio(TipoMaterialBasico.Cobre).CosteOro * cantidad,
-                           PreciosMaterialesBasicos.ObtenerPrecio(TipoMaterialBasico.Cobre).CostePlata * cantidad,
-                           PreciosMaterialesBasicos.ObtenerPrecio(TipoMaterialBasico.Cobre).CosteBronce * cantidad);
-                break;
-            case TipoMaterialBasico.Madera:
-                RestarSaldo(PreciosMaterialesBasicos.ObtenerPrecio(TipoMaterialBasico.Madera).CosteOro * cantidad,
-                           PreciosMaterialesBasicos.ObtenerPrecio(TipoMaterialBasico.Madera).CostePlata * cantidad,
-                           PreciosMaterialesBasicos.ObtenerPrecio(TipoMaterialBasico.Madera).CosteBronce * cantidad);
-                break;
-            case TipoMaterialBasico.Cuero:
-                RestarSaldo(PreciosMaterialesBasicos.ObtenerPrecio(TipoMaterialBasico.Cuero).CosteOro * cantidad,
-                           PreciosMaterialesBasicos.ObtenerPrecio(TipoMaterialBasico.Cuero).CostePlata * cantidad,
-                           PreciosMaterialesBasicos.ObtenerPrecio(TipoMaterialBasico.Cuero).CosteBronce * cantidad);
-                break;
-            case TipoMaterialBasico.Piedra:
-                RestarSaldo(PreciosMaterialesBasicos.ObtenerPrecio(TipoMaterialBasico.Piedra).CosteOro * cantidad,
-                           PreciosMaterialesBasicos.ObtenerPrecio(TipoMaterialBasico.Piedra).CostePlata * cantidad,
-                           PreciosMaterialesBasicos.ObtenerPrecio(TipoMaterialBasico.Piedra).CosteBronce * cantidad);
-                break;
-            case TipoMaterialBasico.Diamante:
-                RestarSaldo(PreciosMaterialesBasicos.ObtenerPrecio(TipoMaterialBasico.Diamante).CosteOro * cantidad,
-                           PreciosMaterialesBasicos.ObtenerPrecio(TipoMaterialBasico.Diamante).CostePlata * cantidad,
-                           PreciosMaterialesBasicos.ObtenerPrecio(TipoMaterialBasico.Diamante).CosteBronce * cantidad);
-                break;
-        }
+        RestarSaldo(PreciosMaterialesBasicos.ObtenerPrecio(tipoMaterialBasico).CosteOro * cantidad,
+                    PreciosMaterialesBasicos.ObtenerPrecio(tipoMaterialBasico).CostePlata * cantidad,
+                    PreciosMaterialesBasicos.ObtenerPrecio(tipoMaterialBasico).CosteBronce * cantidad);
     }
 
     private void AjustarMonedas(int totalBronce)
     {
         this.oro = totalBronce / 100;
-        this.plata = (totalBronce % 100) / 10;
+        this.plata = totalBronce % 100 / 10;
         this.bronce = totalBronce % 10;
     }
 

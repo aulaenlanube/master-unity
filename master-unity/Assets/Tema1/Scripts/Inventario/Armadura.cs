@@ -86,7 +86,7 @@ public class Armadura : ObjetoInventario, IMejorable, ICombinable, IComerciable,
                 Defensa += 10;
                 Agilidad += 10;
                 Durabilidad += 10;
-                NivelMejora = NivelMejora.Avanzado;
+                NivelMejora = NivelMejora.Intermedio;
                 break;
             case NivelMejora.Intermedio:
                 Defensa += 20;

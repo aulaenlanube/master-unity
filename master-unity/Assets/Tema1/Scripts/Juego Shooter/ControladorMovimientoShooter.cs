@@ -2,10 +2,10 @@ using UnityEngine;
 
 public class ControladorMovimientoShooter : MonoBehaviour
 {
-    public float velocidadMovimiento = 10f;
-    public float sensibilidadRaton = 10f;
-    private float rotacionVertical = 0f;
-    public float limiteRotacionVertical = 45.0f; // l?mite de rotaci?n vertical
+    [SerializeField] private float velocidadMovimiento = 10f;
+    [SerializeField] private float sensibilidadRaton = 10f;
+    [SerializeField] private float rotacionVertical = 0f;
+    [SerializeField] private float limiteRotacionVertical = 45.0f; // l?mite de rotaci?n vertical
 
     void Start()
     {        
@@ -24,8 +24,6 @@ public class ControladorMovimientoShooter : MonoBehaviour
         transform.Translate(movimientoIzquierdaDerecha, 0, movimientoAdelanteAtras);
 
 
-
-
         // rotaci?n horizontal
         float rotacionRatonHorizontal = Input.GetAxis("Mouse X") * sensibilidadRaton;
         transform.Rotate(0, rotacionRatonHorizontal, 0);
@@ -42,7 +40,7 @@ public class ControladorMovimientoShooter : MonoBehaviour
             RaycastHit hit;
             if (Physics.Raycast(rayo, out hit)) // si hay alg?n impacto
             {
-                //establemos el impacto y se actualiza la puntuaci?n
+                //establemos el impacto
                 hit.collider.gameObject.GetComponent<EnemigoShooter>()?.DestruirObjetivo();
             }
         }

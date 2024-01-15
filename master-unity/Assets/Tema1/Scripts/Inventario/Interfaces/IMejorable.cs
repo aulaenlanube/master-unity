@@ -10,6 +10,5 @@ public enum NivelMejora
 public interface IMejorable
 {    
     NivelMejora NivelMejora { get; }
-    void Mejorar();
-    
+    void Mejorar();    
 }

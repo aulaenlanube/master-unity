@@ -1,8 +1,7 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum TipoMaterialBasico
+ public enum TipoMaterialBasico
 {
     Oro,
     Plata,
@@ -83,6 +82,7 @@ public class MaterialBasico : ObjetoInventario, ICombinable, IComerciable
     public MaterialBasico(TipoMaterialBasico tipoMaterialBasico, GameObject objetoVisual, int cantidad) : base(obtenerNombre(tipoMaterialBasico), obtenerDescripcion(tipoMaterialBasico), obtenerRareza(tipoMaterialBasico), objetoVisual, 0, 0, 0)
     {
         Cantidad = cantidad;
+        TipoMaterialBasico = tipoMaterialBasico;
         PrecioMaterialBasico precio = PreciosMaterialesBasicos.ObtenerPrecio(tipoMaterialBasico);
         CosteOro = precio.CosteOro * cantidad;
         CostePlata = precio.CostePlata * cantidad;
@@ -205,6 +205,5 @@ public class MaterialBasico : ObjetoInventario, ICombinable, IComerciable
     public void Vender()
     {
         Debug.Log($"Has vendido {Nombre}, cantidad actual: {Cantidad}, valor actual: {CosteOro}oro, {CostePlata}plata, {CosteBronce}bronce");
-    }     
-
+    } 
 }

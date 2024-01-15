@@ -1,4 +1,3 @@
-using OpenCover.Framework.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,11 +19,7 @@ public class Inventario : IInventario
 
     public int ObtenerCantidadMaterialBasico(TipoMaterialBasico tipoMaterialBasico)
     {
-        // buscar si ya existe un material básico del mismo tipo
-        MaterialBasico materialBasicoExistente = (MaterialBasico)inventario.FirstOrDefault(objeto => objeto is MaterialBasico materialBasico && materialBasico.TipoMaterialBasico == tipoMaterialBasico);
-
-        if (materialBasicoExistente != null) return materialBasicoExistente.Cantidad;
-        return 0;
+        return ObtenerMaterialBasico(tipoMaterialBasico)?.Cantidad ?? 0;
     }
 
     public void AgregarObjeto(ObjetoInventario objetoNuevo)
@@ -61,57 +56,38 @@ public class Inventario : IInventario
         }
     }
 
-    public MaterialBasico ObtenerMaterialBasico(TipoMaterialBasico tipoMaterialBasico) //revisar si es necesario
+    public MaterialBasico ObtenerMaterialBasico(TipoMaterialBasico tipoMaterialBasico)
     {
-        // buscar si ya existe un material básico del mismo tipo
-        MaterialBasico materialBasico;
-        foreach(ObjetoInventario obj in inventario)
-        {
-            if(obj is MaterialBasico)
-            {
-                materialBasico = (MaterialBasico)obj;
-                if (materialBasico.TipoMaterialBasico == tipoMaterialBasico) return materialBasico;
-            }
-        }
-        return null;        
+        // buscar si ya existe un material básico del mismo tipo, null si no existe
+        return (MaterialBasico)inventario.FirstOrDefault(objeto => objeto is MaterialBasico materialBasico && materialBasico.TipoMaterialBasico == tipoMaterialBasico);
     }
 
     public void MostrarInventarioPorValor()
     {
-        var objetosFiltrados = inventario.OrderByDescending(objeto => objeto.CosteOro)
+        MostrarObjetosFiltrados(inventario.OrderByDescending(objeto => objeto.CosteOro)
                                       .ThenByDescending(objeto => objeto.CostePlata)
-                                      .ThenByDescending(objeto => objeto.CosteBronce);
-
-        foreach (var objeto in objetosFiltrados)
-        {
-            Debug.Log(objeto.ToString());
-        }
+                                      .ThenByDescending(objeto => objeto.CosteBronce));
     }
 
     public void MostrarInventarioPorRareza(Rareza rareza)
     {
-        var objetosFiltrados = inventario.Where(objeto => objeto.Rareza == rareza)
+        MostrarObjetosFiltrados(inventario.Where(objeto => objeto.Rareza == rareza)
                                       .OrderByDescending(objeto => objeto.CosteOro)
                                       .ThenByDescending(objeto => objeto.CostePlata)
-                                      .ThenByDescending(objeto => objeto.CosteBronce);
-
-        foreach (var objeto in objetosFiltrados)
-        {
-            Debug.Log(objeto.ToString());
-        }
+                                      .ThenByDescending(objeto => objeto.CosteBronce));
     }
 
     public void MostrarObjetosCategoria(Type tipoObjeto)
     {
-        var objetos = inventario.Where(objeto => objeto.GetType() == tipoObjeto)
+        MostrarObjetosFiltrados(inventario.Where(objeto => objeto.GetType() == tipoObjeto)
                                 .OrderByDescending(objeto => objeto.CosteOro)
                                 .ThenByDescending(objeto => objeto.CostePlata)
-                                .ThenByDescending(objeto => objeto.CosteBronce);
+                                .ThenByDescending(objeto => objeto.CosteBronce));
+    }
 
-        foreach (var objeto in objetos)
-        {
-            Debug.Log(objeto.ToString());
-        }
+    public void MostrarObjetosFiltrados(IOrderedEnumerable<ObjetoInventario> objetos)
+    {
+        foreach (var objeto in objetos) Debug.Log(objeto.ToString());
     }
 
     public void MostrarArmas()
@@ -139,7 +115,6 @@ public class Inventario : IInventario
         MostrarObjetosCategoria(typeof(MaterialBasico));
     }
 
-    // solución alternativa para AGREGAR materiales básicos
     public void AgregarMaterialBasico(TipoMaterialBasico tipoMaterialBasico, int cantidad)
     {
         // buscar si ya existe un material básico del mismo tipo
@@ -151,12 +126,11 @@ public class Inventario : IInventario
             materialBasicoExistente.IncrementarCantidad(cantidad);
             return;
         }
+
         // si no existe, crear un nuevo objeto
         inventario.Add(new MaterialBasico(tipoMaterialBasico, null, cantidad));
     }
 
-
-    // solución alternativa para ELIMINAR materiales básicos
     public void EliminarMaterialBasico(TipoMaterialBasico tipoMaterialBasico, int cantidad)
     {
         //validamos la cantidad
@@ -166,27 +140,16 @@ public class Inventario : IInventario
             return;
         }
 
-        // buscar si ya existe un material básico del mismo tipo
-        MaterialBasico materialBasicoExistente = ObtenerMaterialBasico(tipoMaterialBasico);
-
-        if (materialBasicoExistente != null)
+        // comprobar que la cantidad a borrar no sea mayor que la existente
+        if (ObtenerCantidadMaterialBasico(tipoMaterialBasico) < cantidad)
         {
-            // comprobar que la cantidad a borrar no sea mayor que la existente
-            if (materialBasicoExistente.Cantidad < cantidad)
-            {
-                Debug.Log($"No se puede eliminar {cantidad} unidades de {materialBasicoExistente.Nombre} porque solo hay {materialBasicoExistente.Cantidad} unidades");
-                return;
-            }
-
-            // si existe, restar la cantidad del borrado al existente
-            materialBasicoExistente.DecrementarCantidad(cantidad);
+            Debug.Log($"No se puede eliminar {cantidad} unidades de {tipoMaterialBasico} porque no hay suficientes unidades");
+            return;
         }
+
+        // si existe, restar la cantidad del borrado al existente
+        ObtenerMaterialBasico(tipoMaterialBasico).DecrementarCantidad(cantidad);
     }
-
-
-
-
-
 }
 
 

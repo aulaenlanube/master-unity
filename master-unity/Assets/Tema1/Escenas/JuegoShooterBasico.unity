@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657838, g: 0.49641228, b: 0.57481676, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -724,7 +724,7 @@ GameObject:
   - component: {fileID: 718976980}
   - component: {fileID: 718976983}
   m_Layer: 0
-  m_Name: Obj2
+  m_Name: Enemigo2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -828,11 +828,54 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 960ccc5ffcc314974a4c911da5403ebc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  objetivo: {fileID: 1774814151}
   velocidad: 5
+  ladoZonaRespawn: 40
+--- !u!1 &800986583
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 800986585}
+  - component: {fileID: 800986584}
+  m_Layer: 0
+  m_Name: MiniShooter
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &800986584
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 800986583}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f34a59230387fe48893b587f00902b6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
   textoFinPartida: {fileID: 1809505711}
-  ancho: 40
-  profundidad: 40
+  personajePrincipal: {fileID: 1774814146}
+--- !u!4 &800986585
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 800986583}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -11.056419, y: 9.96436, z: 15.03927}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &906619276
 GameObject:
   m_ObjectHideFlags: 0
@@ -847,7 +890,7 @@ GameObject:
   - component: {fileID: 906619278}
   - component: {fileID: 906619281}
   m_Layer: 0
-  m_Name: Obj1
+  m_Name: Enemigo1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -951,11 +994,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 960ccc5ffcc314974a4c911da5403ebc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  objetivo: {fileID: 1774814151}
   velocidad: 5
-  textoFinPartida: {fileID: 1809505711}
-  ancho: 40
-  profundidad: 40
+  ladoZonaRespawn: 40
 --- !u!1 &1033275714
 GameObject:
   m_ObjectHideFlags: 0
@@ -970,7 +1010,7 @@ GameObject:
   - component: {fileID: 1033275716}
   - component: {fileID: 1033275721}
   m_Layer: 0
-  m_Name: Obj3
+  m_Name: Enemigo3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1074,11 +1114,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 960ccc5ffcc314974a4c911da5403ebc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  objetivo: {fileID: 1774814151}
   velocidad: 5
-  textoFinPartida: {fileID: 1809505711}
-  ancho: 40
-  profundidad: 40
+  ladoZonaRespawn: 40
 --- !u!1 &1181348611
 GameObject:
   m_ObjectHideFlags: 0
@@ -1434,6 +1471,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   velocidadMovimiento: 20
   sensibilidadRaton: 5
+  rotacionVertical: 0
   limiteRotacionVertical: 45
 --- !u!1 &1809505709
 GameObject:
@@ -1685,7 +1723,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2078819431}
   m_Layer: 0
-  m_Name: Objetivos
+  m_Name: Enemigos
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1713,6 +1751,7 @@ Transform:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
+  - {fileID: 800986585}
   - {fileID: 534191414}
   - {fileID: 1920895406}
   - {fileID: 1774814151}

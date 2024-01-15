@@ -1,30 +1,31 @@
-using TMPro;
 using UnityEngine;
 
 public class EnemigoShooter : MonoBehaviour
-{
-    public Transform objetivo;
-    public float velocidad = 5.0f;
-    public TextMeshProUGUI textoFinPartida;
+{    
+    [SerializeField] public float velocidad = 5.0f;
+    [SerializeField] public int ladoZonaRespawn = 40;
+    private GameObject objetivo;
 
-    public int ancho = 40;
-    public int profundidad = 40;
+    private void Start()
+    {
+        objetivo = MiniShooter.instance.PersonajePrincipal();        
+    }
 
     void Update()
     {
+
         float distanciaObjetivo = Vector3.Distance(transform.position, objetivo.transform.position);
         Vector3 pos = transform.position;
 
         // sigue al personaje
         if (distanciaObjetivo > 1)
         {
-            transform.position = Vector3.MoveTowards(pos, objetivo.position, velocidad * Time.deltaTime);
+            transform.position = Vector3.MoveTowards(pos, objetivo.transform.position, velocidad * Time.deltaTime);
         }
         // si algún enemigo se acerca mucho, termina partida
         else
         {
-            textoFinPartida.enabled = true;
-            Time.timeScale = 0;
+            MiniShooter.instance.FinPartida();            
         }
     }
 
@@ -37,8 +38,8 @@ public class EnemigoShooter : MonoBehaviour
     public void CambiarPosicionObjetivo()
     {
         transform.position = new Vector3(
-            Random.Range(-ancho, ancho),
+            Random.Range(-ladoZonaRespawn, ladoZonaRespawn),
             transform.position.y,
-            Random.Range(-profundidad, profundidad));
+            Random.Range(-ladoZonaRespawn, ladoZonaRespawn));
     }
 }
