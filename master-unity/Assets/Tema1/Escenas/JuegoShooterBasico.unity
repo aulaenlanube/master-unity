@@ -828,7 +828,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 960ccc5ffcc314974a4c911da5403ebc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  velocidad: 5
+  velocidad: 2
   ladoZonaRespawn: 40
 --- !u!1 &800986583
 GameObject:
@@ -994,7 +994,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 960ccc5ffcc314974a4c911da5403ebc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  velocidad: 5
+  velocidad: 2
   ladoZonaRespawn: 40
 --- !u!1 &1033275714
 GameObject:
@@ -1114,7 +1114,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 960ccc5ffcc314974a4c911da5403ebc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  velocidad: 5
+  velocidad: 2
   ladoZonaRespawn: 40
 --- !u!1 &1181348611
 GameObject:
@@ -1473,6 +1473,10 @@ MonoBehaviour:
   sensibilidadRaton: 5
   rotacionVertical: 0
   limiteRotacionVertical: 45
+  posicionesCamara:
+  - {x: 0, y: 0.7, z: 0}
+  - {x: 0, y: 0.7, z: -4}
+  - {x: 0, y: 2, z: -4}
 --- !u!1 &1809505709
 GameObject:
   m_ObjectHideFlags: 0
