@@ -1,6 +1,5 @@
 using UnityEngine;
 
-
 public enum CategoriaArma
 {  
     Espada,
@@ -63,8 +62,7 @@ public class Arma : ObjetoInventario, IMejorable, ICombinable, IComerciable, IIn
 
     public Arma(string nombre, string descripcion, Rareza rareza, GameObject objetoVisual, int costeOro, int costePlata, int costeBronce, float dps, float velocidadAtaque, int durabilidad, float alcance, bool combinable, bool comerciable)
             : base(nombre, descripcion, rareza, objetoVisual, costeOro, costePlata, costeBronce)
-    {
-      
+    {      
         DPS = dps;
         VelocidadAtaque = velocidadAtaque;
         Durabilidad = durabilidad;

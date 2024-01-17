@@ -9,14 +9,12 @@ public class MiniShooter : MonoBehaviour
 
     //personaje principal
     [SerializeField] private GameObject personajePrincipal;
-    
-
+     
     public static MiniShooter instance;
 
     private void Awake()
     {
-        if (instance == null) instance = this;
-        else Destroy(gameObject);
+        instance = this;        
     }
 
     public void FinPartida()

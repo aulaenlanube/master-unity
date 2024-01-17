@@ -5,7 +5,7 @@ public class ControladorMovimientoShooter : MonoBehaviour
     [SerializeField] private float velocidadMovimiento = 10f;
     [SerializeField] private float sensibilidadRaton = 10f;
     [SerializeField] private float rotacionVertical = 0f;
-    [SerializeField] private float limiteRotacionVertical = 45.0f; // l?mite de rotaci?n vertical
+    [SerializeField] private float limiteRotacionVertical = 45.0f; // límite de rotación vertical
     [SerializeField] private Vector3[] posicionesCamara;
     private int posicionActual = 0;
 
@@ -17,7 +17,7 @@ public class ControladorMovimientoShooter : MonoBehaviour
 
     void Update()
     {
-        // movimiento adelante-atr?s
+        // movimiento adelante-atrás
         float movimientoAdelanteAtras = Input.GetAxis("Vertical") * velocidadMovimiento * Time.deltaTime;
         // movimiento izquierda-derecha
         float movimientoIzquierdaDerecha = Input.GetAxis("Horizontal") * velocidadMovimiento * Time.deltaTime;
@@ -26,11 +26,11 @@ public class ControladorMovimientoShooter : MonoBehaviour
         transform.Translate(movimientoIzquierdaDerecha, 0, movimientoAdelanteAtras);
 
 
-        // rotaci?n horizontal
+        // rotación horizontal
         float rotacionRatonHorizontal = Input.GetAxis("Mouse X") * sensibilidadRaton;
         transform.Rotate(0, rotacionRatonHorizontal, 0);
 
-        // rotaci?n vertical
+        // rotación vertical
         rotacionVertical -= Input.GetAxis("Mouse Y") * sensibilidadRaton;
         rotacionVertical = Mathf.Clamp(rotacionVertical, -limiteRotacionVertical, limiteRotacionVertical);
         Camera.main.transform.localRotation = Quaternion.Euler(rotacionVertical, 0, 0);
@@ -40,7 +40,7 @@ public class ControladorMovimientoShooter : MonoBehaviour
         {
             Ray rayo = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
-            if (Physics.Raycast(rayo, out hit)) // si hay alg?n impacto
+            if (Physics.Raycast(rayo, out hit)) // si hay algún impacto
             {
                 //establemos el impacto
                 hit.collider.gameObject.GetComponent<EnemigoShooter>()?.DestruirObjetivo();

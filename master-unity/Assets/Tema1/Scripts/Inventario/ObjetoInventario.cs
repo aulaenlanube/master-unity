@@ -79,6 +79,7 @@ public abstract class ObjetoInventario
         CostePlata = costePlata;
         CosteBronce = costeBronce;
     }
+
     public override string ToString()
     {
         return $"Nombre del objeto: {Nombre}\n" +

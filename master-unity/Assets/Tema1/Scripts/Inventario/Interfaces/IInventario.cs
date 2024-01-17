@@ -1,5 +1,5 @@
 public interface IInventario
-{
+{   
     void AgregarObjeto(ObjetoInventario objeto);
     void EliminarObjeto(ObjetoInventario objeto);
     void MostrarInventario();

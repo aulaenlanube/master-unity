@@ -13,7 +13,6 @@ public class EnemigoShooter : MonoBehaviour
 
     void Update()
     {
-
         float distanciaObjetivo = Vector3.Distance(transform.position, objetivo.transform.position);
         Vector3 pos = transform.position;
 

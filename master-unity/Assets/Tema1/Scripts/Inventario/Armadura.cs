@@ -78,6 +78,7 @@ public class Armadura : ObjetoInventario, IMejorable, ICombinable, IComerciable,
                 $"Durabilidad: {Durabilidad}\n" +
                 $"Parte: {Parte}\n";
     }
+
     public void Mejorar()
     {
         switch (NivelMejora)
@@ -136,7 +137,7 @@ public class Armadura : ObjetoInventario, IMejorable, ICombinable, IComerciable,
         //caso general: si el objeto que nos pasan es un Armadura y puede combinarse y el objeto actual también, devolvemos true
         if (PuedeCombinarse)
         {
-            return objeto is Armadura arma && arma.PuedeCombinarse;
+            return objeto is Armadura armadura && armadura.PuedeCombinarse;
         }
         return false;
     }

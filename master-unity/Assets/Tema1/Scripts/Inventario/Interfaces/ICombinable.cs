@@ -3,8 +3,6 @@ public interface ICombinable
 {    
     bool PuedeCombinarse { get; }
 
-    void Combinar(ICombinable objeto);  
-    
+    void Combinar(ICombinable objeto);      
     bool EsCombinable(ICombinable objeto);
-
 }

@@ -17,11 +17,6 @@ public class Inventario : IInventario
         return inventario.Contains(objetoInventario);
     }
 
-    public int ObtenerCantidadMaterialBasico(TipoMaterialBasico tipoMaterialBasico)
-    {
-        return ObtenerMaterialBasico(tipoMaterialBasico)?.Cantidad ?? 0;
-    }
-
     public void AgregarObjeto(ObjetoInventario objetoNuevo)
     {
         if (objetoNuevo is MaterialBasico)
@@ -45,15 +40,6 @@ public class Inventario : IInventario
         // caso general
         if (inventario.Remove(objetoBorrado)) Debug.Log($"El objeto {objetoBorrado.Nombre} ha sido eliminado del inventario");
         else Debug.Log($"El objeto {objetoBorrado.Nombre} no se encuentra en el inventario");
-
-    }
-
-    public void MostrarInventario()
-    {
-        foreach (var objetoActualLista in inventario)
-        {
-            Debug.Log(objetoActualLista.ToString());
-        }
     }
 
     public MaterialBasico ObtenerMaterialBasico(TipoMaterialBasico tipoMaterialBasico)
@@ -62,57 +48,9 @@ public class Inventario : IInventario
         return (MaterialBasico)inventario.FirstOrDefault(objeto => objeto is MaterialBasico materialBasico && materialBasico.TipoMaterialBasico == tipoMaterialBasico);
     }
 
-    public void MostrarInventarioPorValor()
+    public int ObtenerCantidadMaterialBasico(TipoMaterialBasico tipoMaterialBasico)
     {
-        MostrarObjetosFiltrados(inventario.OrderByDescending(objeto => objeto.CosteOro)
-                                      .ThenByDescending(objeto => objeto.CostePlata)
-                                      .ThenByDescending(objeto => objeto.CosteBronce));
-    }
-
-    public void MostrarInventarioPorRareza(Rareza rareza)
-    {
-        MostrarObjetosFiltrados(inventario.Where(objeto => objeto.Rareza == rareza)
-                                      .OrderByDescending(objeto => objeto.CosteOro)
-                                      .ThenByDescending(objeto => objeto.CostePlata)
-                                      .ThenByDescending(objeto => objeto.CosteBronce));
-    }
-
-    public void MostrarObjetosCategoria(Type tipoObjeto)
-    {
-        MostrarObjetosFiltrados(inventario.Where(objeto => objeto.GetType() == tipoObjeto)
-                                .OrderByDescending(objeto => objeto.CosteOro)
-                                .ThenByDescending(objeto => objeto.CostePlata)
-                                .ThenByDescending(objeto => objeto.CosteBronce));
-    }
-
-    public void MostrarObjetosFiltrados(IOrderedEnumerable<ObjetoInventario> objetos)
-    {
-        foreach (var objeto in objetos) Debug.Log(objeto.ToString());
-    }
-
-    public void MostrarArmas()
-    {
-        MostrarObjetosCategoria(typeof(Arma));
-    }
-
-    public void MostrarArmaduras()
-    {
-        MostrarObjetosCategoria(typeof(Armadura));
-    }
-
-    public void MostrarConsumibles()
-    {
-        MostrarObjetosCategoria(typeof(Consumible));
-    }
-
-    public void MostrarArtefactos()
-    {
-        MostrarObjetosCategoria(typeof(Artefacto));
-    }
-
-    public void MostrarMaterialesBasicos()
-    {
-        MostrarObjetosCategoria(typeof(MaterialBasico));
+        return ObtenerMaterialBasico(tipoMaterialBasico)?.Cantidad ?? 0;
     }
 
     public void AgregarMaterialBasico(TipoMaterialBasico tipoMaterialBasico, int cantidad)
@@ -149,6 +87,72 @@ public class Inventario : IInventario
 
         // si existe, restar la cantidad del borrado al existente
         ObtenerMaterialBasico(tipoMaterialBasico).DecrementarCantidad(cantidad);
+    }
+
+    
+
+    ///-----------------------------------------------------------------------
+    //-- MÉTODOS MOSTRAR INVENTARIO ------------------------------------------
+    //------------------------------------------------------------------------
+    public void MostrarInventario()
+    {
+        foreach (var objetoActualLista in inventario)
+        {
+            Debug.Log(objetoActualLista.ToString());
+        }
+    }
+
+    public void MostrarArmas()
+    {
+        MostrarObjetosCategoria(typeof(Arma));
+    }
+
+    public void MostrarArmaduras()
+    {
+        MostrarObjetosCategoria(typeof(Armadura));
+    }
+
+    public void MostrarConsumibles()
+    {
+        MostrarObjetosCategoria(typeof(Consumible));
+    }
+
+    public void MostrarArtefactos()
+    {
+        MostrarObjetosCategoria(typeof(Artefacto));
+    }
+
+    public void MostrarMaterialesBasicos()
+    {
+        MostrarObjetosCategoria(typeof(MaterialBasico));
+    }
+
+    public void MostrarObjetosFiltrados(IOrderedEnumerable<ObjetoInventario> objetos)
+    {
+        foreach (var objeto in objetos) Debug.Log(objeto.ToString());
+    }
+
+    public void MostrarInventarioPorValor()
+    {
+        MostrarObjetosFiltrados(inventario.OrderByDescending(objeto => objeto.CosteOro)
+                                      .ThenByDescending(objeto => objeto.CostePlata)
+                                      .ThenByDescending(objeto => objeto.CosteBronce));
+    }
+
+    public void MostrarInventarioPorRareza(Rareza rareza)
+    {
+        MostrarObjetosFiltrados(inventario.Where(objeto => objeto.Rareza == rareza)
+                                      .OrderByDescending(objeto => objeto.CosteOro)
+                                      .ThenByDescending(objeto => objeto.CostePlata)
+                                      .ThenByDescending(objeto => objeto.CosteBronce));
+    }
+
+    public void MostrarObjetosCategoria(Type tipoObjeto)
+    {
+        MostrarObjetosFiltrados(inventario.Where(objeto => objeto.GetType() == tipoObjeto)
+                                .OrderByDescending(objeto => objeto.CosteOro)
+                                .ThenByDescending(objeto => objeto.CostePlata)
+                                .ThenByDescending(objeto => objeto.CosteBronce));
     }
 }
 

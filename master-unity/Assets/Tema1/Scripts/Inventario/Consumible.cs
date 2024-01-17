@@ -73,7 +73,7 @@ public class Consumible : ObjetoInventario, IConsumible, IComerciable
         else
         {
             PorcentajeRestante -= porcentajeAjustado;
-            Debug.Log($"Has consumido un {porcentajeAjustado}% de {Nombre}. Te queda un {porcentajeAjustado}% de {Nombre}");            
+            Debug.Log($"Has consumido un {porcentajeAjustado}% de {Nombre}. Te queda un {PorcentajeRestante}% de {Nombre}");            
         }
     }
 
