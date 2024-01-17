@@ -1,6 +1,5 @@
 using System.Collections;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class Diana : MonoBehaviour
 {
@@ -21,6 +20,8 @@ public class Diana : MonoBehaviour
 
     public delegate void textoTiempo(float duracion);
     public static event textoTiempo tiempoActualizado;
+    
+    public static event textoPuntuacion partidaFinalizada;
 
     void Start()
     {
@@ -63,9 +64,13 @@ public class Diana : MonoBehaviour
             }
         }        
 
+        //si no quedan disparos o no queda tiempo, la partida finaliza
         if (cantidadDisparos == 0 || duracionActual >= duracionPartida)
         {
-            tiempoActualizado?.Invoke(0);
+            tiempoActualizado?.Invoke(0); //actualizamos el tiempo
+            partidaFinalizada?.Invoke(puntuacionActual); //guardamos la puntuación y mostramos las puntuaciones
+           
+            //destruimos la diana
             Destroy(gameObject);
         }
     }
