@@ -102,7 +102,7 @@ public class Armadura : ObjetoInventario, IMejorable, ICombinable, IComerciable,
                 NivelMejora = NivelMejora.Maestro;
                 break;
             case NivelMejora.Maestro:
-                Debug.Log("La armadura ya está al máximo nivel.");
+                Debug.Log("La armadura ya est? al m?ximo nivel.");
                 break;
         }
     }
@@ -121,25 +121,20 @@ public class Armadura : ObjetoInventario, IMejorable, ICombinable, IComerciable,
 
     public void Combinar(ICombinable objeto)
     {
-        if (EsCombinable(objeto))
-        {
-            Armadura armadura = objeto as Armadura;
+        if (EsCombinable(objeto) && objeto is Armadura armadura)
+        {            
             Debug.Log($"Has combinado {Nombre} con {armadura.Nombre}.");
         }
         else
         {
-            Debug.Log($"La combinación no es posible");
+            Debug.Log($"La combinaci?n no es posible");
         }
     }
 
     public bool EsCombinable(ICombinable objeto)
     {
-        //caso general: si el objeto que nos pasan es un Armadura y puede combinarse y el objeto actual también, devolvemos true
-        if (PuedeCombinarse)
-        {
-            return objeto is Armadura armadura && armadura.PuedeCombinarse;
-        }
-        return false;
+        //caso general: si el objeto que nos pasan es un Armadura y puede combinarse y el objeto actual tambi?n, devolvemos true
+        return PuedeCombinarse && objeto.PuedeCombinarse;
     }
 
     public void Equipar()

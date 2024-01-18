@@ -95,7 +95,7 @@ public class Arma : ObjetoInventario, IMejorable, ICombinable, IComerciable, IIn
                 DPS += 30;
                 VelocidadAtaque += 30;
                 Durabilidad += 30;
-                NivelMejora = NivelMejora.Avanzado;
+                NivelMejora = NivelMejora.Intermedio;
                 break;
             case NivelMejora.Avanzado:
                 DPS += 50;
@@ -104,7 +104,7 @@ public class Arma : ObjetoInventario, IMejorable, ICombinable, IComerciable, IIn
                 NivelMejora = NivelMejora.Maestro;
                 break;
             case NivelMejora.Maestro:
-                Debug.Log("El arma ya está al máximo nivel.");
+                Debug.Log("El arma ya est? al m?ximo nivel.");
                 break;
         }        
     }
@@ -121,25 +121,21 @@ public class Arma : ObjetoInventario, IMejorable, ICombinable, IComerciable, IIn
 
     public void Combinar(ICombinable objeto)
     {
-        if (EsCombinable(objeto))
+        //si ambos con combinables y recibimos un Arma
+        if (EsCombinable(objeto) && objeto is Arma arma)
         {
-            Arma arma = objeto as Arma;
             Debug.Log($"Has combinado {Nombre} con {arma.Nombre}.");           
         }
         else
         {
-            Debug.Log($"La combinación no es posible");
+            Debug.Log($"La combinaci?n no es posible");
         }
     }
 
     public bool EsCombinable(ICombinable objeto)
     {
-        //caso general: si el objeto que nos pasan es un Arma y puede combinarse y el objeto actual también, devolvemos true
-        if(PuedeCombinarse)
-        {
-            return objeto is Arma arma && arma.PuedeCombinarse;
-        }
-        return false;        
+        //caso general: si el objeto puede combinarse y el objeto actual tambi?n, devolvemos true
+        return PuedeCombinarse && objeto.PuedeCombinarse;              
     }
 
     public void Equipar()

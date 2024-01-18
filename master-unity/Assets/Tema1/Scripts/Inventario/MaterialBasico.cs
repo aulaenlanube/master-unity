@@ -149,16 +149,15 @@ public class MaterialBasico : ObjetoInventario, ICombinable, IComerciable
     public override string ToString()
     {
         return base.ToString() +
-                $"Tipo de material básico: {TipoMaterialBasico}\n" +
+                $"Tipo de material b?sico: {TipoMaterialBasico}\n" +
                 $"Cantidad: {Cantidad}\n";
     }
 
     public void Combinar(ICombinable objeto) 
     {
-        if (EsCombinable(objeto))
-        {
-            MaterialBasico materialBasico = objeto as MaterialBasico;
-            if (materialBasico != null && tipoMaterialBasico != materialBasico.TipoMaterialBasico)
+        if (EsCombinable(objeto) && objeto is MaterialBasico materialBasico)
+        {            
+            if (tipoMaterialBasico != materialBasico.TipoMaterialBasico)
             {
                 Debug.Log($"Has combinado {Nombre} con {materialBasico.Nombre}.");
             }
@@ -169,14 +168,14 @@ public class MaterialBasico : ObjetoInventario, ICombinable, IComerciable
         }
         else
         {
-            Debug.Log($"La combinación no es posible");
+            Debug.Log($"La combinaci?n no es posible");
         }
     }
 
     public bool EsCombinable(ICombinable objeto)
     {
-        //aquí deberíamos comprobar si el objeto que nos pasan es combinable con el objeto actual
-        //en este caso, como todos los materiales básicos son combinables entre sí, devolvemos true
+        //aqu? deber?amos comprobar si el objeto que nos pasan es combinable con el objeto actual
+        //en este caso, como todos los materiales b?sicos son combinables entre s?, devolvemos true
 
         return objeto is MaterialBasico;
     }
