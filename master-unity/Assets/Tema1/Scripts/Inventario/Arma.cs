@@ -1,7 +1,7 @@
 using UnityEngine;
 
 public enum CategoriaArma
-{  
+{
     Espada,
     Arco,
     Lanza,
@@ -13,45 +13,51 @@ public enum CategoriaArma
 }
 
 public class Arma : ObjetoInventario, IMejorable, ICombinable, IComerciable, IInteractuable
-{    
+{
     private float dps;
     private float velocidadAtaque;
     private int durabilidad;
     private float alcance;
     private bool combinable;
     private bool comerciable;
+    private CategoriaArma categoriaArma;
     private NivelMejora nivelMejora;
 
     public float DPS
     {
         get => dps;
-        set => dps = Mathf.Max(0, value); 
+        set => dps = Mathf.Max(0, value);
     }
     public float VelocidadAtaque
     {
         get => velocidadAtaque;
-        set => velocidadAtaque = Mathf.Max(0, value); 
+        set => velocidadAtaque = Mathf.Max(0, value);
     }
     public int Durabilidad
     {
         get => durabilidad;
-        set => durabilidad = Mathf.Max(0, value); 
+        set => durabilidad = Mathf.Max(0, value);
     }
     public float Alcance
     {
         get => alcance;
-        set => alcance = Mathf.Max(0, value); 
+        set => alcance = Mathf.Max(0, value);
     }
     public bool PuedeCombinarse
-    { 
+    {
         get => combinable;
-        private set => combinable = value; 
+        private set => combinable = value;
     }
 
     public NivelMejora NivelMejora
     {
         get => nivelMejora;
         private set => nivelMejora = value;
+    }
+    public CategoriaArma CategoriaArma
+    {
+        get => categoriaArma;
+        set => categoriaArma = value;
     }
 
     public bool EsComerciable
@@ -60,9 +66,9 @@ public class Arma : ObjetoInventario, IMejorable, ICombinable, IComerciable, IIn
         private set => comerciable = value;
     }
 
-    public Arma(string nombre, string descripcion, Rareza rareza, GameObject objetoVisual, int costeOro, int costePlata, int costeBronce, float dps, float velocidadAtaque, int durabilidad, float alcance, bool combinable, bool comerciable)
+    public Arma(string nombre, string descripcion, Rareza rareza, GameObject objetoVisual, int costeOro, int costePlata, int costeBronce, float dps, float velocidadAtaque, int durabilidad, float alcance, bool combinable, bool comerciable, CategoriaArma categoriaArma)
             : base(nombre, descripcion, rareza, objetoVisual, costeOro, costePlata, costeBronce)
-    {      
+    {
         DPS = dps;
         VelocidadAtaque = velocidadAtaque;
         Durabilidad = durabilidad;
@@ -70,11 +76,12 @@ public class Arma : ObjetoInventario, IMejorable, ICombinable, IComerciable, IIn
         PuedeCombinarse = combinable;
         NivelMejora = NivelMejora.Basico;
         EsComerciable = comerciable;
+        CategoriaArma = categoriaArma;        
     }
 
     public override string ToString()
     {
-        return base.ToString()  +
+        return base.ToString() +
                 $"DPS: {DPS}\n" +
                 $"Velocidad de ataque: {VelocidadAtaque}\n" +
                 $"Durabilidad: {Durabilidad}\n" +
@@ -83,19 +90,19 @@ public class Arma : ObjetoInventario, IMejorable, ICombinable, IComerciable, IIn
 
     public void Mejorar()
     {
-        switch(NivelMejora)
+        switch (NivelMejora)
         {
             case NivelMejora.Basico:
                 DPS += 20;
                 VelocidadAtaque += 20;
                 Durabilidad += 20;
-                NivelMejora = NivelMejora.Avanzado;
+                NivelMejora = NivelMejora.Intermedio;
                 break;
             case NivelMejora.Intermedio:
                 DPS += 30;
                 VelocidadAtaque += 30;
                 Durabilidad += 30;
-                NivelMejora = NivelMejora.Intermedio;
+                NivelMejora = NivelMejora.Avanzado;
                 break;
             case NivelMejora.Avanzado:
                 DPS += 50;
@@ -104,9 +111,9 @@ public class Arma : ObjetoInventario, IMejorable, ICombinable, IComerciable, IIn
                 NivelMejora = NivelMejora.Maestro;
                 break;
             case NivelMejora.Maestro:
-                Debug.Log("El arma ya est? al m?ximo nivel.");
+                Debug.Log("El arma ya está al máximo nivel.");
                 break;
-        }        
+        }
     }
 
     public void Comprar()
@@ -117,25 +124,25 @@ public class Arma : ObjetoInventario, IMejorable, ICombinable, IComerciable, IIn
     public void Vender()
     {
         Debug.Log($"Has vendido {Nombre} por {CosteOro} de oro, {CostePlata} de plata y {CosteBronce} de bronce.");
-    }   
+    }
 
     public void Combinar(ICombinable objeto)
     {
         //si ambos con combinables y recibimos un Arma
         if (EsCombinable(objeto) && objeto is Arma arma)
         {
-            Debug.Log($"Has combinado {Nombre} con {arma.Nombre}.");           
+            Debug.Log($"Has combinado {Nombre} con {arma.Nombre}.");
         }
         else
         {
-            Debug.Log($"La combinaci?n no es posible");
+            Debug.Log($"La combinación no es posible");
         }
     }
 
     public bool EsCombinable(ICombinable objeto)
     {
-        //caso general: si el objeto puede combinarse y el objeto actual tambi?n, devolvemos true
-        return PuedeCombinarse && objeto.PuedeCombinarse;              
+        //caso general: si el objeto puede combinarse y el objeto actual también, devolvemos true
+        return PuedeCombinarse && objeto.PuedeCombinarse;
     }
 
     public void Equipar()

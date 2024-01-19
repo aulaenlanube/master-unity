@@ -3,6 +3,7 @@ using UnityEngine;
 using System.IO;
 using System;
 using System.Linq;
+using System.Runtime.Serialization.Formatters.Binary;
 [Serializable] public class ListaPuntuacionesJuegoPunteria
 {
     public List<int> listaPuntuaciones;
@@ -16,8 +17,9 @@ using System.Linq;
 public class PuntuacionesJuegoPunteria
 {    
     private static PuntuacionesJuegoPunteria instancia = null;
-    private ListaPuntuacionesJuegoPunteria puntuacionesContenedor;
+    private ListaPuntuacionesJuegoPunteria puntuaciones;
     private string rutaFicheroPuntuaciones = Application.dataPath + "/Tema1/Scripts/Juego Diana/puntuaciones.json";
+    private string rutaFicheroPuntuacionesBinario = Application.dataPath + "/Tema1/Scripts/Juego Diana/puntuaciones.dat";
 
     public static PuntuacionesJuegoPunteria Instancia
     {
@@ -33,18 +35,18 @@ public class PuntuacionesJuegoPunteria
 
     private PuntuacionesJuegoPunteria()
     {
-        puntuacionesContenedor = new ListaPuntuacionesJuegoPunteria();
-        CargarPuntuaciones();
+        puntuaciones = new ListaPuntuacionesJuegoPunteria();
+        CargarPuntuacionesBinario();
     }
 
     public List<int> ObtenerMejoresPuntuaciones()
     {
-        return puntuacionesContenedor.listaPuntuaciones.OrderByDescending(x => x).ToList();
+        return puntuaciones.listaPuntuaciones.OrderByDescending(x => x).ToList();
     }
 
     public List<int> ObtenerMejoresPuntuaciones(int cantidad)
     {
-        return puntuacionesContenedor.listaPuntuaciones
+        return puntuaciones.listaPuntuaciones
             .OrderByDescending(x => x)
             .Take(cantidad)
             .ToList();
@@ -53,8 +55,8 @@ public class PuntuacionesJuegoPunteria
 
     public void AgregarPuntuacion(int puntuacion)
     {
-        puntuacionesContenedor.listaPuntuaciones.Add(puntuacion);
-        GuardarPuntuaciones();
+        puntuaciones.listaPuntuaciones.Add(puntuacion);
+        GuardarPuntuacionesBinario();
     }
 
     public void CargarPuntuaciones()
@@ -63,14 +65,35 @@ public class PuntuacionesJuegoPunteria
         {
             string json = File.ReadAllText(rutaFicheroPuntuaciones);
             Debug.Log("cargar: " + json);
-            puntuacionesContenedor = JsonUtility.FromJson<ListaPuntuacionesJuegoPunteria>(json) ?? new ListaPuntuacionesJuegoPunteria();
+            puntuaciones = JsonUtility.FromJson<ListaPuntuacionesJuegoPunteria>(json) ?? new ListaPuntuacionesJuegoPunteria();
         }
     }
 
     private void GuardarPuntuaciones()
     {
-        string json = JsonUtility.ToJson(puntuacionesContenedor);
+        string json = JsonUtility.ToJson(puntuaciones);
         File.WriteAllText(rutaFicheroPuntuaciones, json);
     }
+
+    public void GuardarPuntuacionesBinario()
+    {
+        BinaryFormatter formatter = new BinaryFormatter();
+        FileStream file = File.Create(rutaFicheroPuntuacionesBinario);
+        formatter.Serialize(file, puntuaciones);
+        file.Close();
+    }
+
+    public void CargarPuntuacionesBinario()
+    {        
+        if (File.Exists(rutaFicheroPuntuacionesBinario))
+        {
+            BinaryFormatter formatter = new BinaryFormatter();
+            FileStream file = File.Open(rutaFicheroPuntuacionesBinario, FileMode.Open);
+            puntuaciones = (ListaPuntuacionesJuegoPunteria)formatter.Deserialize(file);
+            file.Close();
+        }        
+    }
+
+
 }
 

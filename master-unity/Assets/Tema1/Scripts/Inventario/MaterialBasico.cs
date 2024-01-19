@@ -168,15 +168,13 @@ public class MaterialBasico : ObjetoInventario, ICombinable, IComerciable
         }
         else
         {
-            Debug.Log($"La combinaci?n no es posible");
+            Debug.Log($"La combinación no es posible");
         }
     }
-
     public bool EsCombinable(ICombinable objeto)
     {
-        //aqu? deber?amos comprobar si el objeto que nos pasan es combinable con el objeto actual
-        //en este caso, como todos los materiales b?sicos son combinables entre s?, devolvemos true
-
+        //aquí deberíamos comprobar si el objeto que nos pasan es combinable con el objeto actual
+        //en este caso, como todos los materiales básicos son combinables entre sí, devolvemos true
         return objeto is MaterialBasico;
     }
 

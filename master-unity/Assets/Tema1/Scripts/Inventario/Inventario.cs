@@ -126,33 +126,34 @@ public class Inventario : IInventario
     {
         MostrarObjetosCategoria(typeof(MaterialBasico));
     }
-
-    public void MostrarObjetosFiltrados(IOrderedEnumerable<ObjetoInventario> objetos)
-    {
-        foreach (var objeto in objetos) Debug.Log(objeto.ToString());
-    }
-
+     
     public void MostrarInventarioPorValor()
     {
-        MostrarObjetosFiltrados(inventario.OrderByDescending(objeto => objeto.CosteOro)
-                                      .ThenByDescending(objeto => objeto.CostePlata)
-                                      .ThenByDescending(objeto => objeto.CosteBronce));
+        inventario.OrderByDescending(objeto => objeto.CosteOro)
+                  .ThenByDescending(objeto => objeto.CostePlata)
+                  .ThenByDescending(objeto => objeto.CosteBronce)
+                  .ToList()
+                  .ForEach(objeto => Debug.Log(objeto));
     }
 
     public void MostrarInventarioPorRareza(Rareza rareza)
     {
-        MostrarObjetosFiltrados(inventario.Where(objeto => objeto.Rareza == rareza)
-                                      .OrderByDescending(objeto => objeto.CosteOro)
-                                      .ThenByDescending(objeto => objeto.CostePlata)
-                                      .ThenByDescending(objeto => objeto.CosteBronce));
+        inventario.Where(objeto => objeto.Rareza == rareza)
+                  .OrderByDescending(objeto => objeto.CosteOro)
+                  .ThenByDescending(objeto => objeto.CostePlata)
+                  .ThenByDescending(objeto => objeto.CosteBronce)
+                  .ToList()
+                  .ForEach(objeto => Debug.Log(objeto));
     }
 
     public void MostrarObjetosCategoria(Type tipoObjeto)
     {
-        MostrarObjetosFiltrados(inventario.Where(objeto => objeto.GetType() == tipoObjeto)
-                                .OrderByDescending(objeto => objeto.CosteOro)
-                                .ThenByDescending(objeto => objeto.CostePlata)
-                                .ThenByDescending(objeto => objeto.CosteBronce));
+        inventario.Where(objeto => objeto.GetType() == tipoObjeto)
+                  .OrderByDescending(objeto => objeto.CosteOro)
+                  .ThenByDescending(objeto => objeto.CostePlata)
+                  .ThenByDescending(objeto => objeto.CosteBronce)
+                  .ToList()
+                  .ForEach(objeto => Debug.Log(objeto));
     }
 }
 
