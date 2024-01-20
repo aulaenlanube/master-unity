@@ -129,9 +129,9 @@ public class Inventario : IInventario
      
     public void MostrarInventarioPorValor()
     {
-        inventario.OrderByDescending(objeto => objeto.CosteOro)
-                  .ThenByDescending(objeto => objeto.CostePlata)
-                  .ThenByDescending(objeto => objeto.CosteBronce)
+        inventario.OrderByDescending(objeto => objeto.Precio.CosteOro)
+                  .ThenByDescending(objeto => objeto.Precio.CostePlata)
+                  .ThenByDescending(objeto => objeto.Precio.CosteBronce)
                   .ToList()
                   .ForEach(objeto => Debug.Log(objeto));
     }
@@ -139,9 +139,9 @@ public class Inventario : IInventario
     public void MostrarInventarioPorRareza(Rareza rareza)
     {
         inventario.Where(objeto => objeto.Rareza == rareza)
-                  .OrderByDescending(objeto => objeto.CosteOro)
-                  .ThenByDescending(objeto => objeto.CostePlata)
-                  .ThenByDescending(objeto => objeto.CosteBronce)
+                  .OrderByDescending(objeto => objeto.Precio.CosteOro)
+                  .ThenByDescending(objeto => objeto.Precio.CostePlata)
+                  .ThenByDescending(objeto => objeto.Precio.CosteBronce)
                   .ToList()
                   .ForEach(objeto => Debug.Log(objeto));
     }
@@ -149,9 +149,9 @@ public class Inventario : IInventario
     public void MostrarObjetosCategoria(Type tipoObjeto)
     {
         inventario.Where(objeto => objeto.GetType() == tipoObjeto)
-                  .OrderByDescending(objeto => objeto.CosteOro)
-                  .ThenByDescending(objeto => objeto.CostePlata)
-                  .ThenByDescending(objeto => objeto.CosteBronce)
+                  .OrderByDescending(objeto => objeto.Precio.CosteOro)
+                  .ThenByDescending(objeto => objeto.Precio.CostePlata)
+                  .ThenByDescending(objeto => objeto.Precio.CosteBronce)
                   .ToList()
                   .ForEach(objeto => Debug.Log(objeto));
     }

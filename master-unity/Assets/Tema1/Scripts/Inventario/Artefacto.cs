@@ -11,8 +11,8 @@ public class Artefacto : ObjetoInventario, IComerciable
         private set => comerciable = value;
     }
 
-    public Artefacto(string nombre, string descripcion, Rareza rareza, GameObject objetoVisual, int costeOro, int costePlata, int costeBronce, string propiedadEspecial, bool comerciable)
-        : base(nombre, descripcion, rareza, objetoVisual, costeOro, costePlata, costeBronce)
+    public Artefacto(string nombre, string descripcion, Rareza rareza, GameObject objetoVisual, Precio precio, string propiedadEspecial, bool comerciable)
+        : base(nombre, descripcion, rareza, objetoVisual, precio)
     {
         PropiedadEspecial = propiedadEspecial;
         EsComerciable = comerciable;
@@ -25,12 +25,12 @@ public class Artefacto : ObjetoInventario, IComerciable
 
     public void Comprar()
     {
-        Debug.Log($"Has comprado {Nombre} por {CosteOro} de oro, {CostePlata} de plata y {CosteBronce} de bronce.");
+        Debug.Log($"Has comprado {Nombre} por {Precio.CosteOro} de oro, {Precio.CostePlata} de plata y {Precio.CosteBronce} de bronce.");
     }
 
     public void Vender()
     {
-        Debug.Log($"Has vendido {Nombre} por {CosteOro} de oro, {CostePlata} de plata y {CosteBronce} de bronce.");
+        Debug.Log($"Has vendido {Nombre} por {Precio.CosteOro} de oro, {Precio.CostePlata} de plata y {Precio.CosteBronce} de bronce.");
     }
 
 }

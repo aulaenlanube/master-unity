@@ -15,6 +15,7 @@ public class Consumible : ObjetoInventario, IConsumible, IComerciable
     private float porcentajeRestante;
     private int duracionEfecto; // duración del efecto en minutos, 0 si no tiene duración
     private bool comerciable;
+    private CategoriaConsumible categoriaConsumible;
 
     public string Efecto
     {
@@ -39,13 +40,20 @@ public class Consumible : ObjetoInventario, IConsumible, IComerciable
         get => comerciable;
         private set => comerciable = value;
     }
+    
+    public CategoriaConsumible CategoriaConsumible
+    {
+        get => categoriaConsumible;
+        set => categoriaConsumible = value;
+    }
 
-    public Consumible(string nombre, string descripcion, Rareza rareza, GameObject objetoVisual, int costeOro, int costePlata, int costeBronce, string efecto, int duracionEfecto, float porcentajeRestante, bool comerciable)
-        : base(nombre, descripcion, rareza, objetoVisual, costeOro, costePlata, costeBronce)
+    public Consumible(string nombre, string descripcion, Rareza rareza, CategoriaConsumible categoriaConsumible, GameObject objetoVisual, Precio precio, string efecto, int duracionEfecto, float porcentajeRestante, bool comerciable)
+        : base(nombre, descripcion, rareza, objetoVisual, precio)
     {
         Efecto = efecto;
         DuracionEfecto = duracionEfecto;
         PorcentajeRestante = porcentajeRestante;
+        CategoriaConsumible = categoriaConsumible;
         EsComerciable = comerciable;
     }
 
@@ -79,11 +87,11 @@ public class Consumible : ObjetoInventario, IConsumible, IComerciable
 
     public void Comprar()
     {
-        Debug.Log($"Has comprado {Nombre} por {CosteOro} de oro, {CostePlata} de plata y {CosteBronce} de bronce.");
+        Debug.Log($"Has comprado {Nombre} por {Precio.CosteOro} de oro, {Precio.CostePlata} de plata y {Precio.CosteBronce} de bronce.");
     }
 
     public void Vender()
     {
-        Debug.Log($"Has vendido {Nombre} por {CosteOro} de oro, {CostePlata} de plata y {CosteBronce} de bronce.");
+        Debug.Log($"Has vendido {Nombre} por {Precio.CosteOro} de oro, {Precio.CostePlata} de plata y {Precio.CosteBronce} de bronce.");
     }
 }

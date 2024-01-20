@@ -57,8 +57,8 @@ public class Armadura : ObjetoInventario, IMejorable, ICombinable, IComerciable,
     }
 
 
-    public Armadura(string nombre, string descripcion, Rareza rareza, GameObject objetoVisual, int costeOro, int costePlata, int costeBronce, int defensa, int agilidad, int durabilidad, ParteArmadura parte, bool combinable, bool comerciable)
-        : base(nombre, descripcion, rareza, objetoVisual, costeOro, costePlata, costeBronce)
+    public Armadura(string nombre, string descripcion, Rareza rareza, GameObject objetoVisual, Precio precio, int defensa, int agilidad, int durabilidad, ParteArmadura parte, bool combinable, bool comerciable)
+        : base(nombre, descripcion, rareza, objetoVisual, precio)
     {
         Defensa = defensa;
         Agilidad = agilidad;
@@ -111,12 +111,12 @@ public class Armadura : ObjetoInventario, IMejorable, ICombinable, IComerciable,
 
     public void Comprar()
     {
-        Debug.Log($"Has comprado {Nombre} por {CosteOro} de oro, {CostePlata} de plata y {CosteBronce} de bronce.");
+        Debug.Log($"Has comprado {Nombre} por {Precio.CosteOro} de oro, {Precio.CostePlata} de plata y {Precio.CosteBronce} de bronce.");
     }
 
     public void Vender()
     {
-        Debug.Log($"Has vendido {Nombre} por {CosteOro} de oro, {CostePlata} de plata y {CosteBronce} de bronce.");
+        Debug.Log($"Has vendido {Nombre} por {Precio.CosteOro} de oro, {Precio.CostePlata} de plata y {Precio.CosteBronce} de bronce.");
     }   
 
     public void Combinar(ICombinable objeto)

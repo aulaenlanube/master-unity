@@ -9,6 +9,45 @@ public enum Rareza
     Legendario
 }
 
+public struct Precio
+{
+    private int costeOro { get; set; }
+    private int costePlata { get; set; }
+    private int costeBronce { get; set;  }
+
+    public Precio(int costeOro, int costePlata, int costeBronce)
+    {
+        this.costeOro = Mathf.Max(0, costeOro);
+        this.costePlata = Mathf.Max(0, costePlata);
+        this.costeBronce = Mathf.Max(0, costeBronce);
+    }
+
+    public int CosteOro
+    {
+        get => costeOro;
+        private set => costeOro = Mathf.Max(0, value);
+    }
+
+    public int CostePlata
+    {
+        get => costePlata;
+        private set => costePlata = Mathf.Max(0, value);        
+    }
+
+    public int CosteBronce
+    {
+        get => costeBronce;
+        private set => costeBronce = Mathf.Max(0, value);
+    }
+
+    public void AjustarPrecio(int oro, int plata, int bronce)
+    {
+        CosteOro = oro;
+        CostePlata = plata;
+        CosteBronce = bronce;        
+    }   
+}
+
 public abstract class ObjetoInventario
 {
     private string id;
@@ -16,9 +55,8 @@ public abstract class ObjetoInventario
     private string descripcion;
     private Rareza rareza;
     private GameObject objetoVisual;
-    private int costeOro;
-    private int costePlata;
-    private int costeBronce;
+    private Precio precio;
+       
 
     public string Id
     {
@@ -49,35 +87,20 @@ public abstract class ObjetoInventario
         get => objetoVisual;
         set => objetoVisual = value;
     }
-
-    public int CosteOro
+    public Precio Precio
     {
-        get => costeOro;
-        set => costeOro = Mathf.Max(0, value);
+        get => precio;
+        set => precio = value;
     }
 
-    public int CostePlata
-    {
-        get => costePlata;
-        set => costePlata = Mathf.Max(0, value);
-    }
-
-    public int CosteBronce
-    {
-        get => costeBronce;
-        set => costeBronce = Mathf.Max(0, value);
-    }
-
-    protected ObjetoInventario(string nombre, string descripcion, Rareza rareza, GameObject objetoVisual, int costeOro, int costePlata, int costeBronce)
+    protected ObjetoInventario(string nombre, string descripcion, Rareza rareza, GameObject objetoVisual, Precio precio)
     {
         Id = Guid.NewGuid().ToString();
         Nombre = nombre;
         Descripcion = descripcion;
         Rareza = rareza;
         ObjetoVisual = objetoVisual;
-        CosteOro = costeOro;
-        CostePlata = costePlata;
-        CosteBronce = costeBronce;
+        Precio = precio;
     }
 
     public override string ToString()
@@ -85,7 +108,7 @@ public abstract class ObjetoInventario
         return $"Nombre del objeto: {Nombre}\n" +
                 $"Rareza: {Rareza}\n" +
                 $"Descripción: {Descripcion}\n" +
-                $"Coste: {CosteOro}oro, {CostePlata}plata, {CosteBronce}bronce\n";
+                $"Coste: {Precio.CosteOro}oro, {Precio.CostePlata}plata, {Precio.CosteBronce}bronce\n";
     }
 }
 

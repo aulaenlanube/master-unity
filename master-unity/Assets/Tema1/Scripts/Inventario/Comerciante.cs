@@ -33,32 +33,32 @@ public class Comerciante : IComerciante
     {
         Nombre = nombre;
         inventario = new Inventario();
-        oro = 0;
-        plata = 0;
-        bronce = 0;
+        Oro = 0;
+        Plata = 0;
+        Bronce = 0;
     }
     public Comerciante(string nombre, Inventario inventario)
     {
         Nombre = nombre;
         this.inventario = inventario;
-        oro = 0;
-        plata = 0;
-        bronce = 0;
+        Oro = 0;
+        Plata = 0;
+        Bronce = 0;
     }
     public Comerciante(string nombre, Inventario inventario, int oro, int plata, int bronce)
     {
-        Nombre = nombre;
         this.inventario = inventario;
-        this.oro = oro;
-        this.plata = plata;
-        this.bronce = bronce;
+        Nombre = nombre;
+        Oro = oro;
+        Plata = plata;
+        Bronce = bronce;
     }
 
-    public bool DineroSuficienteCompra(int oro, int plata, int bronce)
+    public bool DineroSuficienteCompra(Precio precio)
     {
         //1 de oro = 10 de plata        
         //1 de plata = 10 de bronce
-        return this.oro * 100 + this.plata * 10 + this.bronce >= oro * 100 + plata * 10 + bronce;
+        return Oro * 100 + Plata * 10 + Bronce >= precio.CosteOro * 100 + precio.CostePlata * 10 + precio.CosteBronce;
     }
 
     public void Comprar(IComerciable objeto)
@@ -71,7 +71,7 @@ public class Comerciante : IComerciante
         }
 
         //si no hay dinero suficiente, no se puede comprar
-        if (objeto is ObjetoInventario objInventario && !DineroSuficienteCompra(objInventario.CosteOro, objInventario.CostePlata, objInventario.CosteBronce))
+        if (objeto is ObjetoInventario objInventario && !DineroSuficienteCompra(objInventario.Precio))
         {
             Debug.Log($"No se puede comprar {objInventario.Nombre} porque no hay suficiente dinero");
             return;
@@ -81,7 +81,7 @@ public class Comerciante : IComerciante
         if (objeto is ObjetoInventario objetoInventario)
         {
             objeto.Comprar();
-            RestarSaldo(objetoInventario.CosteOro, objetoInventario.CostePlata, objetoInventario.CosteBronce);
+            RestarSaldo(objetoInventario.Precio.CosteOro, objetoInventario.Precio.CostePlata, objetoInventario.Precio.CosteBronce);
             inventario.AgregarObjeto(objetoInventario);
         }
         else
@@ -112,8 +112,8 @@ public class Comerciante : IComerciante
             }
             //si el objeto está en el inventario, se vende
             objeto.Vender();
-            SumarSaldo(objetoInventario.CosteOro, objetoInventario.CostePlata, objetoInventario.CosteBronce);
-            inventario.EliminarObjeto(objetoInventario);            
+            SumarSaldo(objetoInventario.Precio.CosteOro, objetoInventario.Precio.CostePlata, objetoInventario.Precio.CosteBronce);
+            inventario.EliminarObjeto(objetoInventario);
         }
         else
         {
@@ -123,11 +123,11 @@ public class Comerciante : IComerciante
         MostrarSaldo();
     }
 
-    public void ListarInventario()    
-    {     
-        inventario.MostrarInventario();    
-    } 
-    
+    public void ListarInventario()
+    {
+        inventario.MostrarInventario();
+    }
+
     public bool MaterialSuficienteVenta(TipoMaterialBasico tipoMaterialBasico, int cantidad)
     {
         return inventario.ObtenerCantidadMaterialBasico(tipoMaterialBasico) >= cantidad;
@@ -135,36 +135,40 @@ public class Comerciante : IComerciante
 
     public void ComprarMaterialBasico(TipoMaterialBasico tipoMaterialBasico, int cantidad)
     {
-        int costeTotalOro = PreciosMaterialesBasicos.ObtenerPrecio(tipoMaterialBasico).CosteOro * cantidad;
-        int costeTotalPlata = PreciosMaterialesBasicos.ObtenerPrecio(tipoMaterialBasico).CostePlata * cantidad;
-        int costeTotalBronce = PreciosMaterialesBasicos.ObtenerPrecio(tipoMaterialBasico).CosteBronce * cantidad;        
-        
-        if(DineroSuficienteCompra(costeTotalOro, costeTotalPlata, costeTotalBronce))
-        {             
+        Precio precio = new Precio(PreciosMaterialesBasicos.ObtenerPrecio(tipoMaterialBasico).CosteOro * cantidad,
+                                   PreciosMaterialesBasicos.ObtenerPrecio(tipoMaterialBasico).CostePlata * cantidad,
+                                   PreciosMaterialesBasicos.ObtenerPrecio(tipoMaterialBasico).CosteBronce * cantidad);
+
+
+        if (DineroSuficienteCompra(precio))
+        {
             inventario.AgregarMaterialBasico(tipoMaterialBasico, cantidad);
             RestarSaldo(tipoMaterialBasico, cantidad);
-            inventario.ObtenerMaterialBasico(tipoMaterialBasico)?.Comprar(); 
+            inventario.ObtenerMaterialBasico(tipoMaterialBasico)?.Comprar();
             return;
         }
-        Debug.Log($"No se puede comprar {tipoMaterialBasico} porque no hay suficiente dinero");                
+        Debug.Log($"No se puede comprar {tipoMaterialBasico} porque no hay suficiente dinero");
     }
 
     public void VenderMaterialBasico(TipoMaterialBasico tipoMaterialBasico, int cantidad)
-    {        
+    {
         if (MaterialSuficienteVenta(tipoMaterialBasico, cantidad))
-        {            
+        {
             inventario.EliminarMaterialBasico(tipoMaterialBasico, cantidad);
             SumarSaldo(tipoMaterialBasico, cantidad);
             inventario.ObtenerMaterialBasico(tipoMaterialBasico)?.Vender();
             return;
         }
-        Debug.Log($"No se puede vender {tipoMaterialBasico} porque no hay suficientes unidades");        
-    }   
+        Debug.Log($"No se puede vender {tipoMaterialBasico} porque no hay suficientes unidades");
+    }
+    private int CosteEnBronce(int oro, int plata, int bronce)
+    {
+        return oro * 100 + plata * 10 + bronce;
+    }
 
     private void SumarSaldo(int oro, int plata, int bronce)
     {
-        int totalSumar = oro * 100 + plata * 10 + bronce;
-        int totalBronce = this.oro * 100 + this.plata * 10 + this.bronce + totalSumar;
+        int totalBronce = Oro * 100 + Plata * 10 + Bronce + CosteEnBronce(oro, plata, bronce);
         AjustarMonedas(totalBronce);
     }
 
@@ -172,13 +176,12 @@ public class Comerciante : IComerciante
     {
         SumarSaldo(PreciosMaterialesBasicos.ObtenerPrecio(tipoMaterialBasico).CosteOro * cantidad,
                    PreciosMaterialesBasicos.ObtenerPrecio(tipoMaterialBasico).CostePlata * cantidad,
-                   PreciosMaterialesBasicos.ObtenerPrecio(tipoMaterialBasico).CosteBronce * cantidad);       
+                   PreciosMaterialesBasicos.ObtenerPrecio(tipoMaterialBasico).CosteBronce * cantidad);
     }
 
     private void RestarSaldo(int oro, int plata, int bronce)
     {
-        int totalRestar = oro * 100 + plata * 10 + bronce;
-        int totalBronce = this.oro * 100 + this.plata * 10 + this.bronce - totalRestar;
+        int totalBronce = Oro * 100 + Plata * 10 + Bronce - CosteEnBronce(oro, plata, bronce);
         AjustarMonedas(totalBronce);
     }
 
@@ -191,13 +194,22 @@ public class Comerciante : IComerciante
 
     private void AjustarMonedas(int totalBronce)
     {
-        this.oro = totalBronce / 100;
-        this.plata = totalBronce % 100 / 10;
-        this.bronce = totalBronce % 10;
+        if (totalBronce > 9)
+        {
+            Plata = totalBronce / 10;
+            Bronce = totalBronce % 10;
+        }
+        else Bronce = totalBronce;
+
+        if (Plata > 9)
+        {
+            Oro = Plata / 10;
+            Plata = Plata % 10;
+        }
     }
 
     public void MostrarSaldo()
     {
-        Debug.Log($"Saldo actual: {oro} de oro, {plata} de plata y {bronce} de bronce");
+        Debug.Log($"Saldo actual: {Oro} de oro, {Plata} de plata y {Bronce} de bronce");
     }
 }

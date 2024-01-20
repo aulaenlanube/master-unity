@@ -66,8 +66,8 @@ public class Arma : ObjetoInventario, IMejorable, ICombinable, IComerciable, IIn
         private set => comerciable = value;
     }
 
-    public Arma(string nombre, string descripcion, Rareza rareza, GameObject objetoVisual, int costeOro, int costePlata, int costeBronce, float dps, float velocidadAtaque, int durabilidad, float alcance, bool combinable, bool comerciable, CategoriaArma categoriaArma)
-            : base(nombre, descripcion, rareza, objetoVisual, costeOro, costePlata, costeBronce)
+    public Arma(string nombre, string descripcion, Rareza rareza, GameObject objetoVisual, Precio precio, float dps, float velocidadAtaque, int durabilidad, float alcance, bool combinable, bool comerciable, CategoriaArma categoriaArma)
+            : base(nombre, descripcion, rareza, objetoVisual, precio)
     {
         DPS = dps;
         VelocidadAtaque = velocidadAtaque;
@@ -118,12 +118,12 @@ public class Arma : ObjetoInventario, IMejorable, ICombinable, IComerciable, IIn
 
     public void Comprar()
     {
-        Debug.Log($"Has comprado {Nombre} por {CosteOro} de oro, {CostePlata} de plata y {CosteBronce} de bronce.");
+        Debug.Log($"Has comprado {Nombre} por {Precio.CosteOro} de oro, {Precio.CostePlata} de plata y {Precio.CosteBronce} de bronce.");
     }
 
     public void Vender()
     {
-        Debug.Log($"Has vendido {Nombre} por {CosteOro} de oro, {CostePlata} de plata y {CosteBronce} de bronce.");
+        Debug.Log($"Has vendido {Nombre} por {Precio.CosteOro} de oro, {Precio.CostePlata} de plata y {Precio.CosteBronce} de bronce.");
     }
 
     public void Combinar(ICombinable objeto)
