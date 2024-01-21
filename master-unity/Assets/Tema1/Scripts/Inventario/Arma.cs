@@ -4,6 +4,7 @@ public enum CategoriaArma
 {
     Espada,
     Arco,
+    Ballesta,
     Lanza,
     Hacha,
     Martillo,

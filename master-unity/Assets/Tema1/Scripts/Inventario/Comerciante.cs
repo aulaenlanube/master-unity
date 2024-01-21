@@ -139,7 +139,6 @@ public class Comerciante : IComerciante
                                    PreciosMaterialesBasicos.ObtenerPrecio(tipoMaterialBasico).CostePlata * cantidad,
                                    PreciosMaterialesBasicos.ObtenerPrecio(tipoMaterialBasico).CosteBronce * cantidad);
 
-
         if (DineroSuficienteCompra(precio))
         {
             inventario.AgregarMaterialBasico(tipoMaterialBasico, cantidad);

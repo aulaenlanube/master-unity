@@ -55,8 +55,7 @@ public abstract class ObjetoInventario
     private string descripcion;
     private Rareza rareza;
     private GameObject objetoVisual;
-    private Precio precio;
-       
+    private Precio precio;       
 
     public string Id
     {
