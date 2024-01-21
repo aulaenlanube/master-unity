@@ -112,7 +112,7 @@ public class Arma : ObjetoInventario, IMejorable, ICombinable, IComerciable, IIn
                 NivelMejora = NivelMejora.Maestro;
                 break;
             case NivelMejora.Maestro:
-                Debug.Log("El arma ya est· al m·ximo nivel.");
+                Debug.Log("El arma ya est√° al m√°ximo nivel.");
                 break;
         }
     }
@@ -136,13 +136,13 @@ public class Arma : ObjetoInventario, IMejorable, ICombinable, IComerciable, IIn
         }
         else
         {
-            Debug.Log($"La combinaciÛn no es posible");
+            Debug.Log($"La combinaci√≥n no es posible");
         }
     }
 
     public bool EsCombinable(ICombinable objeto)
     {
-        //caso general: si el objeto puede combinarse y el objeto actual tambiÈn, devolvemos true
+        //caso general: si el objeto puede combinarse y el objeto actual tambi√©n, devolvemos true
         return PuedeCombinarse && objeto.PuedeCombinarse;
     }
 
