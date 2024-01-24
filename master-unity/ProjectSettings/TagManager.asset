@@ -4,7 +4,8 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - cubo
+  - Pared
+  - Enemigo
   layers:
   - Default
   - TransparentFX

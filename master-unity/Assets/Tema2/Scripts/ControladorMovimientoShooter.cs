@@ -53,4 +53,12 @@ public class ControladorMovimientoShooter : MonoBehaviour
             Camera.main.transform.localPosition = posicionesCamara[++posicionActual % posicionesCamara.Length];
         }
     }
+
+    void OnTriggerEnter(Collider colider)
+    {        
+        if (colider.gameObject.tag == "Pared" || colider.gameObject.tag == "Enemigo")
+        {
+            MiniShooter.instance.FinPartida();
+        }            
+    }
 }
