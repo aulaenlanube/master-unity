@@ -2,8 +2,8 @@ using UnityEngine;
 
 public class EnemigoShooter : MonoBehaviour
 {    
-    [SerializeField] public float velocidad = 5.0f;
-    [SerializeField] public int ladoZonaRespawn = 40;
+    [SerializeField] private float velocidad = 5.0f;
+    [SerializeField] private int ladoZonaRespawn = 40;
     private GameObject objetivo;
 
     private void Start()
