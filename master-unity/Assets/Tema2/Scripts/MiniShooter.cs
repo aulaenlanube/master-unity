@@ -7,9 +7,13 @@ public class MiniShooter : MonoBehaviour
     [SerializeField] private TextMeshProUGUI textoFinPartida;
     [SerializeField] private TextMeshProUGUI textoPuntuacion;
 
-
     //personaje principal
     [SerializeField] private Transform personajePrincipal;
+    [SerializeField] private float velocidadEnemigos = 5.0f;
+    [SerializeField] private float velocidadPersonaje = 20.0f;
+    [SerializeField] private int ladoZonaRespawn = 40;
+    [SerializeField] private float sensibilidadRaton = 10f;
+    [SerializeField] private float limiteRotacionVertical = 45.0f; // límite de rotación vertical
 
     private int puntuacionJugador;
 
@@ -17,7 +21,7 @@ public class MiniShooter : MonoBehaviour
 
     private void Awake()
     {
-        instance = this;        
+        instance = this;
     }
 
     private void Start()
@@ -35,7 +39,32 @@ public class MiniShooter : MonoBehaviour
     public Transform PersonajePrincipal()
     {
         return personajePrincipal.transform;
-    }  
+    }
+
+    public float VelocidadEnemigos
+    {
+        get { return velocidadEnemigos; }
+    }
+
+    public int LadoZonaRespawn
+    {
+        get { return ladoZonaRespawn; }       
+    }
+
+    public float VelocidadPersonaje
+    {
+        get { return velocidadPersonaje; }
+    }
+
+    public float SensibilidadRaton
+    {
+        get { return sensibilidadRaton; }
+    }
+
+    public float LimiteRotacionVertical
+    {
+        get { return limiteRotacionVertical; }
+    }
 
     //---------------------------------------------
     //------------------ EVENTOS ------------------
@@ -44,11 +73,13 @@ public class MiniShooter : MonoBehaviour
     {
         // se suscribe a los eventos de los enemigos
         EnemigoShooter.enemigoImpactado += ActualizarPuntuacion;
+        MonedaShooter.monedaRecogida += ActualizarPuntuacion;
     }
     private void OnDisable()
     {
         // se desuscribe a los eventos de los enemigos
         EnemigoShooter.enemigoImpactado -= ActualizarPuntuacion;
+        MonedaShooter.monedaRecogida -= ActualizarPuntuacion;
     }
 
     public void ActualizarPuntuacion(int puntos)

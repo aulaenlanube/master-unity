@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Pared
   - Enemigo
+  - Moneda
   layers:
   - Default
   - TransparentFX

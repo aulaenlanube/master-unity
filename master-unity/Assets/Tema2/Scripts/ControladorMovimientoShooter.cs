@@ -1,34 +1,33 @@
 using UnityEngine;
+using System;
 
 public class ControladorMovimientoShooter : MonoBehaviour
 {
-    [SerializeField] private float velocidadMovimiento = 10f;
-    [SerializeField] private float sensibilidadRaton = 10f;
-    [SerializeField] private float rotacionVertical = 0f;
-    [SerializeField] private float limiteRotacionVertical = 45.0f; // límite de rotación vertical
-    [SerializeField] private Vector3[] posicionesCamara;
-    private int posicionActual = 0;
+    [SerializeField] private Vector3[] posicionesCamara;    
+    private float rotacionVertical;    
+    private int posicionActual;
+    private float velocidadMovimiento;
+    private float sensibilidadRaton;
+    private float limiteRotacionVertical;
 
     void Start()
-    {        
+    {
+        velocidadMovimiento = MiniShooter.instance.VelocidadPersonaje;
+        sensibilidadRaton = MiniShooter.instance.SensibilidadRaton;
+        limiteRotacionVertical = MiniShooter.instance.LimiteRotacionVertical;
+        posicionActual = 0;
+        rotacionVertical = 0;
         Cursor.visible = false; // ocultamos el cursor       
-        Cursor.lockState = CursorLockMode.Locked; // bloqueamos el cursor en el centro de la pantalla
+        Cursor.lockState = CursorLockMode.Locked; // bloqueamos el cursor en el centro de la pantalla    
     }
 
     void Update()
-    {
-        // movimiento adelante-atrás
-        float movimientoAdelanteAtras = Input.GetAxis("Vertical") * velocidadMovimiento * Time.deltaTime;
-        // movimiento izquierda-derecha
-        float movimientoIzquierdaDerecha = Input.GetAxis("Horizontal") * velocidadMovimiento * Time.deltaTime;
-
+    {   
         // mover personaje
-        transform.Translate(movimientoIzquierdaDerecha, 0, movimientoAdelanteAtras);
-
+        transform.Translate(new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical")) * velocidadMovimiento * Time.deltaTime);      
 
         // rotación horizontal
-        float rotacionRatonHorizontal = Input.GetAxis("Mouse X") * sensibilidadRaton;
-        transform.Rotate(0, rotacionRatonHorizontal, 0);
+        transform.Rotate(0, Input.GetAxis("Mouse X") * sensibilidadRaton, 0);
 
         // rotación vertical
         rotacionVertical -= Input.GetAxis("Mouse Y") * sensibilidadRaton;
@@ -40,11 +39,7 @@ public class ControladorMovimientoShooter : MonoBehaviour
         {
             Ray rayo = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
-            if (Physics.Raycast(rayo, out hit)) // si hay algún impacto
-            {
-                //establemos el impacto
-                hit.collider.gameObject.GetComponent<EnemigoShooter>()?.DestruirObjetivo();
-            }
+            if (Physics.Raycast(rayo, out hit)) hit.collider.gameObject.GetComponent<EnemigoShooter>()?.DestruirObjetivo();            
         }
 
         //cambio de cámara
@@ -54,11 +49,15 @@ public class ControladorMovimientoShooter : MonoBehaviour
         }
     }
 
-    void OnTriggerEnter(Collider colider)
+    void OnTriggerEnter(Collider collider)
     {        
-        if (colider.gameObject.tag == "Pared" || colider.gameObject.tag == "Enemigo")
+        if (collider.CompareTag("Moneda"))
         {
-            MiniShooter.instance.FinPartida();
-        }            
+            collider.gameObject.GetComponent<MonedaShooter>().RecolectarMoneda();
+        }
+        if (collider.CompareTag("Enemigo") || collider.CompareTag("Pared"))
+        { 
+            MiniShooter.instance.FinPartida();           
+        }
     }
 }

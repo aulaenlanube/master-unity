@@ -1,10 +1,9 @@
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class EnemigoShooter : MonoBehaviour
 {
-    [SerializeField] private float velocidad = 5.0f;
-    [SerializeField] private int ladoZonaRespawn = 40;
+    private float velocidad;
+    private int ladoZonaRespawn;
     private Transform objetivo;
     private int puntosEnemigo = 1;
 
@@ -12,15 +11,18 @@ public class EnemigoShooter : MonoBehaviour
     public delegate void impacto(int puntos);
     public static event impacto enemigoImpactado;
 
-
     private void Start()
     {
         objetivo = MiniShooter.instance.PersonajePrincipal();
+        velocidad = MiniShooter.instance.VelocidadEnemigos;
+        ladoZonaRespawn = MiniShooter.instance.LadoZonaRespawn;
     }
 
     void Update()
     {
-        transform.position = Vector3.MoveTowards(transform.position, objetivo.transform.position, velocidad * Time.deltaTime);       
+        transform.position = Vector3.MoveTowards(transform.position, 
+                                                 objetivo.transform.position, 
+                                                 velocidad * Time.deltaTime);
     }
 
     // impacto con el enemigo: cambia su posición, incrementa su velocidad y actualiza la puntuación
@@ -35,15 +37,15 @@ public class EnemigoShooter : MonoBehaviour
 
     // respwan del enemigo
     public void CambiarPosicionObjetivo()
-    {
-        // distancia mínima de respawn como el 50% del lado de la zona de respawn
-        float distanciaMinimaRespawn = ladoZonaRespawn / 2;
-
+    {  
         Vector3 posicionRespawn;
         do
         {
-            posicionRespawn = new Vector3(Random.Range(-ladoZonaRespawn, ladoZonaRespawn), transform.position.y, Random.Range(-ladoZonaRespawn, ladoZonaRespawn));
-        } while (Vector3.Distance(objetivo.position, posicionRespawn) < ladoZonaRespawn / 2);
+            posicionRespawn = new Vector3(Random.Range(-ladoZonaRespawn, ladoZonaRespawn),
+                                          transform.position.y,
+                                          Random.Range(-ladoZonaRespawn, ladoZonaRespawn));
+
+        } while (Vector3.Distance(objetivo.position, posicionRespawn) < ladoZonaRespawn);
 
         transform.position = new Vector3(posicionRespawn.x, transform.position.y, posicionRespawn.y);
     }
