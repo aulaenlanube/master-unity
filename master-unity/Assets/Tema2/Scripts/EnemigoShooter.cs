@@ -13,7 +13,7 @@ public class EnemigoShooter : MonoBehaviour
 
     private void Start()
     {
-        objetivo = MiniShooter.instance.PersonajePrincipal();
+        objetivo = MiniShooter.instance.PersonajePrincipal;
         velocidad = MiniShooter.instance.VelocidadEnemigos;
         ladoZonaRespawn = MiniShooter.instance.LadoZonaRespawn;
     }

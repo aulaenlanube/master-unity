@@ -4,8 +4,8 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - Pared
   - Enemigo
+  - Pared
   - Moneda
   layers:
   - Default

@@ -160,6 +160,14 @@ MonoBehaviour:
   ladoZonaRespawn: 40
   sensibilidadRaton: 10
   limiteRotacionVertical: 45
+  colorOro: {r: 0.8584906, g: 0.8028036, b: 0, a: 0}
+  colorPlata: {r: 0.46226418, g: 0.46226418, b: 0.46226418, a: 0}
+  colorBronce: {r: 1, g: 0.4039216, b: 0.098039225, a: 0}
+  posicionesCamara:
+  - {x: 0, y: 0.7, z: 0}
+  - {x: 0, y: 2, z: -2}
+  - {x: 0, y: 2, z: -4}
+  - {x: 0, y: 3, z: -6}
 --- !u!4 &33082247
 Transform:
   m_ObjectHideFlags: 0
@@ -169,7 +177,7 @@ Transform:
   m_GameObject: {fileID: 33082245}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.84345865, y: -0.31075335, z: 1.6977946}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -466,8 +474,8 @@ GameObject:
   - component: {fileID: 512911258}
   - component: {fileID: 512911257}
   - component: {fileID: 512911256}
-  - component: {fileID: 512911255}
   - component: {fileID: 512911260}
+  - component: {fileID: 512911255}
   m_Layer: 0
   m_Name: Personaje
   m_TagString: Untagged
@@ -487,10 +495,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9aceebc084c8ab4896c76cc9a2510a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  posicionesCamara:
-  - {x: 0, y: 0.7, z: 0}
-  - {x: 0, y: 2, z: -4}
-  - {x: 0, y: 4, z: -6}
 --- !u!136 &512911256
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -1137,10 +1141,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b65a19ab75e4fd54cbc662fde3df3cea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  probabilidadNuevaMoneda: 100
-  colorOro: {r: 0.955125, g: 1, b: 0, a: 0}
-  colorPlata: {r: 0.3962264, g: 0.3962264, b: 0.3962264, a: 0}
-  colorBronce: {r: 1, g: 0.34837234, b: 0, a: 0}
 --- !u!136 &1000248674
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -1160,10 +1160,10 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.5000001
+  m_Radius: 0.5
   m_Height: 2
   m_Direction: 1
-  m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940697}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!23 &1000248675
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -1489,10 +1489,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b65a19ab75e4fd54cbc662fde3df3cea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  probabilidadNuevaMoneda: 100
-  colorOro: {r: 0.955125, g: 1, b: 0, a: 0}
-  colorPlata: {r: 0.3962264, g: 0.3962264, b: 0.3962264, a: 0}
-  colorBronce: {r: 1, g: 0.34837234, b: 0, a: 0}
 --- !u!136 &1161002372
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -1512,10 +1508,10 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.5000001
+  m_Radius: 0.5
   m_Height: 2
   m_Direction: 1
-  m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940697}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!23 &1161002373
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -1822,10 +1818,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b65a19ab75e4fd54cbc662fde3df3cea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  probabilidadNuevaMoneda: 100
-  colorOro: {r: 0.955125, g: 1, b: 0, a: 0}
-  colorPlata: {r: 0.3962264, g: 0.3962264, b: 0.3962264, a: 0}
-  colorBronce: {r: 1, g: 0.34837234, b: 0, a: 0}
 --- !u!136 &1623540749
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -1845,10 +1837,10 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.5000001
+  m_Radius: 0.5
   m_Height: 2
-  m_Direction: 1
-  m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940697}
+  m_Direction: 0
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!23 &1623540750
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -2320,11 +2312,11 @@ MeshFilter:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
+  - {fileID: 33082247}
   - {fileID: 1047198049}
   - {fileID: 1531240043}
   - {fileID: 62317843}
   - {fileID: 512911259}
   - {fileID: 293152414}
   - {fileID: 1817270869}
-  - {fileID: 33082247}
   - {fileID: 852785792}

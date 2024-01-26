@@ -1,11 +1,8 @@
 using UnityEngine;
-using System;
 
 public class ControladorMovimientoShooter : MonoBehaviour
-{
-    [SerializeField] private Vector3[] posicionesCamara;    
-    private float rotacionVertical;    
-    private int posicionActual;
+{     
+    private float rotacionVertical;  
     private float velocidadMovimiento;
     private float sensibilidadRaton;
     private float limiteRotacionVertical;
@@ -14,11 +11,8 @@ public class ControladorMovimientoShooter : MonoBehaviour
     {
         velocidadMovimiento = MiniShooter.instance.VelocidadPersonaje;
         sensibilidadRaton = MiniShooter.instance.SensibilidadRaton;
-        limiteRotacionVertical = MiniShooter.instance.LimiteRotacionVertical;
-        posicionActual = 0;
-        rotacionVertical = 0;
-        Cursor.visible = false; // ocultamos el cursor       
-        Cursor.lockState = CursorLockMode.Locked; // bloqueamos el cursor en el centro de la pantalla    
+        limiteRotacionVertical = MiniShooter.instance.LimiteRotacionVertical;        
+        rotacionVertical = 0;        
     }
 
     void Update()
@@ -41,19 +35,13 @@ public class ControladorMovimientoShooter : MonoBehaviour
             RaycastHit hit;
             if (Physics.Raycast(rayo, out hit)) hit.collider.gameObject.GetComponent<EnemigoShooter>()?.DestruirObjetivo();            
         }
-
-        //cambio de cámara
-        if (posicionesCamara.Length > 0 && Input.GetKeyDown(KeyCode.C))
-        {
-            Camera.main.transform.localPosition = posicionesCamara[++posicionActual % posicionesCamara.Length];
-        }
     }
 
     void OnTriggerEnter(Collider collider)
     {        
         if (collider.CompareTag("Moneda"))
         {
-            collider.gameObject.GetComponent<MonedaShooter>().RecolectarMoneda();
+            collider.GetComponent<MonedaShooter>().RecolectarMoneda();
         }
         if (collider.CompareTag("Enemigo") || collider.CompareTag("Pared"))
         { 

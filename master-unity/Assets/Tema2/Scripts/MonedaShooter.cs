@@ -8,13 +8,7 @@ public enum TipoMonedaShooter
 }
 
 public class MonedaShooter : MonoBehaviour
-{
-    [Range(0, 100)]
-    public int probabilidadNuevaMoneda;
-    public Color colorOro;
-    public Color colorPlata;
-    public Color colorBronce;
-
+{ 
     // variables privadas
     private int ladoZonaRespawn;
     private TipoMonedaShooter tipoMoneda;
@@ -57,11 +51,11 @@ public class MonedaShooter : MonoBehaviour
 
         GetComponent<Renderer>().material.color = tipoMoneda switch
         {
-            TipoMonedaShooter.oro => colorOro,
-            TipoMonedaShooter.plata => colorPlata,
-            TipoMonedaShooter.bronce => colorBronce,
-            _ => colorOro
-        };
+            TipoMonedaShooter.oro => MiniShooter.instance.ColorOro,
+            TipoMonedaShooter.plata => MiniShooter.instance.ColorPlata,
+            TipoMonedaShooter.bronce => MiniShooter.instance.ColorBronce,
+            _ => MiniShooter.instance.ColorOro
+        } ;
 
         puntosMoneda = tipoMoneda switch
         {
