@@ -2,25 +2,21 @@ using UnityEngine;
 
 public enum TipoMonedaShooter
 {
-    oro,
-    plata,
-    bronce
+    oro = 3,
+    plata = 2,
+    bronce = 1
 }
 
 public class MonedaShooter : MonoBehaviour
-{ 
-    // variables privadas
-    private int ladoZonaRespawn;
-    private TipoMonedaShooter tipoMoneda;
-    private int puntosMoneda;
+{     
+    private TipoMonedaShooter tipoMoneda;    
 
     // evento para actualizar la puntuación
     public delegate void recogerMoneda(int puntos);
     public static event recogerMoneda monedaRecogida;
 
     private void Start()
-    {
-        ladoZonaRespawn = MiniShooter.instance.LadoZonaRespawn;
+    {        
         ActualizarTipoMoneda();
     }
 
@@ -32,16 +28,16 @@ public class MonedaShooter : MonoBehaviour
 
     public void RecolectarMoneda()
     {
-        monedaRecogida?.Invoke(puntosMoneda);
+        monedaRecogida?.Invoke((int)tipoMoneda);
         MoverMoneda();
         ActualizarTipoMoneda();
     }
 
     private void MoverMoneda()
     {        
-        transform.position = new Vector3(Random.Range(-ladoZonaRespawn, ladoZonaRespawn), 
+        transform.position = new Vector3(Random.Range(-MiniShooter.instance.LadoZonaRespawn, MiniShooter.instance.LadoZonaRespawn), 
                                          transform.position.y, 
-                                         Random.Range(-ladoZonaRespawn, ladoZonaRespawn));
+                                         Random.Range(-MiniShooter.instance.LadoZonaRespawn, MiniShooter.instance.LadoZonaRespawn));
     }
 
     private void ActualizarTipoMoneda()
@@ -56,14 +52,5 @@ public class MonedaShooter : MonoBehaviour
             TipoMonedaShooter.bronce => MiniShooter.instance.ColorBronce,
             _ => MiniShooter.instance.ColorOro
         } ;
-
-        puntosMoneda = tipoMoneda switch
-        {
-            TipoMonedaShooter.oro => 3,
-            TipoMonedaShooter.plata => 2,
-            TipoMonedaShooter.bronce => 1,
-            _ => 0
-        };
     }
-
 }

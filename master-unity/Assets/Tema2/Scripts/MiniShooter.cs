@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
@@ -6,6 +7,7 @@ public class MiniShooter : MonoBehaviour
     //elementos de la UI
     [SerializeField] private TextMeshProUGUI textoFinPartida;
     [SerializeField] private TextMeshProUGUI textoPuntuacion;
+    [SerializeField] private TextMeshProUGUI textoOleada;
 
     //personaje principal
     [SerializeField] private Transform personajePrincipal;
@@ -25,6 +27,10 @@ public class MiniShooter : MonoBehaviour
     private int puntuacionJugador;
     private int posicionActual;
     public static MiniShooter instance;
+    private int oleadaActual;
+    private int enemigosOleadaActual;
+    private int enemigosRestantes;
+    private List<EnemigoShooter> enemigosEliminados;
 
     private void Awake()
     {
@@ -38,6 +44,10 @@ public class MiniShooter : MonoBehaviour
         textoFinPartida.enabled = false;
         puntuacionJugador = 0;
         posicionActual = 0;
+        oleadaActual = 1;
+        enemigosOleadaActual = 3;
+        enemigosRestantes = enemigosOleadaActual;
+        enemigosEliminados = new List<EnemigoShooter>();
     }
 
     void Update()
@@ -54,7 +64,40 @@ public class MiniShooter : MonoBehaviour
         textoFinPartida.enabled = true;
         Time.timeScale = 0;
     }
-    
+
+    public void AgregarEnemigoEliminado(EnemigoShooter enemigo)
+    {
+        enemigosEliminados.Add(enemigo);
+        enemigosRestantes--;
+        enemigo.gameObject.SetActive(false);
+
+        //si se han eliminado todos los enemigos de la oleada
+        if (enemigosRestantes == 0)
+        {
+            //se añade un enemigo más y se incrementa la oleada
+            GameObject enemigoAdicional = Instantiate(enemigo.gameObject);
+            enemigoAdicional.gameObject.SetActive(true);
+            enemigoAdicional.GetComponent<EnemigoShooter>().CambiarPosicion();
+            enemigosOleadaActual = ++oleadaActual + 2; //+2, de inicio tenemos 3 en la primera oleada
+            enemigosRestantes = enemigosOleadaActual;
+
+            //se vuelven a activar los enemigos eliminados y se les cambia la posición
+            foreach (EnemigoShooter enemigoShooter in enemigosEliminados)
+            {
+                enemigoShooter.CambiarPosicion();
+                enemigoShooter.gameObject.SetActive(true);
+            }
+            enemigosEliminados.Clear();    
+            IncrementarVelocidadEnemigos();
+        }        
+    }
+
+    // incrementa la velocidad de los enemigos en un 10%
+    public void IncrementarVelocidadEnemigos()
+    {
+        velocidadEnemigos *= 1.1f;
+    }
+
     //---------------------------------------------
     //------------------ EVENTOS ------------------
     //---------------------------------------------
@@ -75,6 +118,7 @@ public class MiniShooter : MonoBehaviour
     {
         puntuacionJugador += puntos;
         textoPuntuacion.text = puntuacionJugador.ToString();
+        textoOleada.text = $"Oleada : {oleadaActual}\nEnemigosRestantes: {enemigosRestantes}";
     }
 
     //---------------------------------------------
@@ -115,13 +159,33 @@ public class MiniShooter : MonoBehaviour
     {
         get { return colorOro; }
     }
+
     public Color ColorPlata
     {
         get { return colorPlata; }
     }
+
     public Color ColorBronce
     {
         get { return colorBronce; }
+    }
+
+    public int OleadaActual
+    {
+        get { return oleadaActual; }
+        set { oleadaActual = value; }
+    }
+
+    public int EnemigosOleadaActual
+    {
+        get { return enemigosOleadaActual; }
+        set { enemigosOleadaActual = value; }
+    }
+
+    public int EnemigosRestantes
+    {
+        get { return enemigosRestantes; }
+        set { enemigosRestantes = value; }
     }
 
 }
