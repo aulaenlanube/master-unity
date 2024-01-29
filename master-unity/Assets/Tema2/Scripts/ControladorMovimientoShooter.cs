@@ -2,31 +2,44 @@ using UnityEngine;
 
 public class ControladorMovimientoShooter : MonoBehaviour
 {
-    private float rotacionVertical;
     private float velocidadMovimiento;
     private float sensibilidadRaton;
     private float limiteRotacionVertical;
+    private Rigidbody rb;
+    private Vector2 velocidadRotacion;
+    private float suavizado = 5f;
 
     void Start()
     {
         velocidadMovimiento = MiniShooter.instance.VelocidadPersonaje;
         sensibilidadRaton = MiniShooter.instance.SensibilidadRaton;
         limiteRotacionVertical = MiniShooter.instance.LimiteRotacionVertical;
-        rotacionVertical = 0;
+        rb = GetComponent<Rigidbody>();
+    }
+
+    void FixedUpdate()
+    {
+        // mover personaje con rigidbody          
+        float velocidadX = Input.GetAxis("Horizontal") * velocidadMovimiento;
+        float velocidadZ = Input.GetAxis("Vertical") * velocidadMovimiento;
+        rb.velocity = transform.rotation * new Vector3(velocidadX, rb.velocity.y, velocidadZ);
     }
 
     void Update()
     {
-        // mover personaje
-        transform.Translate(new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical")) * velocidadMovimiento * Time.deltaTime);
+        // obtener movimiento del ratón con sensibilidad
+        Vector2 mouseDelta = new Vector2(Input.GetAxisRaw("Mouse X"), Input.GetAxisRaw("Mouse Y")) * sensibilidadRaton;
 
-        // rotación horizontal
-        transform.Rotate(0, Input.GetAxis("Mouse X") * sensibilidadRaton, 0);
+        // suavizar la rotación
+        velocidadRotacion.x = Mathf.Lerp(velocidadRotacion.x, velocidadRotacion.x + mouseDelta.x, suavizado * Time.deltaTime);
+        velocidadRotacion.y = Mathf.Lerp(velocidadRotacion.y, velocidadRotacion.y + mouseDelta.y, suavizado * Time.deltaTime);
 
-        // rotación vertical
-        rotacionVertical -= Input.GetAxis("Mouse Y") * sensibilidadRaton;
-        rotacionVertical = Mathf.Clamp(rotacionVertical, -limiteRotacionVertical, limiteRotacionVertical);
-        Camera.main.transform.localRotation = Quaternion.Euler(rotacionVertical, 0, 0);
+        // limitamos rotación vertical
+        velocidadRotacion.y = Mathf.Clamp(velocidadRotacion.y, -limiteRotacionVertical, limiteRotacionVertical);
+
+        //rotación personaje y cámara
+        Camera.main.transform.localRotation = Quaternion.AngleAxis(-velocidadRotacion.y, Vector3.right);
+        transform.localRotation = Quaternion.AngleAxis(velocidadRotacion.x, Vector3.up);
 
         //disparo
         if (Input.GetMouseButtonDown(0))
@@ -49,3 +62,5 @@ public class ControladorMovimientoShooter : MonoBehaviour
         }
     }
 }
+
+

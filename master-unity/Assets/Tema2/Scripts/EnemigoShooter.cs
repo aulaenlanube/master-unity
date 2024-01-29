@@ -35,6 +35,6 @@ public class EnemigoShooter : MonoBehaviour
 
         } while (Vector3.Distance(MiniShooter.instance.PersonajePrincipal.position, posicionRespawn) < MiniShooter.instance.LadoZonaRespawn);
 
-        transform.position = new Vector3(posicionRespawn.x, transform.position.y, posicionRespawn.y);
+        transform.position = posicionRespawn;
     }
 }
