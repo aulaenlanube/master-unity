@@ -14,7 +14,9 @@ public class MiniShooter : MonoBehaviour
 
     //configuráción de juego
     [SerializeField] private float velocidadEnemigos = 5.0f;
-    [SerializeField] private float velocidadPersonaje = 20.0f;
+    [SerializeField] private float velocidadPersonaje = 5.0f;
+    [SerializeField] private float velocidadPersonajeSprint = 15.0f;
+    [SerializeField] private float duracionSprint = 5.0f;
     [SerializeField] private int ladoZonaRespawn = 40;
     [SerializeField] private float sensibilidadRaton = 10f;
     [SerializeField] private float limiteRotacionVertical = 45.0f; // límite de rotación vertical
@@ -144,6 +146,10 @@ public class MiniShooter : MonoBehaviour
     {
         get { return velocidadPersonaje; }
     }
+    public float VelocidadPersonajeSprint
+    {
+        get { return velocidadPersonajeSprint; }
+    }
 
     public float SensibilidadRaton
     {
@@ -186,6 +192,10 @@ public class MiniShooter : MonoBehaviour
     {
         get { return enemigosRestantes; }
         set { enemigosRestantes = value; }
+    }
+    public float DuracionSprint
+    {
+        get { return duracionSprint; }
     }
 
 }

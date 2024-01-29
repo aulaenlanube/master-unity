@@ -9,6 +9,9 @@ public class ControladorMovimientoShooter : MonoBehaviour
     private Vector2 velocidadRotacion;
     private float suavizado = 5f;
 
+    public float fuerzaSalto = 5f;    
+    private bool estaCorriendo;
+
     void Start()
     {
         velocidadMovimiento = MiniShooter.instance.VelocidadPersonaje;
@@ -27,6 +30,43 @@ public class ControladorMovimientoShooter : MonoBehaviour
 
     void Update()
     {
+        ControlMovimiento();
+        ControlRotacion();
+        ControlSalto();
+        ControlDisparo();    
+    }
+
+    void OnTriggerEnter(Collider collider)
+    {
+        if (collider.CompareTag("Moneda"))
+        {
+            collider.GetComponent<MonedaShooter>().RecolectarMoneda();
+        }
+        if (collider.CompareTag("Enemigo") || collider.CompareTag("Pared"))
+        {
+            MiniShooter.instance.FinPartida();
+        }
+    }    
+
+    void ControlDisparo()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+            Ray rayo = Camera.main.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hit;
+            if (Physics.Raycast(rayo, out hit)) hit.collider.gameObject.GetComponent<EnemigoShooter>()?.DestruirObjetivo();
+        }
+    }
+
+    void ControlMovimiento()
+    {
+        estaCorriendo = Input.GetKey(KeyCode.LeftShift);
+        velocidadMovimiento = estaCorriendo ? MiniShooter.instance.VelocidadPersonajeSprint : MiniShooter.instance.VelocidadPersonaje;
+    }
+
+
+    void ControlRotacion()
+    {
         // obtener movimiento del ratón con sensibilidad
         Vector2 mouseDelta = new Vector2(Input.GetAxisRaw("Mouse X"), Input.GetAxisRaw("Mouse Y")) * sensibilidadRaton;
 
@@ -40,25 +80,13 @@ public class ControladorMovimientoShooter : MonoBehaviour
         //rotación personaje y cámara
         Camera.main.transform.localRotation = Quaternion.AngleAxis(-velocidadRotacion.y, Vector3.right);
         transform.localRotation = Quaternion.AngleAxis(velocidadRotacion.x, Vector3.up);
-
-        //disparo
-        if (Input.GetMouseButtonDown(0))
-        {
-            Ray rayo = Camera.main.ScreenPointToRay(Input.mousePosition);
-            RaycastHit hit;
-            if (Physics.Raycast(rayo, out hit)) hit.collider.gameObject.GetComponent<EnemigoShooter>()?.DestruirObjetivo();
-        }
     }
 
-    void OnTriggerEnter(Collider collider)
+    void ControlSalto()
     {
-        if (collider.CompareTag("Moneda"))
+        if (Input.GetKeyDown(KeyCode.Space))
         {
-            collider.GetComponent<MonedaShooter>().RecolectarMoneda();
-        }
-        if (collider.CompareTag("Enemigo") || collider.CompareTag("Pared"))
-        {
-            MiniShooter.instance.FinPartida();
+            rb.AddForce(Vector3.up * fuerzaSalto * 1000);            
         }
     }
 }
