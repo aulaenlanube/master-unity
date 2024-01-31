@@ -9,7 +9,7 @@ public class ControladorMovimientoShooter : MonoBehaviour
     private Vector2 velocidadRotacion;
     private float suavizado = 5f;
 
-    public float fuerzaSalto = 5f;    
+    public float fuerzaSalto = 100f;    
     private bool estaCorriendo;
 
     void Start()
@@ -25,7 +25,7 @@ public class ControladorMovimientoShooter : MonoBehaviour
         // mover personaje con rigidbody          
         float velocidadX = Input.GetAxis("Horizontal") * velocidadMovimiento;
         float velocidadZ = Input.GetAxis("Vertical") * velocidadMovimiento;
-        rb.velocity = transform.rotation * new Vector3(velocidadX, rb.velocity.y, velocidadZ);
+        rb.velocity = transform.rotation * new Vector3(velocidadX, rb.velocity.y, velocidadZ);        
     }
 
     void Update()
@@ -34,38 +34,15 @@ public class ControladorMovimientoShooter : MonoBehaviour
         ControlRotacion();
         ControlSalto();
         ControlDisparo();    
-    }
-
-    void OnTriggerEnter(Collider collider)
-    {
-        if (collider.CompareTag("Moneda"))
-        {
-            collider.GetComponent<MonedaShooter>().RecolectarMoneda();
-        }
-        if (collider.CompareTag("Enemigo") || collider.CompareTag("Pared"))
-        {
-            MiniShooter.instance.FinPartida();
-        }
     }    
 
-    void ControlDisparo()
-    {
-        if (Input.GetMouseButtonDown(0))
-        {
-            Ray rayo = Camera.main.ScreenPointToRay(Input.mousePosition);
-            RaycastHit hit;
-            if (Physics.Raycast(rayo, out hit)) hit.collider.gameObject.GetComponent<EnemigoShooter>()?.DestruirObjetivo();
-        }
-    }
-
-    void ControlMovimiento()
+    private void ControlMovimiento()
     {
         estaCorriendo = Input.GetKey(KeyCode.LeftShift);
         velocidadMovimiento = estaCorriendo ? MiniShooter.instance.VelocidadPersonajeSprint : MiniShooter.instance.VelocidadPersonaje;
     }
 
-
-    void ControlRotacion()
+    private void ControlRotacion()
     {
         // obtener movimiento del ratón con sensibilidad
         Vector2 mouseDelta = new Vector2(Input.GetAxisRaw("Mouse X"), Input.GetAxisRaw("Mouse Y")) * sensibilidadRaton;
@@ -82,13 +59,35 @@ public class ControladorMovimientoShooter : MonoBehaviour
         transform.localRotation = Quaternion.AngleAxis(velocidadRotacion.x, Vector3.up);
     }
 
-    void ControlSalto()
+    private void ControlSalto()
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            rb.AddForce(Vector3.up * fuerzaSalto * 1000);            
+            rb.AddForce(Vector3.up * fuerzaSalto, ForceMode.Impulse);            
         }
     }
+
+    private void ControlDisparo()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+            Ray rayo = Camera.main.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hit;
+            if (Physics.Raycast(rayo, out hit)) hit.collider.gameObject.GetComponent<EnemigoShooter>()?.DestruirObjetivo();
+        }
+    }
+
+    private void OnTriggerEnter(Collider collider)
+    {
+        if (collider.CompareTag("Moneda"))
+        {
+            collider.GetComponent<MonedaShooter>().RecolectarMoneda();
+        }
+        if (collider.CompareTag("Enemigo") || collider.CompareTag("Pared"))
+        {
+            MiniShooter.instance.FinPartida();
+        }
+    }    
 }
 
 
