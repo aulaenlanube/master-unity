@@ -7,7 +7,8 @@ public class ControladorMovimientoShooter : MonoBehaviour
     private Rigidbody rb;
     private Vector2 velocidadRotacion;
     private float suavizado = 5f;
-    private float fuerzaSalto = 100f;       
+    private float fuerzaSalto = 100f;
+    private bool estaEnSuelo = true;
 
     void Start()
     {  
@@ -62,9 +63,10 @@ public class ControladorMovimientoShooter : MonoBehaviour
 
     private void ControlSalto()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space) && estaEnSuelo)
         {
             rb.AddForce(Vector3.up * fuerzaSalto, ForceMode.Impulse);
+            estaEnSuelo = false;
         }
     }
 
@@ -87,6 +89,14 @@ public class ControladorMovimientoShooter : MonoBehaviour
         if (collider.CompareTag("Enemigo") || collider.CompareTag("Pared"))
         {
             MiniShooter.instance.FinPartida();
+        }
+    }
+
+    void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Suelo")) 
+        {
+            estaEnSuelo = true;
         }
     }
 }

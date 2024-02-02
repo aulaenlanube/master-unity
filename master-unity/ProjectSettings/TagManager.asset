@@ -7,6 +7,7 @@ TagManager:
   - Enemigo
   - Pared
   - Moneda
+  - Suelo
   layers:
   - Default
   - TransparentFX
