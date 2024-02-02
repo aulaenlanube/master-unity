@@ -1,20 +1,16 @@
 using UnityEngine;
 
 public class ControladorMovimientoShooter : MonoBehaviour
-{
-    private float velocidadMovimiento;
+{    
     private float sensibilidadRaton;
     private float limiteRotacionVertical;
     private Rigidbody rb;
     private Vector2 velocidadRotacion;
     private float suavizado = 5f;
-
-    public float fuerzaSalto = 100f;    
-    private bool estaCorriendo;
+    private float fuerzaSalto = 100f;       
 
     void Start()
-    {
-        velocidadMovimiento = MiniShooter.instance.VelocidadPersonaje;
+    {  
         sensibilidadRaton = MiniShooter.instance.SensibilidadRaton;
         limiteRotacionVertical = MiniShooter.instance.LimiteRotacionVertical;
         rb = GetComponent<Rigidbody>();
@@ -23,9 +19,9 @@ public class ControladorMovimientoShooter : MonoBehaviour
     void FixedUpdate()
     {
         // mover personaje con rigidbody          
-        float velocidadX = Input.GetAxis("Horizontal") * velocidadMovimiento;
-        float velocidadZ = Input.GetAxis("Vertical") * velocidadMovimiento;
-        rb.velocity = transform.rotation * new Vector3(velocidadX, rb.velocity.y, velocidadZ);        
+        float velocidadX = Input.GetAxis("Horizontal") * MiniShooter.instance.VelocidadPersonaje;
+        float velocidadZ = Input.GetAxis("Vertical") * MiniShooter.instance.VelocidadPersonaje;
+        rb.velocity = transform.rotation * new Vector3(velocidadX, rb.velocity.y, velocidadZ);
     }
 
     void Update()
@@ -33,14 +29,19 @@ public class ControladorMovimientoShooter : MonoBehaviour
         ControlMovimiento();
         ControlRotacion();
         ControlSalto();
-        ControlDisparo();    
-    }    
-
-    private void ControlMovimiento()
-    {
-        estaCorriendo = Input.GetKey(KeyCode.LeftShift);
-        velocidadMovimiento = estaCorriendo ? MiniShooter.instance.VelocidadPersonajeSprint : MiniShooter.instance.VelocidadPersonaje;
+        ControlDisparo();
     }
+
+    void ControlMovimiento()
+    {
+        //controlamos si está corriendo
+        if (Input.GetKey(KeyCode.LeftShift)) MiniShooter.instance.Correr();
+        else MiniShooter.instance.Caminar();        
+
+        // mover personaje
+        float movHorizontal = Input.GetAxis("Horizontal");        
+        rb.velocity = new Vector2(movHorizontal * MiniShooter.instance.VelocidadPersonaje, rb.velocity.y);
+    } 
 
     private void ControlRotacion()
     {
@@ -63,7 +64,7 @@ public class ControladorMovimientoShooter : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            rb.AddForce(Vector3.up * fuerzaSalto, ForceMode.Impulse);            
+            rb.AddForce(Vector3.up * fuerzaSalto, ForceMode.Impulse);
         }
     }
 
@@ -87,7 +88,7 @@ public class ControladorMovimientoShooter : MonoBehaviour
         {
             MiniShooter.instance.FinPartida();
         }
-    }    
+    }
 }
 
 

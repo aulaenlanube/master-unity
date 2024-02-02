@@ -3,7 +3,9 @@ using TMPro;
 using UnityEngine;
 
 public class MiniShooter : MonoBehaviour
-{
+{ 
+    public static MiniShooter instance;
+
     //elementos de la UI
     [SerializeField] private TextMeshProUGUI textoFinPartida;
     [SerializeField] private TextMeshProUGUI textoPuntuacion;
@@ -15,11 +17,12 @@ public class MiniShooter : MonoBehaviour
     //configuráción de juego
     [SerializeField] private float velocidadEnemigos = 5.0f;
     [SerializeField] private float velocidadPersonaje = 5.0f;
-    [SerializeField] private float velocidadPersonajeSprint = 15.0f;
-    [SerializeField] private float duracionSprint = 5.0f;
+    [SerializeField] private float velocidadPersonajeCaminar = 5.0f;
+    [SerializeField] private float velocidadPersonajeCorrer = 15.0f;
+    [SerializeField] private float duracionCorrer = 3.0f;
     [SerializeField] private int ladoZonaRespawn = 40;
     [SerializeField] private float sensibilidadRaton = 10f;
-    [SerializeField] private float limiteRotacionVertical = 45.0f; // límite de rotación vertical
+    [SerializeField] private float limiteRotacionVertical = 45.0f;
     [SerializeField] private Color colorOro;
     [SerializeField] private Color colorPlata;
     [SerializeField] private Color colorBronce; 
@@ -27,12 +30,12 @@ public class MiniShooter : MonoBehaviour
 
     //variables de control
     private int puntuacionJugador;
-    private int posicionActual;
-    public static MiniShooter instance;
+    private int posicionActual;   
     private int oleadaActual;
     private int enemigosOleadaActual;
     private int enemigosRestantes;
     private List<EnemigoShooter> enemigosEliminados;
+    private float tiempoCorrerRestante;
 
     private void Awake()
     {
@@ -42,12 +45,13 @@ public class MiniShooter : MonoBehaviour
     }
 
     void Start()
-    {
+    {        
         textoFinPartida.enabled = false;
         puntuacionJugador = 0;
         posicionActual = 0;
         oleadaActual = 1;
         enemigosOleadaActual = 3;
+        tiempoCorrerRestante = duracionCorrer;
         enemigosRestantes = enemigosOleadaActual;
         enemigosEliminados = new List<EnemigoShooter>();
     }
@@ -100,6 +104,40 @@ public class MiniShooter : MonoBehaviour
         velocidadEnemigos *= 1.1f;
     }
 
+    public void Correr()
+    {
+        if (tiempoCorrerRestante > 0)
+        {
+            velocidadPersonaje = velocidadPersonajeCorrer;
+            tiempoCorrerRestante = Mathf.Max(0, tiempoCorrerRestante - Time.deltaTime);            
+        }
+        else Caminar();
+    }
+
+    public void Caminar()
+    {                
+        if (tiempoCorrerRestante < duracionCorrer)
+        {
+            velocidadPersonaje = velocidadPersonajeCaminar;
+            tiempoCorrerRestante  = Mathf.Min(duracionCorrer, tiempoCorrerRestante + Time.deltaTime);
+        }        
+    }
+
+    public bool EstaCorriendo()
+    {
+        return velocidadPersonajeCorrer == velocidadPersonaje;
+    }
+
+    public float PorcentajeTiempoCorrer()
+    {
+        return tiempoCorrerRestante / duracionCorrer;        
+    }
+
+    public bool BarraCorrerLlena()
+    {
+        return tiempoCorrerRestante >= duracionCorrer;
+    }
+
     //---------------------------------------------
     //------------------ EVENTOS ------------------
     //---------------------------------------------
@@ -145,11 +183,7 @@ public class MiniShooter : MonoBehaviour
     public float VelocidadPersonaje
     {
         get { return velocidadPersonaje; }
-    }
-    public float VelocidadPersonajeSprint
-    {
-        get { return velocidadPersonajeSprint; }
-    }
+    } 
 
     public float SensibilidadRaton
     {
@@ -193,9 +227,14 @@ public class MiniShooter : MonoBehaviour
         get { return enemigosRestantes; }
         set { enemigosRestantes = value; }
     }
-    public float DuracionSprint
+    public float DuracionCorrer
     {
-        get { return duracionSprint; }
+        get { return duracionCorrer; }
+    }
+    public float TiempoCorrerRestante
+    {
+        get { return tiempoCorrerRestante; }
+        set { tiempoCorrerRestante = value; }
     }
 
 }
