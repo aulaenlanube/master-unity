@@ -3,10 +3,12 @@ using UnityEngine;
 public class EnemigoShooter : MonoBehaviour
 {  
     private int puntosEnemigo = 0;
+    private float fuerzaDeEmpuje = 10f;
+    private float fuerzaDeTorque = 10f;
 
     // evento para actualizar la puntuación
     public delegate void impacto(int puntos);
-    public static event impacto enemigoImpactado;   
+    public static event impacto enemigoImpactado;
 
     void Update()
     {
@@ -37,4 +39,25 @@ public class EnemigoShooter : MonoBehaviour
 
         transform.position = posicionRespawn;
     }
+
+    void OnCollisionEnter(Collision collision)
+    {
+        EnemigoShooter enemigo = collision.gameObject.GetComponent<EnemigoShooter>();
+        if (enemigo != null)
+        {
+            // aplicar una fuerza para separar ambos objetos
+            Rigidbody rb = collision.rigidbody;
+            if (rb != null)
+            {
+                Vector3 direccionDeEmpuje = collision.transform.position - transform.position;
+                direccionDeEmpuje = direccionDeEmpuje.normalized * fuerzaDeEmpuje;
+                rb.AddForce(direccionDeEmpuje, ForceMode.Impulse);
+
+                // aplicar una fuerza de torque
+                Vector3 torque = Random.insideUnitSphere * fuerzaDeTorque;
+                rb.AddTorque(torque, ForceMode.Impulse);
+            }
+        }
+    }
+
 }

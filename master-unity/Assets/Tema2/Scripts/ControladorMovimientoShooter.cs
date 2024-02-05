@@ -8,7 +8,7 @@ public class ControladorMovimientoShooter : MonoBehaviour
     private Vector2 velocidadRotacion;
     private float suavizado = 5f;
     private float fuerzaSalto = 100f;
-    private bool estaEnSuelo = true;
+    private float distanciaDelSuelo = 1.1f;
 
     void Start()
     {  
@@ -63,12 +63,17 @@ public class ControladorMovimientoShooter : MonoBehaviour
 
     private void ControlSalto()
     {
-        if (Input.GetKeyDown(KeyCode.Space) && estaEnSuelo)
+        if (Input.GetKeyDown(KeyCode.Space) && EstaEnSuelo())
         {
-            rb.AddForce(Vector3.up * fuerzaSalto, ForceMode.Impulse);
-            estaEnSuelo = false;
+            rb.AddForce(Vector3.up * fuerzaSalto, ForceMode.Impulse);            
         }
     }
+
+    private bool EstaEnSuelo()
+    {
+        return Physics.Raycast(transform.position, Vector3.down, distanciaDelSuelo);
+    }
+
 
     private void ControlDisparo()
     {
@@ -85,18 +90,14 @@ public class ControladorMovimientoShooter : MonoBehaviour
         if (collider.CompareTag("Moneda"))
         {
             collider.GetComponent<MonedaShooter>().RecolectarMoneda();
-        }
-        if (collider.CompareTag("Enemigo") || collider.CompareTag("Pared"))
-        {
-            MiniShooter.instance.FinPartida();
-        }
+        }       
     }
 
     void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.CompareTag("Suelo")) 
+        if (collision.gameObject.CompareTag("Enemigo"))
         {
-            estaEnSuelo = true;
+            MiniShooter.instance.FinPartida();
         }
     }
 }
