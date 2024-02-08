@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Android;
 
 public enum TipoMonedaShooter
 {
@@ -45,12 +46,15 @@ public class MonedaShooter : MonoBehaviour
         System.Array valores = System.Enum.GetValues(typeof(TipoMonedaShooter));
         tipoMoneda = (TipoMonedaShooter)valores.GetValue(new System.Random().Next(valores.Length));
 
-        GetComponent<Renderer>().material.color = tipoMoneda switch
+        Color color = tipoMoneda switch
         {
             TipoMonedaShooter.oro => MiniShooter.instance.ColorOro,
             TipoMonedaShooter.plata => MiniShooter.instance.ColorPlata,
             TipoMonedaShooter.bronce => MiniShooter.instance.ColorBronce,
             _ => MiniShooter.instance.ColorOro
-        } ;
+        };
+
+        GetComponent<Renderer>().material.EnableKeyword("_EMISSION");
+        GetComponent<Renderer>().material.SetColor("_EmissionColor", color);
     }
 }

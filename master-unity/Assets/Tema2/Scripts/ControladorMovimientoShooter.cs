@@ -99,6 +99,30 @@ public class ControladorMovimientoShooter : MonoBehaviour
         {
             MiniShooter.instance.FinPartida();
         }
+        if (collision.gameObject.CompareTag("Teletransporte"))
+        {
+            GameObject[] tels = GameObject.FindGameObjectsWithTag("Teletransporte"); // pasarlo al start para que no se haga cada vez
+            int indice;
+            Vector3 pos = new Vector3();
+            do
+            {
+                indice = Random.Range(0, tels.Length);
+                pos = tels[indice].transform.position;
+            }
+            while (tels[indice] == collision.gameObject);
+            transform.position = new Vector3(pos.x + 1, transform.position.y, pos.z + 1); // para que no se quede dentro del teletransporte
+
+
+            //mover siempre hacia el centro
+            float posX = tels[indice].transform.position.x - transform.position.x;
+            float posZ = tels[indice].transform.position.z - transform.position.z;
+
+            transform.position = new Vector3(pos.x + 1, transform.position.y, pos.z + 1);
+
+
+
+            transform.Rotate(0, 180, 0); //mostrar el problema de rotación
+        }    
     }
 }
 

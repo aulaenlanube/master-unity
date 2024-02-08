@@ -8,6 +8,7 @@ TagManager:
   - Pared
   - Moneda
   - Suelo
+  - Teletransporte
   layers:
   - Default
   - TransparentFX
