@@ -9,12 +9,14 @@ public class ControladorMovimientoShooter : MonoBehaviour
     private float suavizado = 5f;
     private float fuerzaSalto = 100f;
     private float distanciaDelSuelo = 1.1f;
+    private GameObject[] puntosTeletransporte;
 
     void Start()
     {  
         sensibilidadRaton = MiniShooter.instance.SensibilidadRaton;
         limiteRotacionVertical = MiniShooter.instance.LimiteRotacionVertical;
         rb = GetComponent<Rigidbody>();
+        puntosTeletransporte = GameObject.FindGameObjectsWithTag("Teletransporte"); 
     }
 
     void FixedUpdate()
@@ -101,27 +103,16 @@ public class ControladorMovimientoShooter : MonoBehaviour
         }
         if (collision.gameObject.CompareTag("Teletransporte"))
         {
-            GameObject[] tels = GameObject.FindGameObjectsWithTag("Teletransporte"); // pasarlo al start para que no se haga cada vez
             int indice;
             Vector3 pos = new Vector3();
             do
             {
-                indice = Random.Range(0, tels.Length);
-                pos = tels[indice].transform.position;
+                indice = Random.Range(0, puntosTeletransporte.Length);
+                pos = puntosTeletransporte[indice].transform.position;
             }
-            while (tels[indice] == collision.gameObject);
-            transform.position = new Vector3(pos.x + 1, transform.position.y, pos.z + 1); // para que no se quede dentro del teletransporte
+            while (puntosTeletransporte[indice] == collision.gameObject);
+            transform.position = new Vector3(pos.x + 1, pos.y - 1, pos.z + 1); 
 
-
-            //mover siempre hacia el centro
-            float posX = tels[indice].transform.position.x - transform.position.x;
-            float posZ = tels[indice].transform.position.z - transform.position.z;
-
-            transform.position = new Vector3(pos.x + 1, transform.position.y, pos.z + 1);
-
-
-
-            transform.Rotate(0, 180, 0); //mostrar el problema de rotación
         }    
     }
 }
