@@ -15,10 +15,11 @@ public class MiniShooter : MonoBehaviour
     [SerializeField] private Transform personajePrincipal;
 
     //configuráción de juego
-    [SerializeField] private float velocidadEnemigos = 5.0f;
-    [SerializeField] private float velocidadPersonaje = 5.0f;
+    [SerializeField] private float velocidadEnemigos = 5.0f;    
     [SerializeField] private float velocidadPersonajeCaminar = 5.0f;
     [SerializeField] private float velocidadPersonajeCorrer = 15.0f;
+    [SerializeField] private float gravedad = -9.81f;
+    [SerializeField] private float alturaSalto = 2.0f;
     [SerializeField] private float duracionCorrer = 3.0f;
     [SerializeField] private int ladoZonaRespawn = 40;
     [SerializeField] private float sensibilidadRaton = 10f;
@@ -29,6 +30,7 @@ public class MiniShooter : MonoBehaviour
     [SerializeField] private Vector3[] posicionesCamara;
 
     //variables de control
+    private float velocidadPersonaje;
     private int puntuacionJugador;
     private int posicionActual;   
     private int oleadaActual;
@@ -45,7 +47,8 @@ public class MiniShooter : MonoBehaviour
     }
 
     void Start()
-    {        
+    {
+        velocidadPersonaje = velocidadPersonajeCaminar;
         textoFinPartida.enabled = false;
         puntuacionJugador = 0;
         posicionActual = 0;
@@ -236,5 +239,12 @@ public class MiniShooter : MonoBehaviour
         get { return tiempoCorrerRestante; }
         set { tiempoCorrerRestante = value; }
     }
-
+    public float AlturaSalto
+    {
+        get { return alturaSalto; }
+    }
+    public float Gravedad
+    { 
+        get { return gravedad; } 
+    }
 }

@@ -1,50 +1,54 @@
 using UnityEngine;
 
 public class ControladorMovimientoShooter : MonoBehaviour
-{    
+{
     private float sensibilidadRaton;
     private float limiteRotacionVertical;
-    private Rigidbody rb;
     private Vector2 velocidadRotacion;
     private float suavizado = 5f;
-    private float fuerzaSalto = 100f;
-    private float distanciaDelSuelo = 1.1f;
     private GameObject[] puntosTeletransporte;
+    private CharacterController controlador;
+    private Vector3 velocidadJugador;
 
     void Start()
-    {  
+    {
         sensibilidadRaton = MiniShooter.instance.SensibilidadRaton;
         limiteRotacionVertical = MiniShooter.instance.LimiteRotacionVertical;
-        rb = GetComponent<Rigidbody>();
-        puntosTeletransporte = GameObject.FindGameObjectsWithTag("Teletransporte"); 
-    }
-
-    void FixedUpdate()
-    {
-        // mover personaje con rigidbody          
-        float velocidadX = Input.GetAxis("Horizontal") * MiniShooter.instance.VelocidadPersonaje;
-        float velocidadZ = Input.GetAxis("Vertical") * MiniShooter.instance.VelocidadPersonaje;
-        rb.velocity = transform.rotation * new Vector3(velocidadX, rb.velocity.y, velocidadZ);
+        controlador = GetComponent<CharacterController>();
+        puntosTeletransporte = GameObject.FindGameObjectsWithTag("Teletransporte");
     }
 
     void Update()
     {
+
         ControlMovimiento();
         ControlRotacion();
         ControlSalto();
         ControlDisparo();
+
     }
 
     void ControlMovimiento()
     {
         //controlamos si está corriendo
         if (Input.GetKey(KeyCode.LeftShift)) MiniShooter.instance.Correr();
-        else MiniShooter.instance.Caminar();        
+        else MiniShooter.instance.Caminar();
 
-        // mover personaje
-        float movHorizontal = Input.GetAxis("Horizontal");        
-        rb.velocity = new Vector2(movHorizontal * MiniShooter.instance.VelocidadPersonaje, rb.velocity.y);
-    } 
+        MoverPersonaje();
+    }
+
+    void MoverPersonaje()
+    {
+        float movimientoX = Input.GetAxis("Horizontal");
+        float movimientoZ = Input.GetAxis("Vertical");
+        Vector3 movimiento = transform.right * movimientoX + transform.forward * movimientoZ;
+        controlador.Move(movimiento * MiniShooter.instance.VelocidadPersonaje * Time.deltaTime);
+
+        //gravedad
+        if (controlador.isGrounded && velocidadJugador.y < 0) velocidadJugador.y = 0f;
+        velocidadJugador.y += MiniShooter.instance.Gravedad * Time.deltaTime;
+        controlador.Move(velocidadJugador * Time.deltaTime);
+    }
 
     private void ControlRotacion()
     {
@@ -65,15 +69,9 @@ public class ControladorMovimientoShooter : MonoBehaviour
 
     private void ControlSalto()
     {
-        if (Input.GetKeyDown(KeyCode.Space) && EstaEnSuelo())
-        {
-            rb.AddForce(Vector3.up * fuerzaSalto, ForceMode.Impulse);            
-        }
-    }
-
-    private bool EstaEnSuelo()
-    {
-        return Physics.Raycast(transform.position, Vector3.down, distanciaDelSuelo);
+        //salto
+        if (Input.GetKeyDown(KeyCode.Space) && controlador.isGrounded)
+            velocidadJugador.y += Mathf.Sqrt(MiniShooter.instance.AlturaSalto * -2f * MiniShooter.instance.Gravedad);
     }
 
 
@@ -92,7 +90,21 @@ public class ControladorMovimientoShooter : MonoBehaviour
         if (collider.CompareTag("Moneda"))
         {
             collider.GetComponent<MonedaShooter>().RecolectarMoneda();
-        }       
+        }
+        if (collider.gameObject.CompareTag("Teletransporte"))
+        {     
+            controlador.enabled = false;
+            int indice;
+            Vector3 pos = new Vector3();
+            do
+            {
+                indice = Random.Range(0, puntosTeletransporte.Length);
+                pos = puntosTeletransporte[indice].transform.position;
+            }
+            while (puntosTeletransporte[indice] == collider.gameObject);
+            transform.position = new Vector3(pos.x + 1, pos.y - 1, pos.z + 1);
+            controlador.enabled = true;
+        }
     }
 
     void OnCollisionEnter(Collision collision)
@@ -101,20 +113,8 @@ public class ControladorMovimientoShooter : MonoBehaviour
         {
             MiniShooter.instance.FinPartida();
         }
-        if (collision.gameObject.CompareTag("Teletransporte"))
-        {
-            int indice;
-            Vector3 pos = new Vector3();
-            do
-            {
-                indice = Random.Range(0, puntosTeletransporte.Length);
-                pos = puntosTeletransporte[indice].transform.position;
-            }
-            while (puntosTeletransporte[indice] == collision.gameObject);
-            transform.position = new Vector3(pos.x + 1, pos.y - 1, pos.z + 1); 
-
-        }    
     }
+
 }
 
 
