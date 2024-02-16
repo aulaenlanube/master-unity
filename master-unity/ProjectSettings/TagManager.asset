@@ -9,6 +9,7 @@ TagManager:
   - Moneda
   - Suelo
   - Teletransporte
+  - Interactuable
   layers:
   - Default
   - TransparentFX

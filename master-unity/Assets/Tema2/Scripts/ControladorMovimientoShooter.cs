@@ -77,11 +77,19 @@ public class ControladorMovimientoShooter : MonoBehaviour
 
     private void ControlDisparo()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButton(0))
         {
             Ray rayo = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
-            if (Physics.Raycast(rayo, out hit)) hit.collider.gameObject.GetComponent<EnemigoShooter>()?.DestruirObjetivo();
+            if (Physics.Raycast(rayo, out hit))
+            {
+                hit.collider.gameObject.GetComponent<EnemigoShooter>()?.DestruirObjetivo();
+                if (hit.collider.gameObject.CompareTag("Interactuable"))
+                {
+                    hit.rigidbody?.AddForceAtPosition(transform.forward * MiniShooter.instance.FuerzaDisparo, hit.point);
+                }
+
+            }
         }
     }
 
@@ -114,6 +122,29 @@ public class ControladorMovimientoShooter : MonoBehaviour
             MiniShooter.instance.FinPartida();
         }
     }
+
+    
+    private void OnControllerColliderHit(ControllerColliderHit hit)
+    {
+        // referencia al Rigidbody del objeto con el que se colisiona
+        Rigidbody rb = hit.collider.attachedRigidbody;
+        // si no hay Rigidbody o el Rigidbody es kinemático, no hacemos nada
+        if (rb == null || rb.isKinematic) return;
+        // si colisionamos con un objeto que podemos interaccionar
+        if (hit.gameObject.CompareTag("Interactuable"))
+        {
+            // calculamos la dirección y la fuerza del empuje
+            Vector3 direccionDeFuerza = hit.gameObject.transform.position - transform.position;
+            // normalizamos la dirección para tener una magnitud de 1
+            direccionDeFuerza.y = 0; // esto asegura que la fuerza se aplique horizontalmente
+            direccionDeFuerza.Normalize();
+            // aplicamos la fuerza al Rigidbody
+            rb.AddForce(direccionDeFuerza * MiniShooter.instance.FuerzaEmpuje);
+        }
+    }
+
+
+
 
 }
 

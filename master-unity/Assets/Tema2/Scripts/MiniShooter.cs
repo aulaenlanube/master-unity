@@ -20,6 +20,8 @@ public class MiniShooter : MonoBehaviour
     [SerializeField] private float velocidadPersonajeCorrer = 15.0f;
     [SerializeField] private float gravedad = -9.81f;
     [SerializeField] private float alturaSalto = 2.0f;
+    [SerializeField] private float fuerzaEmpuje = 10f;
+    [SerializeField] private float fuerzaDisparo = 10f;
     [SerializeField] private float duracionCorrer = 3.0f;
     [SerializeField] private int ladoZonaRespawn = 40;
     [SerializeField] private float sensibilidadRaton = 10f;
@@ -38,6 +40,7 @@ public class MiniShooter : MonoBehaviour
     private int enemigosRestantes;
     private List<EnemigoShooter> enemigosEliminados;
     private float tiempoCorrerRestante;
+
 
     private void Awake()
     {
@@ -246,5 +249,14 @@ public class MiniShooter : MonoBehaviour
     public float Gravedad
     { 
         get { return gravedad; } 
+    }
+
+    public float FuerzaEmpuje
+    {
+        get { return fuerzaEmpuje; }
+    }
+    public float FuerzaDisparo
+    {
+        get { return fuerzaDisparo; }
     }
 }
