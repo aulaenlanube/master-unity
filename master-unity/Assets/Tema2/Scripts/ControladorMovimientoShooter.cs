@@ -9,12 +9,14 @@ public class ControladorMovimientoShooter : MonoBehaviour
     private GameObject[] puntosTeletransporte;
     private CharacterController controlador;
     private Vector3 velocidadJugador;
+    private Animator animator;
 
     void Start()
     {
         sensibilidadRaton = MiniShooter.instance.SensibilidadRaton;
         limiteRotacionVertical = MiniShooter.instance.LimiteRotacionVertical;
         controlador = GetComponent<CharacterController>();
+        animator = GetComponent<Animator>();
         puntosTeletransporte = GameObject.FindGameObjectsWithTag("Teletransporte");
     }
 
@@ -23,7 +25,6 @@ public class ControladorMovimientoShooter : MonoBehaviour
 
         ControlMovimiento();
         ControlRotacion();
-        ControlSalto();
         ControlDisparo();
 
     }
@@ -48,6 +49,26 @@ public class ControladorMovimientoShooter : MonoBehaviour
         if (controlador.isGrounded && velocidadJugador.y < 0) velocidadJugador.y = 0f;
         velocidadJugador.y += MiniShooter.instance.Gravedad * Time.deltaTime;
         controlador.Move(velocidadJugador * Time.deltaTime);
+
+        //--ANIMACIONES--
+
+        //configurar animaciones
+        animator.SetFloat("movimientoX", movimientoX * MiniShooter.instance.VelocidadPersonaje);
+        animator.SetFloat("movimientoZ", movimientoZ * MiniShooter.instance.VelocidadPersonaje);
+
+        //quieto o movimiento
+        if (movimientoX == 0 && movimientoZ == 0) animator.SetBool("quieto", true);
+        else animator.SetBool("quieto", false);
+
+        //detener salto
+        if (animator.GetBool("saltando") && controlador.isGrounded) animator.SetBool("saltando", false);
+
+        //salto
+        if (Input.GetKeyDown(KeyCode.Space) && controlador.isGrounded)
+        {
+            velocidadJugador.y += Mathf.Sqrt(MiniShooter.instance.AlturaSalto * -2f * MiniShooter.instance.Gravedad);
+            animator.SetBool("saltando", true);
+        }
     }
 
     private void ControlRotacion()
@@ -67,12 +88,6 @@ public class ControladorMovimientoShooter : MonoBehaviour
         transform.localRotation = Quaternion.AngleAxis(velocidadRotacion.x, Vector3.up);
     }
 
-    private void ControlSalto()
-    {
-        //salto
-        if (Input.GetKeyDown(KeyCode.Space) && controlador.isGrounded)
-            velocidadJugador.y += Mathf.Sqrt(MiniShooter.instance.AlturaSalto * -2f * MiniShooter.instance.Gravedad);
-    }
 
 
     private void ControlDisparo()
@@ -100,7 +115,7 @@ public class ControladorMovimientoShooter : MonoBehaviour
             collider.GetComponent<MonedaShooter>().RecolectarMoneda();
         }
         if (collider.gameObject.CompareTag("Teletransporte"))
-        {     
+        {
             controlador.enabled = false;
             int indice;
             Vector3 pos = new Vector3();
@@ -123,7 +138,7 @@ public class ControladorMovimientoShooter : MonoBehaviour
         }
     }
 
-    
+
     private void OnControllerColliderHit(ControllerColliderHit hit)
     {
         // referencia al Rigidbody del objeto con el que se colisiona
