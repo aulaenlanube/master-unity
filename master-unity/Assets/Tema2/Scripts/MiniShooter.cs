@@ -30,6 +30,7 @@ public class MiniShooter : MonoBehaviour
     [SerializeField] private Color colorPlata;
     [SerializeField] private Color colorBronce; 
     [SerializeField] private Vector3[] posicionesCamara;
+    [SerializeField] private RuntimeAnimatorController animatorEnemigoTipo1;
 
     //variables de control
     private float velocidadPersonaje;
@@ -258,5 +259,10 @@ public class MiniShooter : MonoBehaviour
     public float FuerzaDisparo
     {
         get { return fuerzaDisparo; }
+    }
+
+    public RuntimeAnimatorController AnimatorEnemigoTipo1
+    {
+        get { return animatorEnemigoTipo1; }
     }
 }

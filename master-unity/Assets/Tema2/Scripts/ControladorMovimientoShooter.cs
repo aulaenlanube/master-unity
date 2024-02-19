@@ -5,7 +5,7 @@ public class ControladorMovimientoShooter : MonoBehaviour
     private float sensibilidadRaton;
     private float limiteRotacionVertical;
     private Vector2 velocidadRotacion;
-    private float suavizado = 5f;
+    private float suavizado =  1f;
     private GameObject[] puntosTeletransporte;
     private CharacterController controlador;
     private Vector3 velocidadJugador;
@@ -66,10 +66,19 @@ public class ControladorMovimientoShooter : MonoBehaviour
         //salto
         if (Input.GetKeyDown(KeyCode.Space) && controlador.isGrounded)
         {
-            velocidadJugador.y += Mathf.Sqrt(MiniShooter.instance.AlturaSalto * -2f * MiniShooter.instance.Gravedad);
+            if (animator.GetBool("quieto")) Invoke("Saltar", .5f);
+            else Saltar();
+            
             animator.SetBool("saltando", true);
         }
     }
+
+    void Saltar()
+    {
+        velocidadJugador.y = Mathf.Sqrt(MiniShooter.instance.AlturaSalto * -2f * MiniShooter.instance.Gravedad);
+        animator.SetBool("saltando", true);
+    }
+
 
     private void ControlRotacion()
     {
@@ -134,7 +143,7 @@ public class ControladorMovimientoShooter : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Enemigo"))
         {
-            MiniShooter.instance.FinPartida();
+            //MiniShooter.instance.FinPartida();
         }
     }
 
@@ -162,5 +171,7 @@ public class ControladorMovimientoShooter : MonoBehaviour
 
 
 }
+
+
 
 

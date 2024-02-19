@@ -1,7 +1,8 @@
 using UnityEngine;
 
+[RequireComponent(typeof(Animator))]
 public class EnemigoShooter : MonoBehaviour
-{  
+{
     private int puntosEnemigo = 0;
     private float fuerzaDeEmpuje = 10f;
     private float fuerzaDeTorque = 10f;
@@ -10,24 +11,39 @@ public class EnemigoShooter : MonoBehaviour
     public delegate void impacto(int puntos);
     public static event impacto enemigoImpactado;
 
+    void Start()
+    {
+        GetComponent<Animator>().runtimeAnimatorController = MiniShooter.instance.AnimatorEnemigoTipo1;
+    }
+
     void Update()
     {
-        transform.position = Vector3.MoveTowards(transform.position,
-                                                 MiniShooter.instance.PersonajePrincipal.transform.position,
-                                                 MiniShooter.instance.VelocidadEnemigos * Time.deltaTime);
+        transform.LookAt(MiniShooter.instance.PersonajePrincipal.position);
+
+        if (Vector3.Distance(transform.position, MiniShooter.instance.PersonajePrincipal.position) < 2)
+        {
+            GetComponent<Animator>().SetBool("cerca", true);
+        }
+        else
+        {
+            GetComponent<Animator>().SetBool("cerca", false);
+
+            transform.position = Vector3.MoveTowards(transform.position,
+                                                             MiniShooter.instance.PersonajePrincipal.transform.position,
+                                                             MiniShooter.instance.VelocidadEnemigos * Time.deltaTime);
+        }
     }
 
     // impacto con el enemigo, se agrega a la lista de enemigos eliminados
     public void DestruirObjetivo()
-    {
-        GetComponent<Renderer>().material.color = Random.ColorHSV(); 
-        MiniShooter.instance.AgregarEnemigoEliminado(this);        
+    {        
+        MiniShooter.instance.AgregarEnemigoEliminado(this);
         enemigoImpactado.Invoke(++puntosEnemigo);
     }
 
     // respwan del enemigo
     public void CambiarPosicion()
-    {  
+    {
         Vector3 posicionRespawn;
         do
         {
