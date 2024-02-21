@@ -31,7 +31,7 @@ public class BarraCorrerShooter : MonoBehaviour
     {   
         // control barra correr
         float porcentajeTiempoCorrer = MiniShooter.instance.PorcentajeTiempoCorrer();
-        GetComponent<RectTransform>().sizeDelta = new Vector2(anchoMaximoBarra * porcentajeTiempoCorrer, GetComponent<RectTransform>().sizeDelta.y);
+        GetComponent<Image>().fillAmount = porcentajeTiempoCorrer;
 
         // cambiamos el color de la barra según el porcentaje restante
         if (porcentajeTiempoCorrer > 0.8f) GetComponent<Image>().color = Color.green;

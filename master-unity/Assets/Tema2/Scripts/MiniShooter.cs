@@ -41,7 +41,7 @@ public class MiniShooter : MonoBehaviour
     private int enemigosRestantes;
     private List<EnemigoShooter> enemigosEliminados;
     private float tiempoCorrerRestante;
-
+    private bool barraCorrerVacia;
 
     private void Awake()
     {
@@ -61,6 +61,7 @@ public class MiniShooter : MonoBehaviour
         tiempoCorrerRestante = duracionCorrer;
         enemigosRestantes = enemigosOleadaActual;
         enemigosEliminados = new List<EnemigoShooter>();
+        barraCorrerVacia = false;
     }
 
     void Update()
@@ -113,12 +114,16 @@ public class MiniShooter : MonoBehaviour
 
     public void Correr()
     {
-        if (tiempoCorrerRestante > 0)
+        if (tiempoCorrerRestante > 0 && !barraCorrerVacia)
         {
             velocidadPersonaje = velocidadPersonajeCorrer;
-            tiempoCorrerRestante = Mathf.Max(0, tiempoCorrerRestante - Time.deltaTime);            
+            tiempoCorrerRestante = Mathf.Max(0, tiempoCorrerRestante - Time.deltaTime);
         }
-        else Caminar();
+        else
+        {
+            barraCorrerVacia = true;
+            Caminar();
+        }
     }
 
     public void Caminar()
@@ -127,7 +132,8 @@ public class MiniShooter : MonoBehaviour
         {
             velocidadPersonaje = velocidadPersonajeCaminar;
             tiempoCorrerRestante  = Mathf.Min(duracionCorrer, tiempoCorrerRestante + Time.deltaTime);
-        }        
+        }
+        if (tiempoCorrerRestante == duracionCorrer) barraCorrerVacia = false;
     }
 
     public bool EstaCorriendo()
