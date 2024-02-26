@@ -29,10 +29,13 @@ public class MiniShooter : MonoBehaviour
     [SerializeField] private Color colorOro;
     [SerializeField] private Color colorPlata;
     [SerializeField] private Color colorBronce; 
-    [SerializeField] private Vector3[] posicionesCamara;
+    
+    [SerializeField] private Vector3[] posicionesCamaraDePie;
+    [SerializeField] private Vector3[] posicionesCamaraAgachado;
     [SerializeField] private RuntimeAnimatorController animatorEnemigoTipo1;
 
     //variables de control
+    private Vector3[] posicionesCamara;
     private float velocidadPersonaje;
     private int puntuacionJugador;
     private int posicionActual;   
@@ -42,6 +45,7 @@ public class MiniShooter : MonoBehaviour
     private List<EnemigoShooter> enemigosEliminados;
     private float tiempoCorrerRestante;
     private bool barraCorrerVacia;
+    private bool agachado;
 
     private void Awake()
     {
@@ -52,6 +56,7 @@ public class MiniShooter : MonoBehaviour
 
     void Start()
     {
+        posicionesCamara = posicionesCamaraDePie;
         velocidadPersonaje = velocidadPersonajeCaminar;
         textoFinPartida.enabled = false;
         puntuacionJugador = 0;
@@ -69,7 +74,9 @@ public class MiniShooter : MonoBehaviour
         //cambio de cámara
         if (posicionesCamara.Length > 0 && Input.GetKeyDown(KeyCode.C))
         {
-            Camera.main.transform.localPosition = posicionesCamara[++posicionActual % posicionesCamara.Length];
+            if (posicionActual == posicionesCamara.Length - 1) posicionActual = 0;
+            else posicionActual++;
+            Camera.main.transform.localPosition = posicionesCamara[posicionActual];
         }
     }
 
@@ -77,6 +84,21 @@ public class MiniShooter : MonoBehaviour
     {
         textoFinPartida.enabled = true;
         Time.timeScale = 0;
+    }
+
+    public void AlternarCamaras()
+    {
+        if (agachado) posicionesCamara = posicionesCamaraAgachado;
+        else posicionesCamara = posicionesCamaraDePie;
+
+        if(posicionesCamara.Length <= posicionActual) posicionActual = 0;
+        Camera.main.transform.localPosition = posicionesCamara[posicionActual];
+    }
+
+    public void ReniciarCamara()
+    {
+        posicionActual = 0;
+        Camera.main.transform.localPosition = posicionesCamara[posicionActual];
     }
 
     public void AgregarEnemigoEliminado(EnemigoShooter enemigo)
@@ -114,7 +136,7 @@ public class MiniShooter : MonoBehaviour
 
     public void Correr()
     {
-        if (tiempoCorrerRestante > 0 && !barraCorrerVacia)
+        if (tiempoCorrerRestante > 0 && !barraCorrerVacia && !agachado)
         {
             velocidadPersonaje = velocidadPersonajeCorrer;
             tiempoCorrerRestante = Mathf.Max(0, tiempoCorrerRestante - Time.deltaTime);
@@ -270,5 +292,11 @@ public class MiniShooter : MonoBehaviour
     public RuntimeAnimatorController AnimatorEnemigoTipo1
     {
         get { return animatorEnemigoTipo1; }
+    }
+
+    public bool Agachado
+    {
+        get { return agachado; }
+        set { agachado = value; }
     }
 }

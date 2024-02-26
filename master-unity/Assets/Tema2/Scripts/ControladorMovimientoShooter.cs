@@ -1,3 +1,4 @@
+using UnityEditor.PackageManager;
 using UnityEngine;
 
 public class ControladorMovimientoShooter : MonoBehaviour
@@ -5,7 +6,7 @@ public class ControladorMovimientoShooter : MonoBehaviour
     private float sensibilidadRaton;
     private float limiteRotacionVertical;
     private Vector2 velocidadRotacion;
-    private float suavizado =  1f;
+    private float suavizado = 1f;
     private GameObject[] puntosTeletransporte;
     private CharacterController controlador;
     private Vector3 velocidadJugador;
@@ -22,11 +23,9 @@ public class ControladorMovimientoShooter : MonoBehaviour
 
     void Update()
     {
-
         ControlMovimiento();
         ControlRotacion();
         ControlDisparo();
-
     }
 
     void ControlMovimiento()
@@ -35,7 +34,45 @@ public class ControladorMovimientoShooter : MonoBehaviour
         if (Input.GetKey(KeyCode.LeftShift)) MiniShooter.instance.Correr();
         else MiniShooter.instance.Caminar();
 
+        //controlamos si está agachado
+        if (Input.GetKeyDown(KeyCode.X))
+        {
+            if (!animator.GetBool("agachado"))
+            {
+                animator.SetBool("agachado", true);
+                MiniShooter.instance.Agachado = true;
+                controlador.height = 1f;
+                controlador.center = new Vector3(0, 0.6f, 0);
+                MiniShooter.instance.AlternarCamaras();
+            }
+            else
+            {
+                if (PuedeLevantarse())
+                {
+                    animator.SetBool("agachado", false);
+                    MiniShooter.instance.Agachado = false;
+                    controlador.height = 1.4f;
+                    controlador.center = new Vector3(0, 0.8f, 0);
+                    MiniShooter.instance.AlternarCamaras();
+                }
+            }            
+        }
         MoverPersonaje();
+    }
+
+    bool PuedeLevantarse()
+    {
+        RaycastHit hitInfo;
+        if (Physics.Raycast(transform.position, Vector3.up, out hitInfo, 1f))
+        {
+            GameObject obj = hitInfo.collider.gameObject;
+            if (obj.CompareTag("Personaje"))
+            {
+                return false;
+            }
+            return false;
+        }
+        return true;
     }
 
     void MoverPersonaje()
@@ -68,7 +105,7 @@ public class ControladorMovimientoShooter : MonoBehaviour
         {
             if (animator.GetBool("quieto")) Invoke("Saltar", .5f);
             else Saltar();
-            
+
             animator.SetBool("saltando", true);
         }
     }

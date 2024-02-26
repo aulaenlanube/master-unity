@@ -10,6 +10,7 @@ TagManager:
   - Suelo
   - Teletransporte
   - Interactuable
+  - Personaje
   layers:
   - Default
   - TransparentFX
