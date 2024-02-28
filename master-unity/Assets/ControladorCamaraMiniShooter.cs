@@ -6,4 +6,5 @@ public class ControladorCamaraMiniShooter : MonoBehaviour
     {
         MiniShooter.instance.ReniciarCamara();
     }
+
 }

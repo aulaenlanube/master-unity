@@ -55,25 +55,20 @@ public class ControladorMovimientoShooter : MonoBehaviour
                     controlador.center = new Vector3(0, 0.8f, 0);
                     MiniShooter.instance.AlternarCamaras();
                 }
-            }            
+            }
         }
         MoverPersonaje();
     }
 
     bool PuedeLevantarse()
     {
-        RaycastHit hitInfo;
-        if (Physics.Raycast(transform.position, Vector3.up, out hitInfo, 1f))
-        {
-            GameObject obj = hitInfo.collider.gameObject;
-            if (obj.CompareTag("Personaje"))
-            {
-                return false;
-            }
-            return false;
-        }
+        Vector3 limiteSuperiorPosicion = transform.position;
+        limiteSuperiorPosicion.y += controlador.height;
+
+        if (Physics.Raycast(limiteSuperiorPosicion, Vector3.up, 1f)) return false;
         return true;
     }
+
 
     void MoverPersonaje()
     {
