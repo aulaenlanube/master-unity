@@ -1,11 +1,16 @@
 using UnityEngine;
+using UnityEngine.UIElements;
 
 [RequireComponent(typeof(Animator))]
 public class EnemigoShooter : MonoBehaviour
 {
+    [SerializeField] private GameObject barraDeVida;
+    [SerializeField] private float saludMaxima = 10f;  
+
     private int puntosEnemigo = 0;
     private float fuerzaDeEmpuje = 10f;
-    private float fuerzaDeTorque = 10f;
+    private float saludActual;
+    private Vector3 escalaOriginal;
 
     // evento para actualizar la puntuación
     public delegate void impacto(int puntos);
@@ -13,7 +18,12 @@ public class EnemigoShooter : MonoBehaviour
 
     void Start()
     {
+        
         GetComponent<Animator>().runtimeAnimatorController = MiniShooter.instance.AnimatorEnemigoTipo1;
+
+        saludActual = saludMaxima;
+        escalaOriginal = barraDeVida.transform.localScale;
+        ActualizarBarraSalud();
     }
 
     void Update()
@@ -35,10 +45,36 @@ public class EnemigoShooter : MonoBehaviour
     }
 
     // impacto con el enemigo, se agrega a la lista de enemigos eliminados
-    public void DestruirObjetivo()
-    {        
-        MiniShooter.instance.AgregarEnemigoEliminado(this);
-        enemigoImpactado.Invoke(++puntosEnemigo);
+    public void DestruirObjetivo(int puntos)
+    {
+        if (saludActual > puntos)
+        {
+            //restamos salud
+            saludActual -= puntos;
+
+            //actualizamos la barra de vida
+            ActualizarBarraSalud();
+        }
+        else
+        {
+            MiniShooter.instance.AgregarEnemigoEliminado(this);
+            enemigoImpactado.Invoke(++puntosEnemigo);
+
+            //aplicar animación de muerte
+        }
+    }
+
+    void ActualizarBarraSalud()
+    {
+        float porcentajeVida = saludActual / saludMaxima;
+        barraDeVida.transform.localScale = new Vector3(escalaOriginal.x * porcentajeVida, barraDeVida.transform.localScale.y, barraDeVida.transform.localScale.z);
+
+        
+
+        // cambiamos el color de la barra según el porcentaje restante
+        if (porcentajeVida > 0.8f) barraDeVida.GetComponent<SpriteRenderer>().color = Color.green;
+        else if (porcentajeVida > 0.2f) barraDeVida.GetComponent<SpriteRenderer>().color = Color.yellow;
+        else barraDeVida.GetComponent<SpriteRenderer>().color = Color.red;
     }
 
     // respwan del enemigo
@@ -65,13 +101,10 @@ public class EnemigoShooter : MonoBehaviour
             Rigidbody rb = collision.rigidbody;
             if (rb != null)
             {
+                // calculamos la dirección y la fuerza del empuje
                 Vector3 direccionDeEmpuje = collision.transform.position - transform.position;
                 direccionDeEmpuje = direccionDeEmpuje.normalized * fuerzaDeEmpuje;
                 rb.AddForce(direccionDeEmpuje, ForceMode.Impulse);
-
-                // aplicar una fuerza de torque
-                Vector3 torque = Random.insideUnitSphere * fuerzaDeTorque;
-                rb.AddTorque(torque, ForceMode.Impulse);
             }
         }
     }
