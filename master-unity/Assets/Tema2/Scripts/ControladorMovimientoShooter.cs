@@ -139,7 +139,7 @@ public class ControladorMovimientoShooter : MonoBehaviour
             RaycastHit hit;
             if (Physics.Raycast(rayo, out hit))
             {
-                hit.collider.gameObject.GetComponent<EnemigoShooter>()?.DestruirObjetivo(1); //debe ir el daño del arma
+                hit.collider.gameObject.GetComponent<EnemigoShooter>()?.Impacto(1); //debe ir el daño del arma
 
                 if (hit.collider.gameObject.CompareTag("Interactuable"))
                 {

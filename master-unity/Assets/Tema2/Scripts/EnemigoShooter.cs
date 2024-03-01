@@ -5,10 +5,10 @@ using UnityEngine.UIElements;
 public class EnemigoShooter : MonoBehaviour
 {
     [SerializeField] private GameObject barraDeVida;
-    [SerializeField] private float saludMaxima = 10f;  
+    [SerializeField] private float saludMaxima = 10f;
+    [Range(0, 10)][SerializeField] private float regeneracion = 1f;
 
     private int puntosEnemigo = 0;
-    private float fuerzaDeEmpuje = 10f;
     private float saludActual;
     private Vector3 escalaOriginal;
 
@@ -28,6 +28,14 @@ public class EnemigoShooter : MonoBehaviour
 
     void Update()
     {
+        // regeneración de vida
+        if (saludActual < saludMaxima)
+        {
+            saludActual += regeneracion * Time.deltaTime;
+            if (saludActual > saludMaxima) saludActual = saludMaxima;
+            ActualizarBarraSalud();
+        }
+
         transform.LookAt(MiniShooter.instance.PersonajePrincipal.position);
 
         if (Vector3.Distance(transform.position, MiniShooter.instance.PersonajePrincipal.position) < 2)
@@ -45,7 +53,7 @@ public class EnemigoShooter : MonoBehaviour
     }
 
     // impacto con el enemigo, se agrega a la lista de enemigos eliminados
-    public void DestruirObjetivo(int puntos)
+    public void Impacto(int puntos)
     {
         if (saludActual > puntos)
         {
@@ -58,9 +66,7 @@ public class EnemigoShooter : MonoBehaviour
         else
         {
             MiniShooter.instance.AgregarEnemigoEliminado(this);
-            enemigoImpactado.Invoke(++puntosEnemigo);
-
-            //aplicar animación de muerte
+            enemigoImpactado.Invoke(++puntosEnemigo);           
         }
     }
 
@@ -68,7 +74,6 @@ public class EnemigoShooter : MonoBehaviour
     {
         float porcentajeVida = saludActual / saludMaxima;
         barraDeVida.transform.localScale = new Vector3(escalaOriginal.x * porcentajeVida, barraDeVida.transform.localScale.y, barraDeVida.transform.localScale.z);
-
         
 
         // cambiamos el color de la barra según el porcentaje restante
@@ -91,22 +96,4 @@ public class EnemigoShooter : MonoBehaviour
 
         transform.position = posicionRespawn;
     }
-
-    void OnCollisionEnter(Collision collision)
-    {
-        EnemigoShooter enemigo = collision.gameObject.GetComponent<EnemigoShooter>();
-        if (enemigo != null)
-        {
-            // aplicar una fuerza para separar ambos objetos
-            Rigidbody rb = collision.rigidbody;
-            if (rb != null)
-            {
-                // calculamos la dirección y la fuerza del empuje
-                Vector3 direccionDeEmpuje = collision.transform.position - transform.position;
-                direccionDeEmpuje = direccionDeEmpuje.normalized * fuerzaDeEmpuje;
-                rb.AddForce(direccionDeEmpuje, ForceMode.Impulse);
-            }
-        }
-    }
-
 }
