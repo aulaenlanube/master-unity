@@ -133,20 +133,9 @@ public class ControladorMovimientoShooter : MonoBehaviour
 
     private void ControlDisparo()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButton(0))
         {
-            Ray rayo = Camera.main.ScreenPointToRay(Input.mousePosition);
-            RaycastHit hit;
-            if (Physics.Raycast(rayo, out hit))
-            {
-                hit.collider.gameObject.GetComponent<EnemigoShooter>()?.Impacto(1); //debe ir el daño del arma
-
-                if (hit.collider.gameObject.CompareTag("Interactuable"))
-                {
-                    hit.rigidbody?.AddForceAtPosition(transform.forward * MiniShooter.instance.FuerzaDisparo, hit.point);
-                }
-
-            }
+            MiniShooter.instance.Disparar();
         }
     }
 

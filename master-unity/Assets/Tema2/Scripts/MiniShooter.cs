@@ -10,6 +10,7 @@ public class MiniShooter : MonoBehaviour
     [SerializeField] private TextMeshProUGUI textoFinPartida;
     [SerializeField] private TextMeshProUGUI textoPuntuacion;
     [SerializeField] private TextMeshProUGUI textoOleada;
+    [SerializeField] private TextMeshProUGUI textoMunicion;
 
     //personaje principal
     [SerializeField] private Transform personajePrincipal;
@@ -22,6 +23,8 @@ public class MiniShooter : MonoBehaviour
     [SerializeField] private float alturaSalto = 2.0f;
     [SerializeField] private float fuerzaEmpuje = 10f;
     [SerializeField] private float fuerzaDisparo = 10f;
+    [SerializeField] private int municion = 100;
+    [Range(0.05f, 1f)] [SerializeField] private float velocidadDisparo = 1f;
     [SerializeField] private float duracionCorrer = 3.0f;
     [SerializeField] private int ladoZonaRespawn = 40;
     [SerializeField] private float sensibilidadRaton = 10f;
@@ -32,7 +35,7 @@ public class MiniShooter : MonoBehaviour
     
     [SerializeField] private Vector3[] posicionesCamaraDePie;
     [SerializeField] private Vector3[] posicionesCamaraAgachado;
-    [SerializeField] private RuntimeAnimatorController animatorEnemigoTipo1;
+    [SerializeField] private RuntimeAnimatorController animatorEnemigoTipo1;    
 
     //variables de control
     private Vector3[] posicionesCamara;
@@ -46,6 +49,7 @@ public class MiniShooter : MonoBehaviour
     private float tiempoCorrerRestante;
     private bool barraCorrerVacia;
     private bool agachado;
+    private float tiempoUltimoDisparo;
 
     private void Awake()
     {
@@ -67,10 +71,16 @@ public class MiniShooter : MonoBehaviour
         enemigosRestantes = enemigosOleadaActual;
         enemigosEliminados = new List<EnemigoShooter>();
         barraCorrerVacia = false;
+
+        textoMunicion.text = municion.ToString();
+        tiempoUltimoDisparo = 0;
     }
 
     void Update()
     {
+        // actualizamos el tiempo de disparo
+        tiempoUltimoDisparo += Time.deltaTime;
+
         //cambio de cámara
         if (posicionesCamara.Length > 0 && Input.GetKeyDown(KeyCode.C))
         {
@@ -113,14 +123,14 @@ public class MiniShooter : MonoBehaviour
             //se añade un enemigo más y se incrementa la oleada
             GameObject enemigoAdicional = Instantiate(enemigo.gameObject);
             enemigoAdicional.gameObject.SetActive(true);
-            enemigoAdicional.GetComponent<EnemigoShooter>().CambiarPosicion();
+            enemigoAdicional.GetComponent<EnemigoShooter>().ReiniciarEnemigo();
             enemigosOleadaActual = ++oleadaActual + 2; //+2, de inicio tenemos 3 en la primera oleada
             enemigosRestantes = enemigosOleadaActual;
 
             //se vuelven a activar los enemigos eliminados y se les cambia la posición
             foreach (EnemigoShooter enemigoShooter in enemigosEliminados)
             {
-                enemigoShooter.CambiarPosicion();
+                enemigoShooter.ReiniciarEnemigo();
                 enemigoShooter.gameObject.SetActive(true);
             }
             enemigosEliminados.Clear();    
@@ -173,6 +183,28 @@ public class MiniShooter : MonoBehaviour
         return tiempoCorrerRestante >= duracionCorrer;
     }
 
+   public void Disparar()
+    {
+        if (tiempoUltimoDisparo >= velocidadDisparo && municion > 0)
+        {
+            tiempoUltimoDisparo = 0;
+            municion--;
+            textoMunicion.text = municion.ToString();
+
+            Ray rayo = Camera.main.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hit;
+            if (Physics.Raycast(rayo, out hit))
+            {
+                hit.collider.gameObject.GetComponent<EnemigoShooter>()?.Impacto(1); //debe ir el daño del arma
+
+                if (hit.collider.gameObject.CompareTag("Interactuable"))
+                {
+                    hit.rigidbody?.AddForceAtPosition(transform.forward * MiniShooter.instance.FuerzaDisparo, hit.point);
+                }
+            }
+        } 
+    }
+
     //---------------------------------------------
     //------------------ EVENTOS ------------------
     //---------------------------------------------
@@ -180,13 +212,13 @@ public class MiniShooter : MonoBehaviour
     {
         // se suscribe a los eventos de los enemigos
         EnemigoShooter.enemigoImpactado += ActualizarPuntuacion;
-        MonedaShooter.monedaRecogida += ActualizarPuntuacion;
+        MonedaShooter.monedaRecogida += IncrementarMunicion;
     }
     private void OnDisable()
     {
         // se desuscribe a los eventos de los enemigos
         EnemigoShooter.enemigoImpactado -= ActualizarPuntuacion;
-        MonedaShooter.monedaRecogida -= ActualizarPuntuacion;
+        MonedaShooter.monedaRecogida -= IncrementarMunicion;
     }
 
     public void ActualizarPuntuacion(int puntos)
@@ -194,6 +226,12 @@ public class MiniShooter : MonoBehaviour
         puntuacionJugador += puntos;
         textoPuntuacion.text = puntuacionJugador.ToString();
         textoOleada.text = $"Oleada : {oleadaActual}\nEnemigosRestantes: {enemigosRestantes}";
+    }
+
+    public void IncrementarMunicion(int cantidad)
+    {
+        municion += cantidad;
+        textoMunicion.text = municion.ToString();
     }
 
     //---------------------------------------------

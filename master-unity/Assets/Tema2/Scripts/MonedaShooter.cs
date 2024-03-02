@@ -1,11 +1,10 @@
 using UnityEngine;
-using UnityEngine.Android;
 
 public enum TipoMonedaShooter
 {
-    oro = 3,
-    plata = 2,
-    bronce = 1
+    oro = 30,
+    plata = 20,
+    bronce = 10
 }
 
 public class MonedaShooter : MonoBehaviour
@@ -35,10 +34,14 @@ public class MonedaShooter : MonoBehaviour
     }
 
     private void MoverMoneda()
-    {        
-        transform.position = new Vector3(Random.Range(-MiniShooter.instance.LadoZonaRespawn, MiniShooter.instance.LadoZonaRespawn), 
-                                         transform.position.y, 
-                                         Random.Range(-MiniShooter.instance.LadoZonaRespawn, MiniShooter.instance.LadoZonaRespawn));
+    {
+        Vector3 posicionAleatoria = new Vector3(Random.Range(-MiniShooter.instance.LadoZonaRespawn, MiniShooter.instance.LadoZonaRespawn),
+                                                transform.position.y,
+                                                Random.Range(-MiniShooter.instance.LadoZonaRespawn, MiniShooter.instance.LadoZonaRespawn));
+
+        // Mueve el objeto a la posición válida
+        transform.position = posicionAleatoria;
+
     }
 
     private void ActualizarTipoMoneda()

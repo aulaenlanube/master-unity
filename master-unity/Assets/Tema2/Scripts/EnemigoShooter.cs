@@ -1,16 +1,22 @@
 using UnityEngine;
-using UnityEngine.UIElements;
+public enum EstadosBarraSalud
+{
+    verde,
+    amarillo,
+    rojo
+}
 
 [RequireComponent(typeof(Animator))]
 public class EnemigoShooter : MonoBehaviour
 {
-    [SerializeField] private GameObject barraDeVida;
+    [SerializeField] private GameObject barraDeSalud;
     [SerializeField] private float saludMaxima = 10f;
     [Range(0, 10)][SerializeField] private float regeneracion = 1f;
 
     private int puntosEnemigo = 0;
     private float saludActual;
     private Vector3 escalaOriginal;
+    private EstadosBarraSalud estadoBarraSalud;
 
     // evento para actualizar la puntuación
     public delegate void impacto(int puntos);
@@ -18,12 +24,12 @@ public class EnemigoShooter : MonoBehaviour
 
     void Start()
     {
-        
         GetComponent<Animator>().runtimeAnimatorController = MiniShooter.instance.AnimatorEnemigoTipo1;
 
         saludActual = saludMaxima;
-        escalaOriginal = barraDeVida.transform.localScale;
-        ActualizarBarraSalud();
+        escalaOriginal = barraDeSalud.transform.localScale;
+        estadoBarraSalud = EstadosBarraSalud.verde;
+        barraDeSalud.GetComponent<SpriteRenderer>().color = Color.green;
     }
 
     void Update()
@@ -60,30 +66,52 @@ public class EnemigoShooter : MonoBehaviour
             //restamos salud
             saludActual -= puntos;
 
-            //actualizamos la barra de vida
+            //actualizamos la barra de salud
             ActualizarBarraSalud();
         }
         else
         {
             MiniShooter.instance.AgregarEnemigoEliminado(this);
-            enemigoImpactado.Invoke(++puntosEnemigo);           
+            enemigoImpactado.Invoke(++puntosEnemigo);
         }
+    }
+
+    void CambiarColorBarraSalud()
+    {
+        barraDeSalud.GetComponent<SpriteRenderer>().color = estadoBarraSalud switch
+        {
+            EstadosBarraSalud.verde => Color.green,
+            EstadosBarraSalud.amarillo => Color.yellow,
+            EstadosBarraSalud.rojo => Color.red,
+            _ => Color.green
+        };
     }
 
     void ActualizarBarraSalud()
     {
         float porcentajeVida = saludActual / saludMaxima;
-        barraDeVida.transform.localScale = new Vector3(escalaOriginal.x * porcentajeVida, barraDeVida.transform.localScale.y, barraDeVida.transform.localScale.z);
-        
+        barraDeSalud.transform.localScale = new Vector3(escalaOriginal.x * porcentajeVida, barraDeSalud.transform.localScale.y, barraDeSalud.transform.localScale.z);
 
         // cambiamos el color de la barra según el porcentaje restante
-        if (porcentajeVida > 0.8f) barraDeVida.GetComponent<SpriteRenderer>().color = Color.green;
-        else if (porcentajeVida > 0.2f) barraDeVida.GetComponent<SpriteRenderer>().color = Color.yellow;
-        else barraDeVida.GetComponent<SpriteRenderer>().color = Color.red;
+        if (porcentajeVida > 0.8f && estadoBarraSalud != EstadosBarraSalud.verde)
+        {
+            estadoBarraSalud = EstadosBarraSalud.verde;
+            CambiarColorBarraSalud();
+        }
+        else if (porcentajeVida > 0.2f && estadoBarraSalud != EstadosBarraSalud.amarillo)
+        {
+            estadoBarraSalud = EstadosBarraSalud.amarillo;
+            CambiarColorBarraSalud();
+        }
+        else if (porcentajeVida <= 0.2f && estadoBarraSalud != EstadosBarraSalud.rojo)
+        {
+            estadoBarraSalud = EstadosBarraSalud.rojo;
+            CambiarColorBarraSalud();
+        }
     }
 
     // respwan del enemigo
-    public void CambiarPosicion()
+    public void ReiniciarEnemigo()
     {
         Vector3 posicionRespawn;
         do
@@ -95,5 +123,7 @@ public class EnemigoShooter : MonoBehaviour
         } while (Vector3.Distance(MiniShooter.instance.PersonajePrincipal.position, posicionRespawn) < MiniShooter.instance.LadoZonaRespawn);
 
         transform.position = posicionRespawn;
+        saludActual = saludMaxima;
+        ActualizarBarraSalud();
     }
 }
