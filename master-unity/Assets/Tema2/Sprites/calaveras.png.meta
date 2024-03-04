@@ -124,8 +124,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: cb23ea784badb314c8b48dabfd123fcc
-      internalID: 1955333531
+      spriteID: 3bb9f728801466e4fbd200738d826387
+      internalID: -1263603996
       vertices: []
       indices: 
       edges: []
@@ -145,8 +145,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 195c988daea87f441b73a47cf0293a57
-      internalID: -207894339
+      spriteID: ac6a8a708dda8a243bf4c437cf753707
+      internalID: -1186783599
       vertices: []
       indices: 
       edges: []
@@ -166,8 +166,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 68d10274578958748bf3580c6fd2de86
-      internalID: 1138428397
+      spriteID: c6e1eecf0f7e6bc45b3483ec017d2ebc
+      internalID: 788310277
       vertices: []
       indices: 
       edges: []
@@ -187,8 +187,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: b0438f22da5689c46b43c9a9b2b15225
-      internalID: 963188535
+      spriteID: 0d08c21f13ebc8e489fe54579dbec5f7
+      internalID: 1342709736
       vertices: []
       indices: 
       edges: []
@@ -208,8 +208,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 2b420a36a41f57b4ebbcac3c30fd5061
-      internalID: 1800818661
+      spriteID: 5d50562853fd3a44593758dbc597f197
+      internalID: 1331395921
       vertices: []
       indices: 
       edges: []
@@ -218,9 +218,9 @@ TextureImporter:
       name: calaveras_5
       rect:
         serializedVersion: 2
-        x: 1392
+        x: 1396
         y: 492
-        width: 343
+        width: 339
         height: 343
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -229,8 +229,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 7f33643fa9c3d6145b3f660ec2209e27
-      internalID: 1614666852
+      spriteID: c381d000abdcc7446bed40b62d4dfafc
+      internalID: -1701938630
       vertices: []
       indices: 
       edges: []
@@ -242,7 +242,7 @@ TextureImporter:
         x: 305
         y: 59
         width: 340
-        height: 361
+        height: 365
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -250,8 +250,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: e714045bdaff5be42a7f0d4006edd528
-      internalID: -234056343
+      spriteID: 04d8454952eaa98489938c8b18b8cc94
+      internalID: 337277156
       vertices: []
       indices: 
       edges: []
@@ -271,8 +271,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 20f3e710eb7ebe943bd7c45a4c80da48
-      internalID: -1102504705
+      spriteID: 8a90683b4096e49448cc23c818ac704f
+      internalID: -1988377031
       vertices: []
       indices: 
       edges: []
@@ -292,8 +292,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: e2c5b25977d9e3a4db5654a6ce2be35b
-      internalID: -1204737604
+      spriteID: ed64505d448821c48a78ea86bd9df8f5
+      internalID: -1394064431
       vertices: []
       indices: 
       edges: []
@@ -301,7 +301,7 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: 531f36020f9a36c4bb9dd9fc7198a963
+    spriteID: 5e97eb03825dee720800000000000000
     internalID: 0
     vertices: []
     indices: 
@@ -309,15 +309,15 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      calaveras_0: 1955333531
-      calaveras_1: -207894339
-      calaveras_2: 1138428397
-      calaveras_3: 963188535
-      calaveras_4: 1800818661
-      calaveras_5: 1614666852
-      calaveras_6: -234056343
-      calaveras_7: -1102504705
-      calaveras_8: -1204737604
+      calaveras_0: -1263603996
+      calaveras_1: -1186783599
+      calaveras_2: 788310277
+      calaveras_3: 1342709736
+      calaveras_4: 1331395921
+      calaveras_5: -1701938630
+      calaveras_6: 337277156
+      calaveras_7: -1988377031
+      calaveras_8: -1394064431
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

@@ -6,28 +6,44 @@ using UnityEngine.UI;
 public class MiniShooter : MonoBehaviour
 {
     public static MiniShooter instance;
-
-    //elementos de la UI
+    
+    [Header("UI")]
     [SerializeField] private TextMeshProUGUI textoFinPartida;
     [SerializeField] private TextMeshProUGUI textoPuntuacion;
     [SerializeField] private TextMeshProUGUI textoOleada;
     [SerializeField] private TextMeshProUGUI textoMunicion;
-
-    //personaje principal
+    [SerializeField] private Image municionUI;
+    [SerializeField] private Image emblemaUI;
+    [SerializeField] private Sprite[] emblemas;
+    
+    [Header("Personaje Principal")]
     [SerializeField] private Transform personajePrincipal;
-
-    //configuráción de juego
+    
+    [Header("Configuración del movimiento")]
     [SerializeField] private float velocidadEnemigos = 5.0f;
     [SerializeField] private float velocidadPersonajeCaminar = 5.0f;
     [SerializeField] private float velocidadPersonajeCorrer = 15.0f;
     [SerializeField] private float gravedad = -9.81f;
     [SerializeField] private float alturaSalto = 2.0f;
+    [SerializeField] private float duracionCorrer = 3.0f;
+
+    [Header("Configuración de fuerzas")]
     [SerializeField] private float fuerzaEmpuje = 10f;
     [SerializeField] private float fuerzaDisparo = 10f;
+
+    [Header("Configuración del disparo")]
     [SerializeField] private int municion = 100;
     [Range(0.05f, 1f)][SerializeField] private float velocidadDisparo = 1f;
     [Range(0.2f, 2f)][SerializeField] private float tiempoRecarga = 1;
-    [SerializeField] private float duracionCorrer = 3.0f;
+
+
+    [Header("Configuraciones cámara")]
+    [SerializeField] private Vector3[] posicionesCamaraDePie;
+    [SerializeField] private Vector3[] posicionesCamaraAgachado;
+
+    [Header("Configuraciones adicionales")]
+    [SerializeField] private RuntimeAnimatorController animatorEnemigoTipo1;
+    [SerializeField] private GameObject prefabEnemigoTipo1;
     [SerializeField] private int ladoZonaRespawn = 40;
     [SerializeField] private float sensibilidadRaton = 10f;
     [SerializeField] private float limiteRotacionVertical = 45.0f;
@@ -35,27 +51,23 @@ public class MiniShooter : MonoBehaviour
     [SerializeField] private Color colorPlata;
     [SerializeField] private Color colorBronce;
 
-    [SerializeField] private Vector3[] posicionesCamaraDePie;
-    [SerializeField] private Vector3[] posicionesCamaraAgachado;
-    [SerializeField] private RuntimeAnimatorController animatorEnemigoTipo1;
-    [SerializeField] private GameObject prefabEnemigoTipo1;
-    [SerializeField] private Image municionUI;
 
     //variables de control
+    private List<EnemigoShooter> enemigosEliminados = new List<EnemigoShooter>();
+    private int puntuacionJugador = 0;
+    private int posicionActual = 0;
+    private int oleadaActual = 1;
+    private int enemigosOleadaActual = 3;
+    private float tiempoUltimoDisparo = 0;
+    private bool barraCorrerVacia = false;
+    private bool agachado = false;
+    private bool recargando = false;
+
+    //variables de control sin inicializar
     private Vector3[] posicionesCamara;
     private float velocidadPersonaje;
-    private int puntuacionJugador;
-    private int posicionActual;
-    private int oleadaActual;
-    private int enemigosOleadaActual;
-    private int enemigosRestantes;
-    private List<EnemigoShooter> enemigosEliminados;
-    private float tiempoCorrerRestante;
-    private bool barraCorrerVacia;
-    private bool agachado;
-    private float tiempoUltimoDisparo;
-    private bool recargando;
-    
+    private int enemigosRestantes;    
+    private float tiempoCorrerRestante;    
 
     private void Awake()
     {
@@ -68,19 +80,10 @@ public class MiniShooter : MonoBehaviour
     {
         posicionesCamara = posicionesCamaraDePie;
         velocidadPersonaje = velocidadPersonajeCaminar;
-        textoFinPartida.enabled = false;
-        puntuacionJugador = 0;
-        posicionActual = 0;
-        oleadaActual = 1;
-        enemigosOleadaActual = 3;
+        textoFinPartida.enabled = false; 
         tiempoCorrerRestante = duracionCorrer;
-        enemigosRestantes = enemigosOleadaActual;
-        enemigosEliminados = new List<EnemigoShooter>();
-        barraCorrerVacia = false;
-
-        textoMunicion.text = municion.ToString();
-        tiempoUltimoDisparo = 0;
-        recargando = false;
+        enemigosRestantes = enemigosOleadaActual; 
+        textoMunicion.text = municion.ToString();  
     }
 
     void Update()
@@ -198,7 +201,7 @@ public class MiniShooter : MonoBehaviour
 
             //actualizamos la barra de munición
             municionUI.fillAmount = municion % 10 * 0.1f;
-            if (municionUI.fillAmount == 0) Recargar();
+            if (municion % 10 == 0) Recargar();
 
             Ray rayo = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
@@ -223,6 +226,7 @@ public class MiniShooter : MonoBehaviour
     void CompletarRecarga()
     {
         recargando = false;
+        tiempoUltimoDisparo = velocidadDisparo;
         municionUI.fillAmount = 1;
     }
 
@@ -248,6 +252,10 @@ public class MiniShooter : MonoBehaviour
         puntuacionJugador += puntos;
         textoPuntuacion.text = puntuacionJugador.ToString();
         textoOleada.text = $"{enemigosRestantes}";
+
+        //actualizamos el emblema de la oleada
+        int indieceEmblema = Mathf.Min(oleadaActual - 1, emblemas.Length - 1);
+        emblemaUI.sprite = emblemas[indieceEmblema];        
     }
 
     public void IncrementarMunicion(int cantidad)
