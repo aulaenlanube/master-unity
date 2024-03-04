@@ -1,9 +1,10 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class MiniShooter : MonoBehaviour
-{ 
+{
     public static MiniShooter instance;
 
     //elementos de la UI
@@ -16,7 +17,7 @@ public class MiniShooter : MonoBehaviour
     [SerializeField] private Transform personajePrincipal;
 
     //configuráción de juego
-    [SerializeField] private float velocidadEnemigos = 5.0f;    
+    [SerializeField] private float velocidadEnemigos = 5.0f;
     [SerializeField] private float velocidadPersonajeCaminar = 5.0f;
     [SerializeField] private float velocidadPersonajeCorrer = 15.0f;
     [SerializeField] private float gravedad = -9.81f;
@@ -24,24 +25,27 @@ public class MiniShooter : MonoBehaviour
     [SerializeField] private float fuerzaEmpuje = 10f;
     [SerializeField] private float fuerzaDisparo = 10f;
     [SerializeField] private int municion = 100;
-    [Range(0.05f, 1f)] [SerializeField] private float velocidadDisparo = 1f;
+    [Range(0.05f, 1f)][SerializeField] private float velocidadDisparo = 1f;
+    [Range(0.2f, 2f)][SerializeField] private float tiempoRecarga = 1;
     [SerializeField] private float duracionCorrer = 3.0f;
     [SerializeField] private int ladoZonaRespawn = 40;
     [SerializeField] private float sensibilidadRaton = 10f;
     [SerializeField] private float limiteRotacionVertical = 45.0f;
     [SerializeField] private Color colorOro;
     [SerializeField] private Color colorPlata;
-    [SerializeField] private Color colorBronce; 
-    
+    [SerializeField] private Color colorBronce;
+
     [SerializeField] private Vector3[] posicionesCamaraDePie;
     [SerializeField] private Vector3[] posicionesCamaraAgachado;
-    [SerializeField] private RuntimeAnimatorController animatorEnemigoTipo1;    
+    [SerializeField] private RuntimeAnimatorController animatorEnemigoTipo1;
+    [SerializeField] private GameObject prefabEnemigoTipo1;
+    [SerializeField] private Image municionUI;
 
     //variables de control
     private Vector3[] posicionesCamara;
     private float velocidadPersonaje;
     private int puntuacionJugador;
-    private int posicionActual;   
+    private int posicionActual;
     private int oleadaActual;
     private int enemigosOleadaActual;
     private int enemigosRestantes;
@@ -50,6 +54,8 @@ public class MiniShooter : MonoBehaviour
     private bool barraCorrerVacia;
     private bool agachado;
     private float tiempoUltimoDisparo;
+    private bool recargando;
+    
 
     private void Awake()
     {
@@ -74,12 +80,13 @@ public class MiniShooter : MonoBehaviour
 
         textoMunicion.text = municion.ToString();
         tiempoUltimoDisparo = 0;
+        recargando = false;
     }
 
     void Update()
     {
-        // actualizamos el tiempo de disparo
-        tiempoUltimoDisparo += Time.deltaTime;
+        // actualizamos el tiempo de disparo si no se está recargando
+        if (!recargando) tiempoUltimoDisparo += Time.deltaTime;
 
         //cambio de cámara
         if (posicionesCamara.Length > 0 && Input.GetKeyDown(KeyCode.C))
@@ -101,7 +108,7 @@ public class MiniShooter : MonoBehaviour
         if (agachado) posicionesCamara = posicionesCamaraAgachado;
         else posicionesCamara = posicionesCamaraDePie;
 
-        if(posicionesCamara.Length <= posicionActual) posicionActual = 0;
+        if (posicionesCamara.Length <= posicionActual) posicionActual = 0;
         Camera.main.transform.localPosition = posicionesCamara[posicionActual];
     }
 
@@ -121,9 +128,7 @@ public class MiniShooter : MonoBehaviour
         if (enemigosRestantes == 0)
         {
             //se añade un enemigo más y se incrementa la oleada
-            GameObject enemigoAdicional = Instantiate(enemigo.gameObject);
-            enemigoAdicional.gameObject.SetActive(true);
-            enemigoAdicional.GetComponent<EnemigoShooter>().ReiniciarEnemigo();
+            GameObject enemigoAdicional = Instantiate(prefabEnemigoTipo1);
             enemigosOleadaActual = ++oleadaActual + 2; //+2, de inicio tenemos 3 en la primera oleada
             enemigosRestantes = enemigosOleadaActual;
 
@@ -133,9 +138,9 @@ public class MiniShooter : MonoBehaviour
                 enemigoShooter.ReiniciarEnemigo();
                 enemigoShooter.gameObject.SetActive(true);
             }
-            enemigosEliminados.Clear();    
+            enemigosEliminados.Clear();
             IncrementarVelocidadEnemigos();
-        }        
+        }
     }
 
     // incrementa la velocidad de los enemigos en un 10%
@@ -159,11 +164,11 @@ public class MiniShooter : MonoBehaviour
     }
 
     public void Caminar()
-    {                
+    {
         if (tiempoCorrerRestante < duracionCorrer)
         {
             velocidadPersonaje = velocidadPersonajeCaminar;
-            tiempoCorrerRestante  = Mathf.Min(duracionCorrer, tiempoCorrerRestante + Time.deltaTime);
+            tiempoCorrerRestante = Mathf.Min(duracionCorrer, tiempoCorrerRestante + Time.deltaTime);
         }
         if (tiempoCorrerRestante == duracionCorrer) barraCorrerVacia = false;
     }
@@ -175,7 +180,7 @@ public class MiniShooter : MonoBehaviour
 
     public float PorcentajeTiempoCorrer()
     {
-        return tiempoCorrerRestante / duracionCorrer;        
+        return tiempoCorrerRestante / duracionCorrer;
     }
 
     public bool BarraCorrerLlena()
@@ -183,13 +188,17 @@ public class MiniShooter : MonoBehaviour
         return tiempoCorrerRestante >= duracionCorrer;
     }
 
-   public void Disparar()
+    public void Disparar()
     {
         if (tiempoUltimoDisparo >= velocidadDisparo && municion > 0)
         {
             tiempoUltimoDisparo = 0;
             municion--;
             textoMunicion.text = municion.ToString();
+
+            //actualizamos la barra de munición
+            municionUI.fillAmount = municion % 10 * 0.1f;
+            if (municionUI.fillAmount == 0) Recargar();
 
             Ray rayo = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
@@ -202,8 +211,21 @@ public class MiniShooter : MonoBehaviour
                     hit.rigidbody?.AddForceAtPosition(transform.forward * MiniShooter.instance.FuerzaDisparo, hit.point);
                 }
             }
-        } 
+        }
     }
+
+    void Recargar()
+    {
+        recargando = true;
+        Invoke("CompletarRecarga", tiempoRecarga);
+    }
+
+    void CompletarRecarga()
+    {
+        recargando = false;
+        municionUI.fillAmount = 1;
+    }
+
 
     //---------------------------------------------
     //------------------ EVENTOS ------------------
@@ -225,7 +247,7 @@ public class MiniShooter : MonoBehaviour
     {
         puntuacionJugador += puntos;
         textoPuntuacion.text = puntuacionJugador.ToString();
-        textoOleada.text = $"Oleada : {oleadaActual}\nEnemigosRestantes: {enemigosRestantes}";
+        textoOleada.text = $"{enemigosRestantes}";
     }
 
     public void IncrementarMunicion(int cantidad)
@@ -235,7 +257,7 @@ public class MiniShooter : MonoBehaviour
     }
 
     //---------------------------------------------
-    //------------------ GETTERS ------------------
+    //---------- GETTERS Y SETTERS ----------------
     //---------------------------------------------
 
     public Transform PersonajePrincipal
@@ -256,7 +278,7 @@ public class MiniShooter : MonoBehaviour
     public float VelocidadPersonaje
     {
         get { return velocidadPersonaje; }
-    } 
+    }
 
     public float SensibilidadRaton
     {
@@ -300,28 +322,27 @@ public class MiniShooter : MonoBehaviour
         get { return enemigosRestantes; }
         set { enemigosRestantes = value; }
     }
+
     public float DuracionCorrer
     {
         get { return duracionCorrer; }
     }
-    public float TiempoCorrerRestante
-    {
-        get { return tiempoCorrerRestante; }
-        set { tiempoCorrerRestante = value; }
-    }
+ 
     public float AlturaSalto
     {
         get { return alturaSalto; }
     }
+
     public float Gravedad
-    { 
-        get { return gravedad; } 
+    {
+        get { return gravedad; }
     }
 
     public float FuerzaEmpuje
     {
         get { return fuerzaEmpuje; }
     }
+
     public float FuerzaDisparo
     {
         get { return fuerzaDisparo; }

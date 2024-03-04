@@ -113,13 +113,13 @@ TextureImporter:
       name: emblemas_0
       rect:
         serializedVersion: 2
-        x: 190
-        y: 465
-        width: 326
-        height: 311
+        x: 159
+        y: 439
+        width: 386
+        height: 361
       alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 20, y: 20, z: 20, w: 20}
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -134,13 +134,13 @@ TextureImporter:
       name: emblemas_1
       rect:
         serializedVersion: 2
-        x: 815
-        y: 465
-        width: 326
-        height: 311
+        x: 784
+        y: 434
+        width: 386
+        height: 366
       alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 20, y: 20, z: 20, w: 20}
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -155,13 +155,13 @@ TextureImporter:
       name: emblemas_2
       rect:
         serializedVersion: 2
-        x: 1446
-        y: 465
-        width: 327
-        height: 311
+        x: 1416
+        y: 435
+        width: 387
+        height: 365
       alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 20, y: 20, z: 20, w: 20}
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -181,7 +181,7 @@ TextureImporter:
         width: 496
         height: 311
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -202,7 +202,7 @@ TextureImporter:
         width: 499
         height: 311
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -223,7 +223,7 @@ TextureImporter:
         width: 498
         height: 311
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -239,12 +239,12 @@ TextureImporter:
       name: emblemas_6
       rect:
         serializedVersion: 2
-        x: 737
-        y: 27
-        width: 498
-        height: 344
+        x: 731
+        y: 0
+        width: 507
+        height: 444
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -260,12 +260,12 @@ TextureImporter:
       name: emblemas_7
       rect:
         serializedVersion: 2
-        x: 1365
-        y: 27
-        width: 498
-        height: 344
+        x: 1358
+        y: 0
+        width: 516
+        height: 466
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -281,12 +281,12 @@ TextureImporter:
       name: emblemas_8
       rect:
         serializedVersion: 2
-        x: 1993
-        y: 27
-        width: 497
-        height: 344
+        x: 1990
+        y: 0
+        width: 511
+        height: 460
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -307,7 +307,7 @@ TextureImporter:
         width: 607
         height: 344
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
