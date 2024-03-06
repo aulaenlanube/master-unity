@@ -96,7 +96,7 @@ public class MiniShooter : MonoBehaviour
         {
             if (posicionActual == posicionesCamara.Length - 1) posicionActual = 0;
             else posicionActual++;
-            Camera.main.transform.localPosition = posicionesCamara[posicionActual];
+            EstablecerCamara();
         }
     }
 
@@ -112,14 +112,40 @@ public class MiniShooter : MonoBehaviour
         else posicionesCamara = posicionesCamaraDePie;
 
         if (posicionesCamara.Length <= posicionActual) posicionActual = 0;
-        Camera.main.transform.localPosition = posicionesCamara[posicionActual];
+        EstablecerCamara();
     }
 
     public void ReniciarCamara()
     {
         posicionActual = 0;
+        EstablecerCamara();
+    }
+
+    void EstablecerCamara()
+    {
+        //alternamos la culling mask de la cámara para renderizar o no el personaje
+        if (posicionActual == 0) EliminarCapaDeCullingMask(Camera.main, "JugadorPrimeraPersona");
+        if (posicionActual == 1) AgregarCapaACullingMask(Camera.main, "JugadorPrimeraPersona");
+
+        //establecemos la posición de la cámara
         Camera.main.transform.localPosition = posicionesCamara[posicionActual];
     }
+
+
+    // agrega una capa a la Culling Mask de la cámara
+    public void AgregarCapaACullingMask(Camera camara, string nombreCapa)
+    {
+        int capa = LayerMask.NameToLayer(nombreCapa);
+        camara.cullingMask |= 1 << capa;
+    }
+
+    // elimina una capa de la Culling Mask de la cámara
+    public void EliminarCapaDeCullingMask(Camera camara, string nombreCapa)
+    {
+        int capa = LayerMask.NameToLayer(nombreCapa);
+        camara.cullingMask &= ~(1 << capa);
+    }
+
 
     public void AgregarEnemigoEliminado(EnemigoShooter enemigo)
     {
