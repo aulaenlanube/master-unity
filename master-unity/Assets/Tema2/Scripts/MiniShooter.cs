@@ -7,6 +7,9 @@ public class MiniShooter : MonoBehaviour
 {
     public static MiniShooter instance;
 
+    [Header("Personaje Principal")]
+    [SerializeField] private Transform personajePrincipal;
+
     [Header("UI")]
     [SerializeField] private TextMeshProUGUI textoFinPartida;
     [SerializeField] private TextMeshProUGUI textoPuntuacion;
@@ -17,9 +20,6 @@ public class MiniShooter : MonoBehaviour
     [SerializeField] private Sprite mirillaUI;
     [SerializeField] private Sprite mirillaZoomUI;
     [SerializeField] private Sprite[] emblemas;
-
-    [Header("Personaje Principal")]
-    [SerializeField] private Transform personajePrincipal;
 
     [Header("Configuración del movimiento")]
     [SerializeField] private float velocidadEnemigos = 5.0f;
@@ -40,8 +40,6 @@ public class MiniShooter : MonoBehaviour
     [SerializeField] private float fuerzaRetroceso = 5f;
     [SerializeField] private float velocidadRetorno = 25f;
 
-
-
     [Header("Configuraciones cámara")]
     [SerializeField] private Vector3[] posicionesCamaraDePie;
     [SerializeField] private Vector3[] posicionesCamaraAgachado;
@@ -60,7 +58,7 @@ public class MiniShooter : MonoBehaviour
     //variables de control
     private List<EnemigoShooter> enemigosEliminados = new List<EnemigoShooter>();
     private int puntuacionJugador = 0;
-    private int posicionActual = 0;
+    private int posicionActualCamara = 0;
     private int oleadaActual = 1;
     private int enemigosOleadaActual = 3;
     private float tiempoUltimoDisparo = 0;
@@ -74,6 +72,10 @@ public class MiniShooter : MonoBehaviour
     private float velocidadPersonaje;
     private int enemigosRestantes;
     private float tiempoCorrerRestante;
+
+    // evento de cambio de cámara
+    public delegate void cambiarCamara(int indiceActual);
+    public static event cambiarCamara camaraCambiada;
 
     private void Awake()
     {
@@ -102,8 +104,8 @@ public class MiniShooter : MonoBehaviour
         //cambio de cámara
         if (posicionesCamara.Length > 0 && Input.GetKeyDown(KeyCode.C))
         {
-            if (posicionActual == posicionesCamara.Length - 1) posicionActual = 0;
-            else posicionActual++;
+            if (posicionActualCamara == posicionesCamara.Length - 1) posicionActualCamara = 0;
+            else posicionActualCamara++;
             EstablecerCamara();
         }
     }
@@ -129,24 +131,25 @@ public class MiniShooter : MonoBehaviour
         if (agachado) posicionesCamara = posicionesCamaraAgachado;
         else posicionesCamara = posicionesCamaraDePie;
 
-        if (posicionesCamara.Length <= posicionActual) posicionActual = 0;
+        if (posicionesCamara.Length <= posicionActualCamara) posicionActualCamara = 0;
         EstablecerCamara();
     }
 
     public void ReniciarCamara()
     {
-        posicionActual = 0;
+        posicionActualCamara = 0;
         EstablecerCamara();
     }
 
     void EstablecerCamara()
     {
         //alternamos la culling mask de la cámara para renderizar o no el personaje
-        if (posicionActual == 0) EliminarCapaDeCullingMask(Camera.main, "JugadorPrimeraPersona");
-        if (posicionActual == 1) AgregarCapaACullingMask(Camera.main, "JugadorPrimeraPersona");
+        if (posicionActualCamara == 0) EliminarCapaDeCullingMask(Camera.main, "JugadorPrimeraPersona");
+        if (posicionActualCamara == 1) AgregarCapaACullingMask(Camera.main, "JugadorPrimeraPersona");
 
         //establecemos la posición de la cámara
-        Camera.main.transform.localPosition = posicionesCamara[posicionActual];
+        Camera.main.transform.localPosition = posicionesCamara[posicionActualCamara];
+        camaraCambiada.Invoke(posicionActualCamara);
     }
 
 
@@ -282,12 +285,12 @@ public class MiniShooter : MonoBehaviour
 
     public Vector3 ObtenerPosicionCamaraActual()
     {
-        return posicionesCamara[posicionActual];
+        return posicionesCamara[posicionActualCamara];
     }
 
     public bool EstaEnPrimeraPersona()
     {
-        return posicionActual == 0;
+        return posicionActualCamara == 0;
     }
 
 

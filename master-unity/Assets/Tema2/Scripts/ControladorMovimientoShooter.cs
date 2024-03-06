@@ -27,13 +27,10 @@ public class ControladorMovimientoShooter : MonoBehaviour
 
     void Update()
     {
-
-
         ControlMovimiento();
         SimularCabeceo();
         ControlRotacion();        
-        ControlDisparo();
-        
+        ControlDisparo();        
     }
 
     private void SimularCabeceo()
