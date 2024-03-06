@@ -118,7 +118,7 @@ TextureImporter:
         width: 405
         height: 405
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -139,7 +139,7 @@ TextureImporter:
         width: 380
         height: 388
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -160,7 +160,7 @@ TextureImporter:
         width: 450
         height: 455
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -181,7 +181,7 @@ TextureImporter:
         width: 469
         height: 467
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -189,6 +189,48 @@ TextureImporter:
       bones: []
       spriteID: aa1ba3a42a4e47248b0b5a124c641b64
       internalID: -1110414436
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mirillas_4
+      rect:
+        serializedVersion: 2
+        x: 750
+        y: 761
+        width: 7
+        height: 183
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b18a5cb85fd473f4d85d82dc301b3588
+      internalID: 1718007392
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mirillas_5
+      rect:
+        serializedVersion: 2
+        x: 562
+        y: 749
+        width: 185
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7cbaa4901e48f8142b3d5bd42a33959c
+      internalID: -561887710
       vertices: []
       indices: 
       edges: []
@@ -208,6 +250,8 @@ TextureImporter:
       mirillas_1: -1315475011
       mirillas_2: 873124778
       mirillas_3: -1110414436
+      mirillas_4: 1718007392
+      mirillas_5: -561887710
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

@@ -6,19 +6,21 @@ using UnityEngine.UI;
 public class MiniShooter : MonoBehaviour
 {
     public static MiniShooter instance;
-    
+
     [Header("UI")]
     [SerializeField] private TextMeshProUGUI textoFinPartida;
     [SerializeField] private TextMeshProUGUI textoPuntuacion;
     [SerializeField] private TextMeshProUGUI textoOleada;
     [SerializeField] private TextMeshProUGUI textoMunicion;
-    [SerializeField] private Image municionUI;
+    [SerializeField] private Image municionUI; 
     [SerializeField] private Image emblemaUI;
+    [SerializeField] private Sprite mirillaUI;
+    [SerializeField] private Sprite mirillaZoomUI;
     [SerializeField] private Sprite[] emblemas;
-    
+
     [Header("Personaje Principal")]
     [SerializeField] private Transform personajePrincipal;
-    
+
     [Header("Configuración del movimiento")]
     [SerializeField] private float velocidadEnemigos = 5.0f;
     [SerializeField] private float velocidadPersonajeCaminar = 5.0f;
@@ -35,6 +37,9 @@ public class MiniShooter : MonoBehaviour
     [SerializeField] private int municion = 100;
     [Range(0.05f, 1f)][SerializeField] private float velocidadDisparo = 1f;
     [Range(0.2f, 2f)][SerializeField] private float tiempoRecarga = 1;
+    [SerializeField] private float fuerzaRetroceso = 5f;
+    [SerializeField] private float velocidadRetorno = 25f;
+
 
 
     [Header("Configuraciones cámara")]
@@ -59,6 +64,7 @@ public class MiniShooter : MonoBehaviour
     private int oleadaActual = 1;
     private int enemigosOleadaActual = 3;
     private float tiempoUltimoDisparo = 0;
+    private float cantidadRetroceso = 0f;
     private bool barraCorrerVacia = false;
     private bool agachado = false;
     private bool recargando = false;
@@ -66,8 +72,8 @@ public class MiniShooter : MonoBehaviour
     //variables de control sin inicializar
     private Vector3[] posicionesCamara;
     private float velocidadPersonaje;
-    private int enemigosRestantes;    
-    private float tiempoCorrerRestante;    
+    private int enemigosRestantes;
+    private float tiempoCorrerRestante;
 
     private void Awake()
     {
@@ -80,14 +86,16 @@ public class MiniShooter : MonoBehaviour
     {
         posicionesCamara = posicionesCamaraDePie;
         velocidadPersonaje = velocidadPersonajeCaminar;
-        textoFinPartida.enabled = false; 
+        textoFinPartida.enabled = false;
         tiempoCorrerRestante = duracionCorrer;
-        enemigosRestantes = enemigosOleadaActual; 
-        textoMunicion.text = municion.ToString();  
+        enemigosRestantes = enemigosOleadaActual;
+        textoMunicion.text = municion.ToString();
+
+    
     }
 
     void Update()
-    {
+    {      
         // actualizamos el tiempo de disparo si no se está recargando
         if (!recargando) tiempoUltimoDisparo += Time.deltaTime;
 
@@ -97,6 +105,16 @@ public class MiniShooter : MonoBehaviour
             if (posicionActual == posicionesCamara.Length - 1) posicionActual = 0;
             else posicionActual++;
             EstablecerCamara();
+        }
+    }
+
+    private void LateUpdate()
+    {
+        if (cantidadRetroceso > 0)
+        {
+            // aplicar el retroceso hacia arriba
+            Camera.main.transform.Rotate(-cantidadRetroceso, 0f, 0f); // aplica el efecto de retroceso
+            cantidadRetroceso -= velocidadRetorno * Time.deltaTime; // reduce gradualmente el efecto de retroceso
         }
     }
 
@@ -240,7 +258,13 @@ public class MiniShooter : MonoBehaviour
                     hit.rigidbody?.AddForceAtPosition(transform.forward * MiniShooter.instance.FuerzaDisparo, hit.point);
                 }
             }
+            AplicarRetroceso();
         }
+    }
+
+    void AplicarRetroceso()
+    {
+        cantidadRetroceso += fuerzaRetroceso;
     }
 
     void Recargar()
@@ -254,6 +278,16 @@ public class MiniShooter : MonoBehaviour
         recargando = false;
         tiempoUltimoDisparo = velocidadDisparo;
         municionUI.fillAmount = 1;
+    }
+
+    public Vector3 ObtenerPosicionCamaraActual()
+    {
+        return posicionesCamara[posicionActual];
+    }
+
+    public bool EstaEnPrimeraPersona()
+    {
+        return posicionActual == 0;
     }
 
 
@@ -281,7 +315,7 @@ public class MiniShooter : MonoBehaviour
 
         //actualizamos el emblema de la oleada
         int indieceEmblema = Mathf.Min(oleadaActual - 1, emblemas.Length - 1);
-        emblemaUI.sprite = emblemas[indieceEmblema];        
+        emblemaUI.sprite = emblemas[indieceEmblema];
     }
 
     public void IncrementarMunicion(int cantidad)
@@ -361,7 +395,7 @@ public class MiniShooter : MonoBehaviour
     {
         get { return duracionCorrer; }
     }
- 
+
     public float AlturaSalto
     {
         get { return alturaSalto; }
@@ -391,5 +425,15 @@ public class MiniShooter : MonoBehaviour
     {
         get { return agachado; }
         set { agachado = value; }
+    }
+
+    public Sprite MirillaUI
+    {
+        get { return mirillaUI; }
+    }
+        
+    public Sprite MirillaZoomUI
+    {
+        get { return mirillaZoomUI; }
     }
 }
