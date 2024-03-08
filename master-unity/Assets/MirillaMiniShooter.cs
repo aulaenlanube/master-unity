@@ -4,21 +4,16 @@ using static Diana;
 
 [RequireComponent(typeof(Image))]
 public class MirillaMiniShooter : MonoBehaviour
-{
-    [SerializeField] private GameObject mirillaZoom;
-    [SerializeField] private float velocidadZoom = 20f;
-    [SerializeField] private float capacidadZoom = 30;
-
-    private Image mirilla;
+{         
     private Vector2 escalaOriginal;
-    private Vector2 escalaZoom;
     private bool zoomActivo = false;
 
     void Start()
     {
-        mirilla = GetComponent<Image>();
-        escalaOriginal = mirilla.rectTransform.sizeDelta;
-        escalaZoom = escalaOriginal * 0.5f; // se asume que el tamaño de zoom es la mitad del original
+
+        MiniShooter.instance.MirillaZoom = MiniShooter.instance.MirillaZoom;        
+        
+        escalaOriginal = MiniShooter.instance.Mirilla.rectTransform.sizeDelta;
     }
 
     void Update()
@@ -27,62 +22,36 @@ public class MirillaMiniShooter : MonoBehaviour
         {
             if (Input.GetMouseButton(1)) //botón derecho del mouse
             {
-                //activamos zoom
+                // activamos zoom y establecemos la escala de zoom
                 zoomActivo = true;
+                Vector2 escalaZoom = escalaOriginal * .5f;
 
                 // hacer que la mirilla se haga más pequeña para simular el zoom
-                mirilla.rectTransform.sizeDelta = Vector2.Lerp(mirilla.rectTransform.sizeDelta, escalaOriginal * 0.5f, Time.deltaTime * velocidadZoom); // Asume que quieres reducir a la mitad el tamaño original
+                MiniShooter.instance.Mirilla.rectTransform.sizeDelta = Vector2.Lerp(MiniShooter.instance.Mirilla.rectTransform.sizeDelta, escalaZoom, Time.deltaTime * MiniShooter.instance.VelocidadZoom); 
 
-                // cambiar al sprite de zoom si el tamaño está al 80% del tamaño objetivo
-                if (escalaZoom.x / mirilla.rectTransform.sizeDelta.x > 0.8f)
+                // cambiar al sprite de zoom si la escala está al 90% del tamaño objetivo
+                if (escalaZoom.x / MiniShooter.instance.Mirilla.rectTransform.sizeDelta.x > .9f)
                 {
-                    GetComponent<Image>().enabled = false;
-                    mirillaZoom.GetComponent<Image>().enabled = true;
+                    MiniShooter.instance.Mirilla.enabled = false;
+                    MiniShooter.instance.MirillaZoom.enabled = true;
 
                     //zoom de la cámara
-                    Camera.main.fieldOfView = Mathf.Lerp(Camera.main.fieldOfView, capacidadZoom, Time.deltaTime * 10);
+                    Camera.main.fieldOfView = Mathf.Lerp(Camera.main.fieldOfView, MiniShooter.instance.CapacidadZoom, Time.deltaTime * MiniShooter.instance.VelocidadZoom);
                 }
             }
             else
             {
-                if (zoomActivo)
-                {  
-                    //quitamos zoom de la cámara
-                    zoomActivo = false;
-                    Camera.main.fieldOfView = Mathf.Lerp(Camera.main.fieldOfView, 60f, 1);
+                if (zoomActivo) //quitamos zoom de la cámara
+                {                      
+                    zoomActivo = false;   
+                    MiniShooter.instance.Mirilla.enabled = true;
+                    MiniShooter.instance.MirillaZoom.enabled = false;                    
                 }
 
-                GetComponent<Image>().enabled = true;
-                mirillaZoom.GetComponent<Image>().enabled = false;
-
-                // Retornar suavemente la mirilla a su posición y tamaño original            
-                mirilla.rectTransform.sizeDelta = Vector2.Lerp(mirilla.rectTransform.sizeDelta, escalaOriginal, Time.deltaTime * velocidadZoom);
-
-                
+                // retornar suavemente la mirilla a su escala original 
+                Camera.main.fieldOfView = Mathf.Lerp(Camera.main.fieldOfView, 60f, Time.deltaTime * MiniShooter.instance.VelocidadZoom);
+                MiniShooter.instance.Mirilla.rectTransform.sizeDelta = Vector2.Lerp(MiniShooter.instance.Mirilla.rectTransform.sizeDelta, escalaOriginal, Time.deltaTime * MiniShooter.instance.VelocidadZoom);                    
             }
-        }
-
-    }
-
-    //---------------------------------------------
-    //------------------ EVENTOS ------------------
-    //---------------------------------------------
-    private void OnEnable()
-    {
-        MiniShooter.camaraCambiada += ActualizarMirilla;
-    }
-
-    private void OnDisable()
-    {
-        MiniShooter.camaraCambiada -= ActualizarMirilla;
-    }
-
-    public void ActualizarMirilla(int indice)
-    {
-        if (indice != 0)
-        {
-            GetComponent<Image>().enabled = false;
-            mirillaZoom.GetComponent<Image>().enabled = false;
         }
     }
 }

@@ -15,10 +15,8 @@ public class MiniShooter : MonoBehaviour
     [SerializeField] private TextMeshProUGUI textoPuntuacion;
     [SerializeField] private TextMeshProUGUI textoOleada;
     [SerializeField] private TextMeshProUGUI textoMunicion;
-    [SerializeField] private Image municionUI; 
+    [SerializeField] private Image municionUI;
     [SerializeField] private Image emblemaUI;
-    [SerializeField] private Sprite mirillaUI;
-    [SerializeField] private Sprite mirillaZoomUI;
     [SerializeField] private Sprite[] emblemas;
 
     [Header("Configuración del movimiento")]
@@ -40,9 +38,15 @@ public class MiniShooter : MonoBehaviour
     [SerializeField] private float fuerzaRetroceso = 5f;
     [SerializeField] private float velocidadRetorno = 25f;
 
+    [Header("Configuración mirilla")]
+    [SerializeField] private Image mirilla;
+    [SerializeField] private Image mirillaZoom;
+    [SerializeField] private float velocidadZoom = 20f;
+    [SerializeField] private float capacidadZoom = 30;
+
     [Header("Configuraciones cámara")]
     [SerializeField] private Vector3[] posicionesCamaraDePie;
-    [SerializeField] private Vector3[] posicionesCamaraAgachado;
+    [SerializeField] private Vector3[] posicionesCamaraAgachado;  
 
     [Header("Configuraciones adicionales")]
     [SerializeField] private RuntimeAnimatorController animatorEnemigoTipo1;
@@ -73,9 +77,6 @@ public class MiniShooter : MonoBehaviour
     private int enemigosRestantes;
     private float tiempoCorrerRestante;
 
-    // evento de cambio de cámara
-    public delegate void cambiarCamara(int indiceActual);
-    public static event cambiarCamara camaraCambiada;
 
     private void Awake()
     {
@@ -93,11 +94,11 @@ public class MiniShooter : MonoBehaviour
         enemigosRestantes = enemigosOleadaActual;
         textoMunicion.text = municion.ToString();
 
-    
+
     }
 
     void Update()
-    {      
+    {
         // actualizamos el tiempo de disparo si no se está recargando
         if (!recargando) tiempoUltimoDisparo += Time.deltaTime;
 
@@ -149,7 +150,16 @@ public class MiniShooter : MonoBehaviour
 
         //establecemos la posición de la cámara
         Camera.main.transform.localPosition = posicionesCamara[posicionActualCamara];
-        camaraCambiada.Invoke(posicionActualCamara);
+        ActualizarMirilla();
+    }
+
+    public void ActualizarMirilla()
+    {
+        if (posicionActualCamara != 0)
+        {
+            mirilla.enabled = false;
+            mirillaZoom.enabled = false;
+        }
     }
 
 
@@ -430,13 +440,8 @@ public class MiniShooter : MonoBehaviour
         set { agachado = value; }
     }
 
-    public Sprite MirillaUI
-    {
-        get { return mirillaUI; }
-    }
-        
-    public Sprite MirillaZoomUI
-    {
-        get { return mirillaZoomUI; }
-    }
+    public Image Mirilla { get => mirilla; set => mirilla = value; }
+    public Image MirillaZoom { get => mirillaZoom; set => mirillaZoom = value; }
+    public float VelocidadZoom { get => velocidadZoom; set => velocidadZoom = value; }
+    public float CapacidadZoom { get => capacidadZoom; set => capacidadZoom = value; }
 }
