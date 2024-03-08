@@ -12,8 +12,8 @@ public class ControladorMovimientoShooter : MonoBehaviour
     private Animator animator;
 
     // variables para el cabeceo
-    public float amplitudCabeceo = 0.05f;
-    public float frecuenciaCabeceo = 10f;
+    private float amplitudCabeceo = 0.05f;
+    private float frecuenciaCabeceo = 10f;
     private float tiempoCabeceo = 0f;
 
     void Start()
@@ -35,16 +35,16 @@ public class ControladorMovimientoShooter : MonoBehaviour
 
     private void SimularCabeceo()
     {
-        //simulamos el cabeceo cuando no está quieto y está en primera persona
-        if (animator.GetBool("quieto") == false && MiniShooter.instance.EstaEnPrimeraPersona())
+        // simulamos el cabeceo cuando no está quieto y está en primera persona
+        if (!animator.GetBool("quieto") && MiniShooter.instance.EstaEnPrimeraPersona())
         {
-            // Cálculo del tiempo para el efecto de cabeceo basado en el movimiento
+            // cálculo del tiempo para el efecto de cabeceo basado en el movimiento
             amplitudCabeceo = MiniShooter.instance.VelocidadPersonaje / 50f;
             frecuenciaCabeceo = MiniShooter.instance.VelocidadPersonaje;
             tiempoCabeceo += Time.deltaTime * frecuenciaCabeceo;
             float alturaCabeceo = Mathf.Sin(tiempoCabeceo) * amplitudCabeceo;
 
-            // Ajustar la posición de la cámara en el eje Y para simular el cabeceo
+            // ajustar la posición de la cámara en el eje Y para simular el cabeceo
             Camera.main.transform.localPosition = new Vector3(0, alturaCabeceo, 0) + MiniShooter.instance.ObtenerPosicionCamaraActual(); 
         }       
     }

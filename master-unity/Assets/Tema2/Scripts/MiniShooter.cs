@@ -3,6 +3,15 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
+public enum CapacidadZoom
+{
+    SinZoom = 60,
+    X2 = 30,
+    X3 = 20,
+    X6 = 10,
+    Max = 5
+}
+
 public class MiniShooter : MonoBehaviour
 {
     public static MiniShooter instance;
@@ -42,7 +51,7 @@ public class MiniShooter : MonoBehaviour
     [SerializeField] private Image mirilla;
     [SerializeField] private Image mirillaZoom;
     [SerializeField] private float velocidadZoom = 20f;
-    [SerializeField] private float capacidadZoom = 30;
+    [SerializeField] private CapacidadZoom capacidadZoom;
 
     [Header("Configuraciones cámara")]
     [SerializeField] private Vector3[] posicionesCamaraDePie;
@@ -155,7 +164,11 @@ public class MiniShooter : MonoBehaviour
 
     public void ActualizarMirilla()
     {
-        if (posicionActualCamara != 0)
+        if (EstaEnPrimeraPersona())
+        {
+            mirilla.enabled = true;            
+        }
+        else
         {
             mirilla.enabled = false;
             mirillaZoom.enabled = false;
@@ -440,8 +453,22 @@ public class MiniShooter : MonoBehaviour
         set { agachado = value; }
     }
 
-    public Image Mirilla { get => mirilla; set => mirilla = value; }
-    public Image MirillaZoom { get => mirillaZoom; set => mirillaZoom = value; }
-    public float VelocidadZoom { get => velocidadZoom; set => velocidadZoom = value; }
-    public float CapacidadZoom { get => capacidadZoom; set => capacidadZoom = value; }
+    public Image Mirilla 
+    { 
+        get => mirilla;
+    }
+    
+    public Image MirillaZoom 
+    { 
+        get => mirillaZoom;
+    }
+    public float VelocidadZoom 
+    { 
+        get => velocidadZoom;         
+    }
+
+    public CapacidadZoom CapacidadZoom 
+    { 
+        get => capacidadZoom;         
+    }
 }
