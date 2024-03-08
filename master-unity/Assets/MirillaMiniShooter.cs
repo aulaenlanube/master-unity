@@ -33,7 +33,7 @@ public class MirillaMiniShooter : MonoBehaviour
 
                     //zoom de la cámara
                     Camera.main.fieldOfView = Mathf.Lerp(Camera.main.fieldOfView, 
-                                                         (float)MiniShooter.instance.CapacidadZoom, 
+                                                         MiniShooter.instance.CapacidadZoom, 
                                                          Time.deltaTime * MiniShooter.instance.VelocidadZoom);
                 }
             }

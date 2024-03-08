@@ -12,6 +12,15 @@ public enum CapacidadZoom
     Max = 5
 }
 
+public enum VelocidadZoom
+{
+    Lenta = 5,
+    Normal = 10,
+    Rapida = 20,
+    UltraRapida = 30    
+}
+
+
 public class MiniShooter : MonoBehaviour
 {
     public static MiniShooter instance;
@@ -50,7 +59,7 @@ public class MiniShooter : MonoBehaviour
     [Header("Configuración mirilla")]
     [SerializeField] private Image mirilla;
     [SerializeField] private Image mirillaZoom;
-    [SerializeField] private float velocidadZoom = 20f;
+    [SerializeField] private VelocidadZoom velocidadZoom;
     [SerializeField] private CapacidadZoom capacidadZoom;
 
     [Header("Configuraciones cámara")]
@@ -462,13 +471,13 @@ public class MiniShooter : MonoBehaviour
     { 
         get => mirillaZoom;
     }
-    public float VelocidadZoom 
+    public int VelocidadZoom 
     { 
-        get => velocidadZoom;         
+        get => (int)velocidadZoom;         
     }
 
-    public CapacidadZoom CapacidadZoom 
+    public int CapacidadZoom 
     { 
-        get => capacidadZoom;         
+        get => (int)capacidadZoom;         
     }
 }
