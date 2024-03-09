@@ -17,7 +17,7 @@ public enum VelocidadZoom
     Lenta = 5,
     Normal = 10,
     Rapida = 20,
-    UltraRapida = 30    
+    UltraRapida = 30
 }
 
 
@@ -64,7 +64,7 @@ public class MiniShooter : MonoBehaviour
 
     [Header("Configuraciones cámara")]
     [SerializeField] private Vector3[] posicionesCamaraDePie;
-    [SerializeField] private Vector3[] posicionesCamaraAgachado;  
+    [SerializeField] private Vector3[] posicionesCamaraAgachado;
 
     [Header("Configuraciones adicionales")]
     [SerializeField] private RuntimeAnimatorController animatorEnemigoTipo1;
@@ -175,7 +175,7 @@ public class MiniShooter : MonoBehaviour
     {
         if (EstaEnPrimeraPersona())
         {
-            mirilla.enabled = true;            
+            mirilla.enabled = true;
         }
         else
         {
@@ -279,8 +279,9 @@ public class MiniShooter : MonoBehaviour
             textoMunicion.text = municion.ToString();
 
             //actualizamos la barra de munición
-            municionUI.fillAmount = municion % 10 * 0.1f;
-            if (municion % 10 == 0) Recargar();
+            int municionRestanteCargador = municion % 10;
+            municionUI.fillAmount = municionRestanteCargador * .1f;
+            if (municionRestanteCargador == 0 && municion > 0) Recargar();
 
             Ray rayo = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
@@ -349,8 +350,8 @@ public class MiniShooter : MonoBehaviour
         textoOleada.text = $"{enemigosRestantes}";
 
         //actualizamos el emblema de la oleada
-        int indieceEmblema = Mathf.Min(oleadaActual - 1, emblemas.Length - 1);
-        emblemaUI.sprite = emblemas[indieceEmblema];
+        int indiceEmblema = Mathf.Min(oleadaActual - 1, emblemas.Length - 1);
+        emblemaUI.sprite = emblemas[indiceEmblema];
     }
 
     public void IncrementarMunicion(int cantidad)
@@ -462,22 +463,22 @@ public class MiniShooter : MonoBehaviour
         set { agachado = value; }
     }
 
-    public Image Mirilla 
-    { 
+    public Image Mirilla
+    {
         get => mirilla;
     }
-    
-    public Image MirillaZoom 
-    { 
+
+    public Image MirillaZoom
+    {
         get => mirillaZoom;
     }
-    public int VelocidadZoom 
-    { 
-        get => (int)velocidadZoom;         
+    public int VelocidadZoom
+    {
+        get => (int)velocidadZoom;
     }
 
-    public int CapacidadZoom 
-    { 
-        get => (int)capacidadZoom;         
+    public int CapacidadZoom
+    {
+        get => (int)capacidadZoom;
     }
 }
