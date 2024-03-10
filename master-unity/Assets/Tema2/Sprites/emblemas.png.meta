@@ -113,13 +113,13 @@ TextureImporter:
       name: emblemas_0
       rect:
         serializedVersion: 2
-        x: 170
-        y: 447
-        width: 373
-        height: 353
+        x: 91
+        y: 430
+        width: 530
+        height: 344
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
-      border: {x: 20, y: 20, z: 20, w: 20}
+      border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -134,13 +134,13 @@ TextureImporter:
       name: emblemas_1
       rect:
         serializedVersion: 2
-        x: 795
-        y: 439
-        width: 369
-        height: 359
+        x: 715
+        y: 430
+        width: 530
+        height: 344
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
-      border: {x: 20, y: 20, z: 20, w: 20}
+      border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -155,13 +155,13 @@ TextureImporter:
       name: emblemas_2
       rect:
         serializedVersion: 2
-        x: 1424
-        y: 439
-        width: 366
-        height: 359
+        x: 1345
+        y: 430
+        width: 530
+        height: 344
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
-      border: {x: 20, y: 20, z: 20, w: 20}
+      border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -176,10 +176,10 @@ TextureImporter:
       name: emblemas_3
       rect:
         serializedVersion: 2
-        x: 1995
-        y: 465
-        width: 496
-        height: 311
+        x: 1977
+        y: 439
+        width: 530
+        height: 335
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -197,10 +197,10 @@ TextureImporter:
       name: emblemas_4
       rect:
         serializedVersion: 2
-        x: 2621
-        y: 465
-        width: 499
-        height: 311
+        x: 2608
+        y: 439
+        width: 530
+        height: 335
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -218,10 +218,10 @@ TextureImporter:
       name: emblemas_5
       rect:
         serializedVersion: 2
-        x: 109
-        y: 60
-        width: 498
-        height: 311
+        x: 91
+        y: 29
+        width: 530
+        height: 344
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -239,9 +239,9 @@ TextureImporter:
       name: emblemas_6
       rect:
         serializedVersion: 2
-        x: 737
+        x: 719
         y: 27
-        width: 498
+        width: 530
         height: 344
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -260,9 +260,9 @@ TextureImporter:
       name: emblemas_7
       rect:
         serializedVersion: 2
-        x: 1365
+        x: 1352
         y: 27
-        width: 498
+        width: 530
         height: 344
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -281,9 +281,9 @@ TextureImporter:
       name: emblemas_8
       rect:
         serializedVersion: 2
-        x: 1993
+        x: 1980
         y: 27
-        width: 497
+        width: 530
         height: 344
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -302,7 +302,7 @@ TextureImporter:
       name: emblemas_9
       rect:
         serializedVersion: 2
-        x: 2604
+        x: 2608
         y: 26
         width: 530
         height: 344
