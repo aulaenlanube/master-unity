@@ -119,7 +119,7 @@ public class ControladorMovimientoShooter : MonoBehaviour
         //salto
         if (Input.GetKeyDown(KeyCode.Space) && controlador.isGrounded)
         {
-            if (animator.GetBool("quieto")) Invoke("Saltar", .5f);
+            if (animator.GetBool("quieto")) Invoke("Saltar", .01f);
             else Saltar();
 
             animator.SetBool("saltando", true);

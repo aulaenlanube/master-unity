@@ -56,9 +56,10 @@ public class MiniShooter : MonoBehaviour
     [SerializeField] private float fuerzaRetroceso = 5f;
     [SerializeField] private float velocidadRetorno = 25f;
 
-    [Header("Configuración mirilla")]
-    [SerializeField] private Image mirilla;
-    [SerializeField] private Image mirillaZoom;
+    [Header("Configuración mirilla")]   
+    [SerializeField] private Image mirillaPrimeraPersona;
+    [SerializeField] private Image mirillaZoomPrimeraPersona;
+    [SerializeField] private Image mirillaTerceraPersona;
     [SerializeField] private VelocidadZoom velocidadZoom;
     [SerializeField] private CapacidadZoom capacidadZoom;
 
@@ -110,9 +111,7 @@ public class MiniShooter : MonoBehaviour
         textoFinPartida.enabled = false;
         tiempoCorrerRestante = duracionCorrer;
         enemigosRestantes = enemigosOleadaActual;
-        textoMunicion.text = municion.ToString();
-
-
+        textoMunicion.text = municion.ToString();        
     }
 
     void Update()
@@ -168,19 +167,21 @@ public class MiniShooter : MonoBehaviour
 
         //establecemos la posición de la cámara
         Camera.main.transform.localPosition = posicionesCamara[posicionActualCamara];
-        ActualizarMirilla();
+        ActualizarMirillas();
     }
 
-    public void ActualizarMirilla()
+    public void ActualizarMirillas()
     {
         if (EstaEnPrimeraPersona())
         {
-            mirilla.enabled = true;
+            MirillaPrimeraPersona.enabled = true;
+            MirillaTerceraPersona.enabled = false;
         }
         else
         {
-            mirilla.enabled = false;
-            mirillaZoom.enabled = false;
+            MirillaTerceraPersona.enabled = true;
+            MirillaPrimeraPersona.enabled = false;
+            MirillaZoomPrimeraPersona.enabled = false;
         }
     }
 
@@ -360,6 +361,17 @@ public class MiniShooter : MonoBehaviour
         textoMunicion.text = municion.ToString();
     }
 
+    public Image MirillaActual()
+    {
+        return EstaEnPrimeraPersona() ? MirillaPrimeraPersona : MirillaTerceraPersona;
+    }
+
+    public Vector2 ObtenerEscalaOriginalMirilla()
+    {
+        return MirillaActual().rectTransform.sizeDelta;
+    }
+
+
     //---------------------------------------------
     //---------- GETTERS Y SETTERS ----------------
     //---------------------------------------------
@@ -463,15 +475,6 @@ public class MiniShooter : MonoBehaviour
         set { agachado = value; }
     }
 
-    public Image Mirilla
-    {
-        get => mirilla;
-    }
-
-    public Image MirillaZoom
-    {
-        get => mirillaZoom;
-    }
     public int VelocidadZoom
     {
         get => (int)velocidadZoom;
@@ -480,5 +483,23 @@ public class MiniShooter : MonoBehaviour
     public int CapacidadZoom
     {
         get => (int)capacidadZoom;
+    }
+
+    public Image MirillaZoomPrimeraPersona 
+    { 
+        get => mirillaZoomPrimeraPersona; 
+        set => mirillaZoomPrimeraPersona = value; 
+    }
+
+    public Image MirillaPrimeraPersona 
+    { 
+        get => mirillaPrimeraPersona; 
+        set => mirillaPrimeraPersona = value; 
+    }
+
+    public Image MirillaTerceraPersona 
+    { 
+        get => mirillaTerceraPersona; 
+        set => mirillaTerceraPersona = value; 
     }
 }
