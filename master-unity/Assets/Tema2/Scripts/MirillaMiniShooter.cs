@@ -46,9 +46,11 @@ public class MirillaMiniShooter : MonoBehaviour
                 MiniShooter.instance.MirillaPrimeraPersona.enabled = false;
             }
 
+            int capacidadZoom = MiniShooter.instance.EstaEnPrimeraPersona() ?  MiniShooter.instance.CapacidadZoom : (int)CapacidadZoom.X2;
+
             //zoom de la cámara
             Camera.main.fieldOfView = Mathf.Lerp(Camera.main.fieldOfView,
-                                                 MiniShooter.instance.CapacidadZoom,
+                                                 capacidadZoom,
                                                  Time.deltaTime * MiniShooter.instance.VelocidadZoom);
         }
     }

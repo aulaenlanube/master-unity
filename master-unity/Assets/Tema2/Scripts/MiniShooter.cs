@@ -9,7 +9,8 @@ public enum CapacidadZoom
     X2 = 30,
     X3 = 20,
     X6 = 10,
-    Max = 5
+    X10 = 6,
+    Max = 2
 }
 
 public enum VelocidadZoom
