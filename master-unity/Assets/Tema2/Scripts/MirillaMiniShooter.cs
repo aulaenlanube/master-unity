@@ -14,7 +14,6 @@ public class MirillaMiniShooter : MonoBehaviour
 
     void Update()
     {
-
         if (Input.GetMouseButton(1)) //botón derecho del mouse
         {
             // apuntamos con la mirilla
@@ -70,6 +69,7 @@ public class MirillaMiniShooter : MonoBehaviour
                                              Time.deltaTime * MiniShooter.instance.VelocidadZoom);
 
         Image mirilla = MiniShooter.instance.MirillaActual();
+
         mirilla.rectTransform.sizeDelta = Vector2.Lerp(mirilla.rectTransform.sizeDelta,
                                                        escalaOriginalMirilla,
                                                        Time.deltaTime * MiniShooter.instance.VelocidadZoom);
