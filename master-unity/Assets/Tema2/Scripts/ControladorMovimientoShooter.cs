@@ -154,10 +154,11 @@ public class ControladorMovimientoShooter : MonoBehaviour
 
     private void ControlDisparo()
     {
-        if (Input.GetMouseButton(0))
+        if (Input.GetMouseButton(0) && !MiniShooter.instance.Recargando)
         {
             MiniShooter.instance.Disparar();
         }
+        else animator.SetBool("disparando", false);
     }
 
     private void OnTriggerEnter(Collider collider)

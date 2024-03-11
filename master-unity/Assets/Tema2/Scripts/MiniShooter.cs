@@ -53,7 +53,8 @@ public class MiniShooter : MonoBehaviour
     [Header("Configuración del disparo")]
     [SerializeField] private int municion = 100;
     [Range(0.05f, 1f)][SerializeField] private float velocidadDisparo = 1f;
-    [Range(0.2f, 2f)][SerializeField] private float tiempoRecarga = 1;
+    [Range(0.2f, 3f)][SerializeField] private float tiempoRecarga = 1;
+    [Range(1, 30)][SerializeField] private int capacidadCargador = 10;
     [SerializeField] private float fuerzaRetroceso = 5f;
     [SerializeField] private float velocidadRetorno = 25f;
 
@@ -112,13 +113,14 @@ public class MiniShooter : MonoBehaviour
         textoFinPartida.enabled = false;
         tiempoCorrerRestante = duracionCorrer;
         enemigosRestantes = enemigosOleadaActual;
-        textoMunicion.text = municion.ToString();        
+        textoMunicion.text = municion.ToString();
+        ActualizarBalasCargadorUI();
     }
 
     void Update()
     {
         // actualizamos el tiempo de disparo si no se está recargando
-        if (!recargando) tiempoUltimoDisparo += Time.deltaTime;
+        if (!Recargando) tiempoUltimoDisparo += Time.deltaTime;
 
         //cambio de cámara
         if (posicionesCamara.Length > 0 && Input.GetKeyDown(KeyCode.C))
@@ -272,6 +274,14 @@ public class MiniShooter : MonoBehaviour
         return tiempoCorrerRestante >= duracionCorrer;
     }
 
+    void ActualizarBalasCargadorUI()
+    {        
+        int municionRestanteCargador = municion % capacidadCargador;
+        if (municionRestanteCargador == 0 && municion > 0) municionRestanteCargador = capacidadCargador;
+        if (municionRestanteCargador > 9) municionRestanteCargador = 10;
+        municionUI.fillAmount = municionRestanteCargador * .1f;
+    }
+
     public void Disparar()
     {
         if (tiempoUltimoDisparo >= velocidadDisparo && municion > 0)
@@ -280,10 +290,8 @@ public class MiniShooter : MonoBehaviour
             municion--;
             textoMunicion.text = municion.ToString();
 
-            //actualizamos la barra de munición
-            int municionRestanteCargador = municion % 10;
-            municionUI.fillAmount = municionRestanteCargador * .1f;
-            if (municionRestanteCargador == 0 && municion > 0) Recargar();
+            //actualizamos las balas del cargador            
+            ActualizarBalasCargadorUI();
 
             Ray rayo = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
@@ -293,10 +301,15 @@ public class MiniShooter : MonoBehaviour
 
                 if (hit.collider.gameObject.CompareTag("Interactuable"))
                 {
-                    hit.rigidbody?.AddForceAtPosition(transform.forward * MiniShooter.instance.FuerzaDisparo, hit.point);
+                    hit.rigidbody?.AddForceAtPosition(transform.forward * fuerzaDisparo, hit.point);
                 }
             }
+
+            personajePrincipal.GetComponent<Animator>().SetBool("disparando", true);
             AplicarRetroceso();
+
+            int municionRestanteCargador = municion % capacidadCargador;
+            if (municionRestanteCargador == 0 && municion > 0) Recargar();
         }
     }
 
@@ -307,16 +320,22 @@ public class MiniShooter : MonoBehaviour
 
     void Recargar()
     {
+        personajePrincipal.GetComponent<Animator>().SetBool("recargando", true);
         recargando = true;
+        
         Invoke("CompletarRecarga", tiempoRecarga);
     }
 
+
     void CompletarRecarga()
     {
+        personajePrincipal.GetComponent<Animator>().SetBool("recargando", false);
         recargando = false;
+        
         tiempoUltimoDisparo = velocidadDisparo;
-        municionUI.fillAmount = 1;
+        ActualizarBalasCargadorUI();
     }
+
 
     public Vector3 ObtenerPosicionCamaraActual()
     {
@@ -502,5 +521,10 @@ public class MiniShooter : MonoBehaviour
     { 
         get => mirillaTerceraPersona; 
         set => mirillaTerceraPersona = value; 
+    }
+    public bool Recargando 
+    { 
+        get => recargando; 
+        set => recargando = value; 
     }
 }
