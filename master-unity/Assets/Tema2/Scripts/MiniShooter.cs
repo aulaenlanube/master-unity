@@ -69,6 +69,10 @@ public class MiniShooter : MonoBehaviour
     [SerializeField] private Vector3[] posicionesCamaraDePie;
     [SerializeField] private Vector3[] posicionesCamaraAgachado;
 
+    [Header("Efectos de sonido")]
+    [SerializeField] private AudioClip sonidoDisparo;
+    [SerializeField] private AudioClip sonidoRecarga;
+
     [Header("Configuraciones adicionales")]
     [SerializeField] private RuntimeAnimatorController animatorEnemigoTipo1;
     [SerializeField] private GameObject prefabEnemigoTipo1;
@@ -79,6 +83,7 @@ public class MiniShooter : MonoBehaviour
     [SerializeField] private Color colorPlata;
     [SerializeField] private Color colorBronce;
 
+   
 
     //variables de control
     private List<EnemigoShooter> enemigosEliminados = new List<EnemigoShooter>();
@@ -97,6 +102,8 @@ public class MiniShooter : MonoBehaviour
     private float velocidadPersonaje;
     private int enemigosRestantes;
     private float tiempoCorrerRestante;
+
+    
 
 
     private void Awake()
@@ -315,11 +322,13 @@ public class MiniShooter : MonoBehaviour
 
     void AplicarRetroceso()
     {
+        GetComponent<AudioSource>().PlayOneShot(sonidoDisparo);
         cantidadRetroceso += fuerzaRetroceso;
     }
 
     void Recargar()
     {
+        GetComponent<AudioSource>().PlayOneShot(sonidoRecarga);
         personajePrincipal.GetComponent<Animator>().SetBool("recargando", true);
         recargando = true;
         
@@ -329,6 +338,7 @@ public class MiniShooter : MonoBehaviour
 
     void CompletarRecarga()
     {
+        GetComponent<AudioSource>().Stop();
         personajePrincipal.GetComponent<Animator>().SetBool("recargando", false);
         recargando = false;
         

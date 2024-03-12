@@ -152,6 +152,7 @@ public class ControladorMovimientoShooter : MonoBehaviour
 
 
 
+
     private void ControlDisparo()
     {
         if (Input.GetMouseButton(0) && !MiniShooter.instance.Recargando)
