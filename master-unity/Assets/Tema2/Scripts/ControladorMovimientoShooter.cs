@@ -159,7 +159,11 @@ public class ControladorMovimientoShooter : MonoBehaviour
         {
             MiniShooter.instance.Disparar();
         }
-        else animator.SetBool("disparando", false);
+        else
+        {
+            animator.SetBool("disparando", false);
+            MiniShooter.instance.AnimatorArmaTipo11.SetBool("disparando", false);
+        }
     }
 
     private void OnTriggerEnter(Collider collider)

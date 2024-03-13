@@ -75,6 +75,7 @@ public class MiniShooter : MonoBehaviour
 
     [Header("Configuraciones adicionales")]
     [SerializeField] private RuntimeAnimatorController animatorEnemigoTipo1;
+    [SerializeField] private Animator animatorArmaTipo11;
     [SerializeField] private GameObject prefabEnemigoTipo1;
     [SerializeField] private int ladoZonaRespawn = 40;
     [SerializeField] private float sensibilidadRaton = 10f;
@@ -313,6 +314,7 @@ public class MiniShooter : MonoBehaviour
             }
 
             personajePrincipal.GetComponent<Animator>().SetBool("disparando", true);
+            animatorArmaTipo11.SetBool("disparando", true);
             AplicarRetroceso();
 
             int municionRestanteCargador = municion % capacidadCargador;
@@ -537,5 +539,10 @@ public class MiniShooter : MonoBehaviour
     { 
         get => recargando; 
         set => recargando = value; 
+    }
+    public Animator AnimatorArmaTipo11 
+    { 
+        get => animatorArmaTipo11; 
+        set => animatorArmaTipo11 = value;
     }
 }
