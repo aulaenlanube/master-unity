@@ -389,6 +389,7 @@ public class MiniShooter : MonoBehaviour
     {
         municion += cantidad;
         textoMunicion.text = municion.ToString();
+        ActualizarBalasCargadorUI();
     }
 
     public Image MirillaActual()
