@@ -162,6 +162,7 @@ public class ControladorMovimientoShooter : MonoBehaviour
         else
         {
             animator.SetBool("disparando", false);
+            MiniShooter.instance.EfectoDisparo.gameObject.SetActive(false);
             MiniShooter.instance.AnimatorArmaTipo11.SetBool("disparando", false);
         }
     }
