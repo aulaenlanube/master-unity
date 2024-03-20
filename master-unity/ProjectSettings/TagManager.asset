@@ -11,6 +11,7 @@ TagManager:
   - Teletransporte
   - Interactuable
   - Personaje
+  - Marcable
   layers:
   - Default
   - TransparentFX

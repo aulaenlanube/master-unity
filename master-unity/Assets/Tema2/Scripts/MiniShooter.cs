@@ -77,6 +77,7 @@ public class MiniShooter : MonoBehaviour
     [SerializeField] private RuntimeAnimatorController animatorEnemigoTipo1;
     [SerializeField] private Animator animatorArmaTipo11;
     [SerializeField] private GameObject prefabEnemigoTipo1;
+    [SerializeField] private GameObject prefabMarcaDisparo;
     [SerializeField] private int ladoZonaRespawn = 40;
     [SerializeField] private float sensibilidadRaton = 10f;
     [SerializeField] private float limiteRotacionVertical = 45.0f;
@@ -311,6 +312,11 @@ public class MiniShooter : MonoBehaviour
                 {
                     hit.rigidbody?.AddForceAtPosition(transform.forward * fuerzaDisparo, hit.point);
                 }
+
+                if (hit.collider.gameObject.CompareTag("Marcable"))
+                {
+                    MarcarDisparo(hit.point, hit.normal);
+                }     
             }
 
             personajePrincipal.GetComponent<Animator>().SetBool("disparando", true);
@@ -320,6 +326,15 @@ public class MiniShooter : MonoBehaviour
             int municionRestanteCargador = municion % capacidadCargador;
             if (municionRestanteCargador == 0 && municion > 0) Recargar();
         }
+    }
+
+    void MarcarDisparo(Vector3 posicion, Vector3 normal)
+    {
+        // la rotación se ajusta para que la marca mire hacia afuera de la superficie
+        GameObject marcaDisparo = Instantiate(prefabMarcaDisparo, posicion, Quaternion.LookRotation(normal));
+
+        // ajustar la posición para que la marca no penetre la pared o flote sobre ella
+        marcaDisparo.transform.position += marcaDisparo.transform.forward * 0.01f;
     }
 
     void AplicarRetroceso()
