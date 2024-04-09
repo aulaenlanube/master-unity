@@ -52,9 +52,8 @@ public class MiniShooter : MonoBehaviour
 
     [Header("Configuración del disparo")]
     [SerializeField] private int municion = 100;
-    [Range(0.05f, 1f)][SerializeField] private float velocidadDisparo = 1f;
-    [Range(0.2f, 3f)][SerializeField] private float tiempoRecarga = 1;
-    [Range(1, 30)][SerializeField] private int capacidadCargador = 10;
+    [Range(0.05f, 1f)][SerializeField] private float velocidadDisparo = 1f;    
+    [Range(1, 500)][SerializeField] private int capacidadCargador = 10;
     [SerializeField] private float fuerzaRetroceso = 5f;
     [SerializeField] private float velocidadRetorno = 25f;
 
@@ -320,9 +319,9 @@ public class MiniShooter : MonoBehaviour
                 }     
             }
 
-            efectoDisparo.gameObject.SetActive(true);
             personajePrincipal.GetComponent<Animator>().SetBool("disparando", true);
             animatorArmaTipo11.SetBool("disparando", true);
+            GetComponent<AudioSource>().PlayOneShot(sonidoDisparo);
             AplicarRetroceso();
 
             int municionRestanteCargador = municion % capacidadCargador;
@@ -340,24 +339,19 @@ public class MiniShooter : MonoBehaviour
     }
 
     void AplicarRetroceso()
-    {
-        GetComponent<AudioSource>().PlayOneShot(sonidoDisparo);        
+    {              
         cantidadRetroceso += fuerzaRetroceso;
     }
 
     void Recargar()
-    {
-        GetComponent<AudioSource>().PlayOneShot(sonidoRecarga);
+    {        
         personajePrincipal.GetComponent<Animator>().SetBool("recargando", true);
-        recargando = true;
-        
-        Invoke("CompletarRecarga", tiempoRecarga);
+        recargando = true;   
     }
 
 
-    void CompletarRecarga()
-    {
-        GetComponent<AudioSource>().Stop();
+    public void CompletarRecarga()
+    {        
         personajePrincipal.GetComponent<Animator>().SetBool("recargando", false);
         recargando = false;
         
@@ -376,6 +370,16 @@ public class MiniShooter : MonoBehaviour
         return posicionActualCamara == 0;
     }
 
+
+    public void ReproducirSonidoRecarga()
+    {
+        GetComponent<AudioSource>().PlayOneShot(sonidoRecarga);
+    }
+
+    public void DetenerEfectosDeSonido()
+    {
+        GetComponent<AudioSource>().Stop();
+    }
 
     //---------------------------------------------
     //------------------ EVENTOS ------------------
