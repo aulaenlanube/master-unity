@@ -84,8 +84,9 @@ public class MiniShooter : MonoBehaviour
     [SerializeField] private Color colorOro;
     [SerializeField] private Color colorPlata;
     [SerializeField] private Color colorBronce;
+    [SerializeField] public GameObject suelo;
 
-   
+
 
     //variables de control
     private List<EnemigoShooter> enemigosEliminados = new List<EnemigoShooter>();
