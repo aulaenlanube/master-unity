@@ -92,7 +92,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4000012719361978}
-  - component: {fileID: 706293933028557069}
+  - component: {fileID: 6744621092040748050}
   m_Layer: 0
   m_Name: Your Weapon Example 11
   m_TagString: Untagged
@@ -122,7 +122,7 @@ Transform:
   - {fileID: 4000010254956240}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!95 &706293933028557069
+--- !u!95 &6744621092040748050
 Animator:
   serializedVersion: 5
   m_ObjectHideFlags: 0
@@ -132,7 +132,7 @@ Animator:
   m_GameObject: {fileID: 1000010848169964}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 0cd604b62207fa04fafd134f7e8b5f60, type: 2}
+  m_Controller: {fileID: 9100000, guid: 4e0623d72a821434baf9fc14fcd50efb, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0

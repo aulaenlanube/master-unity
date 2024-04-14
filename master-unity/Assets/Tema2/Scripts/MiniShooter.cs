@@ -74,7 +74,7 @@ public class MiniShooter : MonoBehaviour
 
     [Header("Configuraciones adicionales")]
     [SerializeField] private RuntimeAnimatorController animatorEnemigoTipo1;
-    [SerializeField] private Animator animatorArmaTipo11;
+    [SerializeField] private GameObject arma;
     [SerializeField] private GameObject prefabEnemigoTipo1;
     [SerializeField] private GameObject prefabMarcaDisparo;
     [SerializeField] private ParticleSystem efectoDisparo; 
@@ -320,8 +320,7 @@ public class MiniShooter : MonoBehaviour
                 }     
             }
 
-            personajePrincipal.GetComponent<Animator>().SetBool("disparando", true);
-            animatorArmaTipo11.SetBool("disparando", true);
+            personajePrincipal.GetComponent<Animator>().SetBool("disparando", true);            
             GetComponent<AudioSource>().PlayOneShot(sonidoDisparo);
             AplicarRetroceso();
 
@@ -562,10 +561,10 @@ public class MiniShooter : MonoBehaviour
         get => recargando; 
         set => recargando = value; 
     }
-    public Animator AnimatorArmaTipo11 
+    public GameObject Arma 
     { 
-        get => animatorArmaTipo11; 
-        set => animatorArmaTipo11 = value;
+        get => arma; 
+        set => arma = value;
     }
 
     public ParticleSystem EfectoDisparo

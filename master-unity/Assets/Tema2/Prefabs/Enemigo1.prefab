@@ -302,7 +302,6 @@ GameObject:
   - component: {fileID: 3239199854729536377}
   - component: {fileID: 669407264541756977}
   - component: {fileID: 8524054755890847352}
-  - component: {fileID: -2398951603991363637}
   m_Layer: 0
   m_Name: Enemigo1
   m_TagString: Enemigo
@@ -414,28 +413,6 @@ CapsuleCollider:
   m_Height: 2.0823023
   m_Direction: 1
   m_Center: {x: 0.03, y: 1.0115539, z: -0.10775331}
---- !u!195 &-2398951603991363637
-NavMeshAgent:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1662588743686254262}
-  m_Enabled: 1
-  m_AgentTypeID: 0
-  m_Radius: 0.5
-  m_Speed: 3.5
-  m_Acceleration: 8
-  avoidancePriority: 50
-  m_AngularSpeed: 120
-  m_StoppingDistance: 0
-  m_AutoTraverseOffMeshLink: 1
-  m_AutoBraking: 1
-  m_AutoRepath: 1
-  m_Height: 2
-  m_BaseOffset: 0
-  m_WalkableMask: 4294967295
-  m_ObstacleAvoidanceType: 4
 --- !u!1 &1859133481291813281
 GameObject:
   m_ObjectHideFlags: 0
@@ -478,6 +455,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6532467783877997690}
   - component: {fileID: 5548564581356156558}
+  - component: {fileID: 5272971446657005562}
   m_Layer: 0
   m_Name: BarraSalud
   m_TagString: Untagged
@@ -553,6 +531,18 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 1
+--- !u!114 &5272971446657005562
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1887694424608073077}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d87fff92af27cdf4d8eaf255da900603, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2014040764449791262
 GameObject:
   m_ObjectHideFlags: 0
