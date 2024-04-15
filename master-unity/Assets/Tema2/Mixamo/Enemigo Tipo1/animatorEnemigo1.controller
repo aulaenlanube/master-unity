@@ -11,18 +11,18 @@ AnimatorStateMachine:
   m_ChildStates:
   - serializedVersion: 1
     m_State: {fileID: 1450800545747996364}
-    m_Position: {x: 430, y: 20, z: 0}
+    m_Position: {x: 310, y: 70, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 4592378380945719856}
-    m_Position: {x: 780, y: 20, z: 0}
+    m_Position: {x: 310, y: 160, z: 0}
   m_ChildStateMachines: []
   m_AnyStateTransitions: []
   m_EntryTransitions: []
   m_StateMachineTransitions: {}
   m_StateMachineBehaviours: []
-  m_AnyStatePosition: {x: 50, y: 20, z: 0}
-  m_EntryPosition: {x: 50, y: 120, z: 0}
-  m_ExitPosition: {x: 800, y: 120, z: 0}
+  m_AnyStatePosition: {x: 50, y: 30, z: 0}
+  m_EntryPosition: {x: 50, y: 70, z: 0}
+  m_ExitPosition: {x: 310, y: 30, z: 0}
   m_ParentStateMachinePosition: {x: 800, y: 20, z: 0}
   m_DefaultState: {fileID: 1450800545747996364}
 --- !u!1101 &-6293027794312101736
@@ -45,7 +45,7 @@ AnimatorStateTransition:
   m_TransitionDuration: 0.25
   m_TransitionOffset: 0
   m_ExitTime: 0.8214286
-  m_HasExitTime: 1
+  m_HasExitTime: 0
   m_HasFixedDuration: 1
   m_InterruptionSource: 0
   m_OrderedInterruption: 1
@@ -64,7 +64,7 @@ AnimatorController:
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   m_AnimatorLayers:
   - serializedVersion: 5
     m_Name: Base Layer
@@ -105,6 +105,18 @@ AnimatorState:
   m_MirrorParameter: 
   m_CycleOffsetParameter: 
   m_TimeParameter: 
+--- !u!114 &3920797462698309652
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7935345541a952d43a19f4bb4f22f200, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1102 &4592378380945719856
 AnimatorState:
   serializedVersion: 6
@@ -117,7 +129,8 @@ AnimatorState:
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: 5272011767106669506}
-  m_StateMachineBehaviours: []
+  m_StateMachineBehaviours:
+  - {fileID: 3920797462698309652}
   m_Position: {x: 50, y: 50, z: 0}
   m_IKOnFeet: 0
   m_WriteDefaultValues: 1

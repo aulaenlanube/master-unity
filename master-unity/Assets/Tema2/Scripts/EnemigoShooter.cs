@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Runtime.ConstrainedExecution;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
@@ -10,25 +11,32 @@ public enum EstadosBarraSalud
     rojo
 }
 
+[RequireComponent(typeof(LineRenderer))]
 [RequireComponent(typeof(NavMeshAgent))]
 [RequireComponent(typeof(Animator))]
 public class EnemigoShooter : MonoBehaviour
 {
     [SerializeField] private GameObject barraDeSalud;
     [SerializeField] private float saludMaxima = 10f;
+    [Range(10, 100)][SerializeField] private float distanciaSeguimiento = 10f;
+    [Range(1, 3)][SerializeField] private float distanciaContacto = 1.5f;
     [Range(0, 10)][SerializeField] private float regeneracion = 1f;
 
     private int puntosEnemigo = 0;
-    //private int puntoRutaActual = 0;
+    private int puntoRutaActual = 0;
     private float saludActual;
     private Vector3 escalaOriginal;
     private EstadosBarraSalud estadoBarraSalud;
     private NavMeshAgent agente;
     private Vector3[] puntosRuta;
+    private float distanciaAlPersonaje;
 
     // evento para actualizar la puntuación
     public delegate void impacto(int puntos);
     public static event impacto enemigoImpactado;
+
+    // LineRenderer para dibujar la ruta del enemigo
+    private LineRenderer lineRenderer;
 
     void Start()
     {
@@ -40,26 +48,62 @@ public class EnemigoShooter : MonoBehaviour
         estadoBarraSalud = EstadosBarraSalud.verde;
         barraDeSalud.GetComponent<SpriteRenderer>().color = Color.green;
 
+        // obtenemos los puntos de la ruta
+        puntosRuta = RutasEnemigos.instance.ObtenerRutaAleatoria();
+        agente.SetDestination(puntosRuta[puntoRutaActual]);
+
+        lineRenderer = GetComponent<LineRenderer>();
+
+        // configuración inicial del LineRenderer
+        lineRenderer.startWidth = .3f;  // Ancho inicial de la línea
+        lineRenderer.endWidth = .3f;    // Ancho final de la línea
+        lineRenderer.material = new Material(Shader.Find("Sprites/Default"));
+        lineRenderer.startColor = Color.red;
+        lineRenderer.endColor = Color.blue;
     }
 
     void Update()
     {
         // regeneración de vida
-        if (saludActual < saludMaxima)
-        {
-            saludActual += regeneracion * Time.deltaTime;
-            if (saludActual > saludMaxima) saludActual = saludMaxima;
-            ActualizarBarraSalud();
-        }
+        RegenerarVida();
+        
+        // calculamos la distancia respecto al personaje principal
+        distanciaAlPersonaje = Vector3.Distance(transform.position, MiniShooter.instance.PersonajePrincipal.position);
 
-        if (Vector3.Distance(transform.position, MiniShooter.instance.PersonajePrincipal.position) < 2)
+        // si el enemigo entra en contacto con el personaje principal, modificamos el booleano que activa la animación de ataque
+        if (EnRangoAtaque())
         {
             GetComponent<Animator>().SetBool("cerca", true);
+            return;
+        }
+
+        //si estamos suficientemente cerca del personaje, empezamos a seguirlo
+        if (distanciaAlPersonaje < distanciaSeguimiento)
+        {  
+            agente.SetDestination(MiniShooter.instance.PersonajePrincipal.position);  
+        }
+        // si no estamos cerca del personaje, seguimos la ruta
+        else
+        {
+            // si estamos cerca de un punto de la ruta, obtenemos el siguiente punto de la ruta
+            if (Vector3.Distance(transform.position, puntosRuta[puntoRutaActual]) < 1)
+            {
+                puntoRutaActual = (puntoRutaActual + 1) % puntosRuta.Length;
+            }
+
+            agente.SetDestination(puntosRuta[puntoRutaActual]);   
+        }
+
+
+        // ibujar la ruta del enemigo hasta el siguiente punto
+        if (agente.pathStatus != NavMeshPathStatus.PathInvalid)
+        {
+            lineRenderer.positionCount = agente.path.corners.Length;
+            lineRenderer.SetPositions(agente.path.corners);
         }
         else
         {
-            GetComponent<Animator>().SetBool("cerca", false);
-            agente.SetDestination(MiniShooter.instance.PersonajePrincipal.position);
+            lineRenderer.positionCount = 0; // No dibujar si no hay ruta válida
         }
     }
 
@@ -90,6 +134,16 @@ public class EnemigoShooter : MonoBehaviour
             EstadosBarraSalud.rojo => Color.red,
             _ => Color.green
         };
+    }
+
+    void RegenerarVida()
+    {
+        if (saludActual < saludMaxima)
+        {
+            saludActual += regeneracion * Time.deltaTime;
+            if (saludActual > saludMaxima) saludActual = saludMaxima;
+            ActualizarBarraSalud();
+        }
     }
 
     void ActualizarBarraSalud()
@@ -129,16 +183,21 @@ public class EnemigoShooter : MonoBehaviour
 
         transform.position = posicionRespawn;
 
-        //ObtenerPosicionAleatoria();
+        ObtenerPosicionAleatoria();
         saludActual = saludMaxima;
         ActualizarBarraSalud();
     }
 
     void ObtenerPosicionAleatoria()
     {
-        transform.position = puntosRuta[Random.Range(0, puntosRuta.Length)];
+        puntoRutaActual = Random.Range(0, puntosRuta.Length);
+        transform.position = puntosRuta[puntoRutaActual];       
+    }  
 
+    public bool EnRangoAtaque()
+    {
+        return distanciaAlPersonaje < distanciaContacto;
     }
-
+    
 
 }
