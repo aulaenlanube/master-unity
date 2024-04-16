@@ -36,7 +36,7 @@ public class EnemigoShooter : MonoBehaviour
     public static event impacto enemigoImpactado;
 
     // LineRenderer para dibujar la ruta del enemigo
-    private LineRenderer lineRenderer;
+    private LineRenderer lineaAlObjetivo;
 
     void Start()
     {
@@ -52,14 +52,7 @@ public class EnemigoShooter : MonoBehaviour
         puntosRuta = RutasEnemigos.instance.ObtenerRutaAleatoria();
         agente.SetDestination(puntosRuta[puntoRutaActual]);
 
-        lineRenderer = GetComponent<LineRenderer>();
-
-        // configuración inicial del LineRenderer
-        lineRenderer.startWidth = .3f;  // Ancho inicial de la línea
-        lineRenderer.endWidth = .3f;    // Ancho final de la línea
-        lineRenderer.material = new Material(Shader.Find("Sprites/Default"));
-        lineRenderer.startColor = Color.red;
-        lineRenderer.endColor = Color.blue;
+        lineaAlObjetivo = GetComponent<LineRenderer>();
     }
 
     void Update()
@@ -94,17 +87,8 @@ public class EnemigoShooter : MonoBehaviour
             agente.SetDestination(puntosRuta[puntoRutaActual]);   
         }
 
-
-        // ibujar la ruta del enemigo hasta el siguiente punto
-        if (agente.pathStatus != NavMeshPathStatus.PathInvalid)
-        {
-            lineRenderer.positionCount = agente.path.corners.Length;
-            lineRenderer.SetPositions(agente.path.corners);
-        }
-        else
-        {
-            lineRenderer.positionCount = 0; // No dibujar si no hay ruta válida
-        }
+        // dibujamos linea al objetivo
+        DibujarRuta();
     }
 
     // impacto con el enemigo, se agrega a la lista de enemigos eliminados
@@ -197,6 +181,20 @@ public class EnemigoShooter : MonoBehaviour
     public bool EnRangoAtaque()
     {
         return distanciaAlPersonaje < distanciaContacto;
+    }
+
+    void DibujarRuta()
+    {
+        // dibujar la ruta del enemigo hasta el siguiente punto
+        if (agente.pathStatus != NavMeshPathStatus.PathInvalid)
+        {
+            lineaAlObjetivo.positionCount = agente.path.corners.Length;
+            lineaAlObjetivo.SetPositions(agente.path.corners);
+        }
+        else
+        {
+            lineaAlObjetivo.positionCount = 0; // no dibujar si no hay ruta válida
+        }
     }
     
 
