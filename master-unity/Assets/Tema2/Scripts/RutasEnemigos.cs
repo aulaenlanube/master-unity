@@ -10,7 +10,9 @@ public class RutaEnemigo
 
 public class RutasEnemigos : MonoBehaviour
 {
+    public RutaEnemigo[,] matriz; // Array de RutaEnemigo
     [SerializeField] private RutaEnemigo[] rutasEnemigos; // Array de RutaEnemigo
+    public float anchoLinea = 1f;
     private Color[] coloresRutas; // Array de colores para las rutas
 
     public static RutasEnemigos instance;

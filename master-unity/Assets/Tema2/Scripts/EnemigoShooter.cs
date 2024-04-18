@@ -1,6 +1,3 @@
-using System.Collections.Generic;
-using System.Runtime.ConstrainedExecution;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -11,7 +8,7 @@ public enum EstadosBarraSalud
     rojo
 }
 
-[RequireComponent(typeof(LineRenderer))]
+
 [RequireComponent(typeof(NavMeshAgent))]
 [RequireComponent(typeof(Animator))]
 public class EnemigoShooter : MonoBehaviour
@@ -50,7 +47,7 @@ public class EnemigoShooter : MonoBehaviour
 
         // obtenemos los puntos de la ruta
         puntosRuta = RutasEnemigos.instance.ObtenerRutaAleatoria();
-        agente.SetDestination(puntosRuta[puntoRutaActual]);
+        ObtenerPosicionAleatoria();
 
         lineaAlObjetivo = GetComponent<LineRenderer>();
     }
@@ -89,7 +86,11 @@ public class EnemigoShooter : MonoBehaviour
 
         // dibujamos linea al objetivo
         DibujarRuta();
+
+        // orientamos al agente hacia el siguiente punto de la ruta
+        OrientarAgente();
     }
+
 
     // impacto con el enemigo, se agrega a la lista de enemigos eliminados
     public void Impacto(int puntos)
@@ -155,18 +156,7 @@ public class EnemigoShooter : MonoBehaviour
 
     // respwan del enemigo
     public void ReiniciarEnemigo()
-    {
-        Vector3 posicionRespawn;
-        do
-        {
-            posicionRespawn = new Vector3(Random.Range(-MiniShooter.instance.LadoZonaRespawn, MiniShooter.instance.LadoZonaRespawn),
-                                          transform.position.y,
-                                          Random.Range(-MiniShooter.instance.LadoZonaRespawn, MiniShooter.instance.LadoZonaRespawn));
-
-        } while (Vector3.Distance(MiniShooter.instance.PersonajePrincipal.position, posicionRespawn) < MiniShooter.instance.LadoZonaRespawn);
-
-        transform.position = posicionRespawn;
-
+    { 
         ObtenerPosicionAleatoria();
         saludActual = saludMaxima;
         ActualizarBarraSalud();
@@ -175,12 +165,19 @@ public class EnemigoShooter : MonoBehaviour
     void ObtenerPosicionAleatoria()
     {
         puntoRutaActual = Random.Range(0, puntosRuta.Length);
-        transform.position = puntosRuta[puntoRutaActual];       
+        EstablecerPosicion();
     }  
 
     public bool EnRangoAtaque()
     {
         return distanciaAlPersonaje < distanciaContacto;
+    }
+
+    void EstablecerPosicion()
+    {
+        agente.enabled = false;
+        transform.position = puntosRuta[puntoRutaActual];
+        agente.enabled = true;
     }
 
     void DibujarRuta()
@@ -195,7 +192,21 @@ public class EnemigoShooter : MonoBehaviour
         {
             lineaAlObjetivo.positionCount = 0; // no dibujar si no hay ruta válida
         }
-    }
-    
+    }   
 
+    void OrientarAgente()
+    {
+        if (agente.path.corners.Length > 1)  // si hay más de un corner un 'corner' hacia el cual mirar
+        {
+            Vector3 posicionActual = transform.position;
+            Vector3 proximoCorner = agente.path.corners[1];  // el índice 0 es la posición actual, el índice 1 es el próximo 'corner'
+
+            Vector3 direccionHaciaCorner = proximoCorner - posicionActual;
+            direccionHaciaCorner.y = 0;  // normalizar en el plano horizontal, ignorando la diferencia de altura
+
+            // rotar hacia el próximo 'corner'
+            Quaternion rotacionObjetivo = Quaternion.LookRotation(direccionHaciaCorner);
+            transform.rotation = Quaternion.Slerp(transform.rotation, rotacionObjetivo, Time.deltaTime*2);            
+        }
+    }
 }
