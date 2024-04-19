@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -27,6 +28,7 @@ public class EnemigoShooter : MonoBehaviour
     private NavMeshAgent agente;
     private Vector3[] puntosRuta;
     private float distanciaAlPersonaje;
+    private Animator animator;
 
     // evento para actualizar la puntuación
     public delegate void impacto(int puntos);
@@ -39,6 +41,7 @@ public class EnemigoShooter : MonoBehaviour
     {
         GetComponent<Animator>().runtimeAnimatorController = MiniShooter.instance.AnimatorEnemigoTipo1;
         agente = GetComponent<NavMeshAgent>();
+        animator = GetComponent<Animator>();
 
         saludActual = saludMaxima;
         escalaOriginal = barraDeSalud.transform.localScale;
@@ -60,17 +63,20 @@ public class EnemigoShooter : MonoBehaviour
         // calculamos la distancia respecto al personaje principal
         distanciaAlPersonaje = Vector3.Distance(transform.position, MiniShooter.instance.PersonajePrincipal.position);
 
+       
+
         // si el enemigo entra en contacto con el personaje principal, modificamos el booleano que activa la animación de ataque
         if (EnRangoAtaque())
         {
-            GetComponent<Animator>().SetBool("cerca", true);
+            animator.SetBool("cerca", true);           
             return;
         }
+
 
         //si estamos suficientemente cerca del personaje, empezamos a seguirlo
         if (distanciaAlPersonaje < distanciaSeguimiento)
         {  
-            agente.SetDestination(MiniShooter.instance.PersonajePrincipal.position);  
+            IrADestino(MiniShooter.instance.PersonajePrincipal.position);              
         }
         // si no estamos cerca del personaje, seguimos la ruta
         else
@@ -81,7 +87,7 @@ public class EnemigoShooter : MonoBehaviour
                 puntoRutaActual = (puntoRutaActual + 1) % puntosRuta.Length;
             }
 
-            agente.SetDestination(puntosRuta[puntoRutaActual]);   
+            IrADestino(puntosRuta[puntoRutaActual]);   
         }
 
         // dibujamos linea al objetivo
@@ -207,6 +213,44 @@ public class EnemigoShooter : MonoBehaviour
             // rotar hacia el próximo 'corner'
             Quaternion rotacionObjetivo = Quaternion.LookRotation(direccionHaciaCorner);
             transform.rotation = Quaternion.Slerp(transform.rotation, rotacionObjetivo, Time.deltaTime*2);            
+        }
+    }
+
+    public void IrADestino(Vector3 destino)
+    {
+        float radioBusqueda = 20f;
+        NavMeshPath camino = new NavMeshPath();
+
+        if (NavMesh.CalculatePath(transform.position, destino, NavMesh.AllAreas, camino)
+            && camino.status == NavMeshPathStatus.PathComplete)
+        {
+            animator.SetBool("bloqueado", false);
+            agente.SetDestination(destino);
+        }
+        else
+        {
+            // intenta encontrar el punto más cercano válido en el NavMesh
+            NavMeshHit hit;
+            if (NavMesh.SamplePosition(destino, out hit, radioBusqueda, NavMesh.AllAreas))
+            {
+                // Calcula la distancia desde la posición actual del agente hasta el punto más cercano válido encontrado
+                float distanciaAlPuntoCercano = Vector3.Distance(transform.position, hit.position);
+
+
+                // si el punto es muy cercano respecto a la posición actual, se considera bloqueado
+                if (distanciaAlPuntoCercano < 2)
+                {
+                    agente.ResetPath();
+                    animator.SetBool("bloqueado", true);
+                }
+                else
+                {                    
+                    agente.SetDestination(hit.position);
+                    animator.SetBool("bloqueado", false);
+                }
+
+            }
+            else animator.SetBool("bloqueado", true); // no hay un punto cercano donde ir           
         }
     }
 }

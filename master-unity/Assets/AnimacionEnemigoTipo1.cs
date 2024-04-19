@@ -27,6 +27,6 @@ public class AnimacionEnemigoTipo1 : StateMachineBehaviour
         animator.gameObject.GetComponent<NavMeshAgent>().isStopped = false;
 
         // volvemos a seguir al personaje principal
-        animator.gameObject.GetComponent<NavMeshAgent>().SetDestination(MiniShooter.instance.PersonajePrincipal.position);
+        animator.gameObject.GetComponent<EnemigoShooter>().IrADestino(MiniShooter.instance.PersonajePrincipal.position);
     }
 }
