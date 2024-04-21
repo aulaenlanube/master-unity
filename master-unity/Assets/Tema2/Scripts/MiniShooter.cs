@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.UI;
 
 public enum CapacidadZoom
@@ -215,9 +216,13 @@ public class MiniShooter : MonoBehaviour
 
 
     public void AgregarEnemigoEliminado(EnemigoShooter enemigo)
-    {
+    {     
         enemigosEliminados.Add(enemigo);
         enemigosRestantes--;
+
+        ActualizarPuntuacion(enemigo.PuntosEnemigo); //---> agregado, importante el orden
+
+
         enemigo.gameObject.SetActive(false);
 
         //si se han eliminado todos los enemigos de la oleada
@@ -235,6 +240,7 @@ public class MiniShooter : MonoBehaviour
                 enemigoShooter.gameObject.SetActive(true);
             }
             enemigosEliminados.Clear();
+            ActualizarPuntuacion(0); // ----> se actualiza la puntuación, para que se muestren los enemigos restantes de la oleada actual
             IncrementarVelocidadEnemigos();
         }
     }

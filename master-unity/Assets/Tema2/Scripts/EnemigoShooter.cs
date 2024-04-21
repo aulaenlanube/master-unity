@@ -1,4 +1,3 @@
-using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -20,7 +19,7 @@ public class EnemigoShooter : MonoBehaviour
     [Range(1, 3)][SerializeField] private float distanciaContacto = 1.5f;
     [Range(0, 10)][SerializeField] private float regeneracion = 1f;
 
-    private int puntosEnemigo = 0;
+    private int puntosEnemigo = 1;
     private int puntoRutaActual = 0;
     private float saludActual;
     private Vector3 escalaOriginal;
@@ -29,6 +28,8 @@ public class EnemigoShooter : MonoBehaviour
     private Vector3[] puntosRuta;
     private float distanciaAlPersonaje;
     private Animator animator;
+    private float intervaloActualizacionRuta = .5f;
+    private float reloj;
 
     // evento para actualizar la puntuación
     public delegate void impacto(int puntos);
@@ -47,6 +48,7 @@ public class EnemigoShooter : MonoBehaviour
         escalaOriginal = barraDeSalud.transform.localScale;
         estadoBarraSalud = EstadosBarraSalud.verde;
         barraDeSalud.GetComponent<SpriteRenderer>().color = Color.green;
+        reloj = intervaloActualizacionRuta;
 
         // obtenemos los puntos de la ruta
         puntosRuta = RutasEnemigos.instance.ObtenerRutaAleatoria();
@@ -59,24 +61,24 @@ public class EnemigoShooter : MonoBehaviour
     {
         // regeneración de vida
         RegenerarVida();
-        
+
         // calculamos la distancia respecto al personaje principal
         distanciaAlPersonaje = Vector3.Distance(transform.position, MiniShooter.instance.PersonajePrincipal.position);
 
-       
+
 
         // si el enemigo entra en contacto con el personaje principal, modificamos el booleano que activa la animación de ataque
         if (EnRangoAtaque())
         {
-            animator.SetBool("cerca", true);           
+            animator.SetBool("cerca", true);
             return;
         }
 
 
         //si estamos suficientemente cerca del personaje, empezamos a seguirlo
         if (distanciaAlPersonaje < distanciaSeguimiento)
-        {  
-            IrADestino(MiniShooter.instance.PersonajePrincipal.position);              
+        {
+            IrADestino(MiniShooter.instance.PersonajePrincipal.position);
         }
         // si no estamos cerca del personaje, seguimos la ruta
         else
@@ -87,7 +89,7 @@ public class EnemigoShooter : MonoBehaviour
                 puntoRutaActual = (puntoRutaActual + 1) % puntosRuta.Length;
             }
 
-            IrADestino(puntosRuta[puntoRutaActual]);   
+            IrADestino(puntosRuta[puntoRutaActual]);
         }
 
         // dibujamos linea al objetivo
@@ -103,6 +105,9 @@ public class EnemigoShooter : MonoBehaviour
     {
         if (saludActual > puntos)
         {
+            //activamos animación de golpe
+            animator.SetBool("golpeado", true);
+
             //restamos salud
             saludActual -= puntos;
 
@@ -111,8 +116,13 @@ public class EnemigoShooter : MonoBehaviour
         }
         else
         {
-            MiniShooter.instance.AgregarEnemigoEliminado(this);
-            enemigoImpactado.Invoke(++puntosEnemigo);
+            // ajustamos salud a 0 si está muerto
+            saludActual = 0;
+
+            //MiniShooter.instance.AgregarEnemigoEliminado(this);
+            //enemigoImpactado.Invoke(++puntosEnemigo); // ----> hay que pasarlo en la máquina de estados, o en el mini-shooter
+
+            animator.SetTrigger("muerto");
         }
     }
 
@@ -129,12 +139,22 @@ public class EnemigoShooter : MonoBehaviour
 
     void RegenerarVida()
     {
-        if (saludActual < saludMaxima)
+        if (EstaHerido() && !EstaMuerto()) // ----> si está herido y no está muerto, regeneramos vida
         {
             saludActual += regeneracion * Time.deltaTime;
             if (saludActual > saludMaxima) saludActual = saludMaxima;
             ActualizarBarraSalud();
         }
+    }
+
+    public bool EstaHerido()
+    {
+        return saludActual < saludMaxima;
+    }
+
+    public bool EstaMuerto()
+    {
+        return saludActual <= 0;
     }
 
     void ActualizarBarraSalud()
@@ -162,7 +182,7 @@ public class EnemigoShooter : MonoBehaviour
 
     // respwan del enemigo
     public void ReiniciarEnemigo()
-    { 
+    {
         ObtenerPosicionAleatoria();
         saludActual = saludMaxima;
         ActualizarBarraSalud();
@@ -172,7 +192,7 @@ public class EnemigoShooter : MonoBehaviour
     {
         puntoRutaActual = Random.Range(0, puntosRuta.Length);
         EstablecerPosicion();
-    }  
+    }
 
     public bool EnRangoAtaque()
     {
@@ -198,7 +218,7 @@ public class EnemigoShooter : MonoBehaviour
         {
             lineaAlObjetivo.positionCount = 0; // no dibujar si no hay ruta válida
         }
-    }   
+    }
 
     void OrientarAgente()
     {
@@ -212,45 +232,58 @@ public class EnemigoShooter : MonoBehaviour
 
             // rotar hacia el próximo 'corner'
             Quaternion rotacionObjetivo = Quaternion.LookRotation(direccionHaciaCorner);
-            transform.rotation = Quaternion.Slerp(transform.rotation, rotacionObjetivo, Time.deltaTime*2);            
+            transform.rotation = Quaternion.Slerp(transform.rotation, rotacionObjetivo, Time.deltaTime * 2);
         }
     }
 
     public void IrADestino(Vector3 destino)
     {
-        float radioBusqueda = 20f;
-        NavMeshPath camino = new NavMeshPath();
-
-        if (NavMesh.CalculatePath(transform.position, destino, NavMesh.AllAreas, camino)
-            && camino.status == NavMeshPathStatus.PathComplete)
+        reloj -= Time.deltaTime;
+        if (reloj <= 0f)
         {
-            animator.SetBool("bloqueado", false);
-            agente.SetDestination(destino);
-        }
-        else
-        {
-            // intenta encontrar el punto más cercano válido en el NavMesh
-            NavMeshHit hit;
-            if (NavMesh.SamplePosition(destino, out hit, radioBusqueda, NavMesh.AllAreas))
+            NavMeshPath camino = new NavMeshPath();
+            if (NavMesh.CalculatePath(transform.position, destino, NavMesh.AllAreas, camino)
+                && camino.status == NavMeshPathStatus.PathComplete)
             {
-                // Calcula la distancia desde la posición actual del agente hasta el punto más cercano válido encontrado
-                float distanciaAlPuntoCercano = Vector3.Distance(transform.position, hit.position);
-
-
-                // si el punto es muy cercano respecto a la posición actual, se considera bloqueado
-                if (distanciaAlPuntoCercano < 2)
-                {
-                    agente.ResetPath();
-                    animator.SetBool("bloqueado", true);
-                }
-                else
-                {                    
-                    agente.SetDestination(hit.position);
-                    animator.SetBool("bloqueado", false);
-                }
-
+                animator.SetBool("bloqueado", false);
+                agente.SetDestination(destino);
             }
-            else animator.SetBool("bloqueado", true); // no hay un punto cercano donde ir           
+            else
+            {
+                // intenta encontrar el punto más cercano válido en el NavMesh
+                NavMeshHit hit;
+                if (NavMesh.SamplePosition(destino, out hit, float.MaxValue, NavMesh.AllAreas))
+                {
+                    // distancia desde la posición actual del agente hasta el punto más cercano válido encontrado
+                    float distanciaAlPuntoCercano = Vector3.Distance(transform.position, hit.position);
+
+                    // si el punto es muy cercano respecto a la posición actual, se considera bloqueado
+                    if (distanciaAlPuntoCercano < 2)
+                    {
+                        agente.ResetPath();
+                    }
+                    else
+                    {
+                        // si el punto es accesible, se establece como destino
+                        if (NavMesh.CalculatePath(transform.position, hit.position, NavMesh.AllAreas, camino)  && camino.status == NavMeshPathStatus.PathComplete)
+                        {
+                            agente.SetDestination(hit.position);
+                        }
+                        else agente.SetDestination(puntosRuta[puntoRutaActual]);
+                    }
+                }
+            }
+            reloj = intervaloActualizacionRuta;  // reiniciamos el reloj
         }
+    }
+
+    public GameObject BarraSalud
+    {
+        get { return barraDeSalud; }
+    }
+
+    public int PuntosEnemigo
+    {
+        get { return puntosEnemigo; }
     }
 }

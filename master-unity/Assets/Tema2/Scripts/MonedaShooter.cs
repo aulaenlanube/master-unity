@@ -2,9 +2,9 @@ using UnityEngine;
 
 public enum TipoMonedaShooter
 {
-    oro = 30,
-    plata = 20,
-    bronce = 10
+    oro = 300,
+    plata = 200,
+    bronce = 100
 }
 
 public class MonedaShooter : MonoBehaviour
