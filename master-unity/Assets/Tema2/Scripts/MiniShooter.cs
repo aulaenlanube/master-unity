@@ -218,11 +218,7 @@ public class MiniShooter : MonoBehaviour
     public void AgregarEnemigoEliminado(EnemigoShooter enemigo)
     {     
         enemigosEliminados.Add(enemigo);
-        enemigosRestantes--;
-
-        ActualizarPuntuacion(enemigo.PuntosEnemigo); //---> agregado, importante el orden
-
-
+        enemigosRestantes--;        
         enemigo.gameObject.SetActive(false);
 
         //si se han eliminado todos los enemigos de la oleada
@@ -240,9 +236,10 @@ public class MiniShooter : MonoBehaviour
                 enemigoShooter.gameObject.SetActive(true);
             }
             enemigosEliminados.Clear();
-            ActualizarPuntuacion(0); // ----> se actualiza la puntuación, para que se muestren los enemigos restantes de la oleada actual
             IncrementarVelocidadEnemigos();
         }
+
+        ActualizarPuntuacion(enemigo.PuntosEnemigo);
     }
 
     // incrementa la velocidad de los enemigos en un 10%

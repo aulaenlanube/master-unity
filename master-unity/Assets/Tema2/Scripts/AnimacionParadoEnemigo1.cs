@@ -4,8 +4,8 @@ using UnityEngine.AI;
 public class AnimacionParadoEnemigo1 : StateMachineBehaviour
 {
     private float reloj = 0;
-    private float intervalo = 0.1f; // cada 0.1 segundos se comprueba si el enemigo está bloqueado
-    private float porcentajeMovimientoMinimo = 0.5f; // 10% de su movimiento esperado
+    private float intervalo = 0.1f;
+    private float porcentajeMovimientoMinimo = 0.5f; // % de su movimiento esperado
     private float movMinimo;
     private Vector3 posicionInicial;
 
@@ -21,8 +21,6 @@ public class AnimacionParadoEnemigo1 : StateMachineBehaviour
         if (reloj >= intervalo)
         {
             reloj = 0;
-
-            //si el enemigo se ha movido menos del 10% de su movimiento esperado en el último 0.1 segundo, se considera bloqueado
             if (Vector3.Distance(animator.transform.position, posicionInicial) > movMinimo)
             {
                 animator.SetBool("bloqueado", false);

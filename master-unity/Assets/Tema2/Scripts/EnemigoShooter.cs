@@ -19,7 +19,7 @@ public class EnemigoShooter : MonoBehaviour
     [Range(1, 3)][SerializeField] private float distanciaContacto = 1.5f;
     [Range(0, 10)][SerializeField] private float regeneracion = 1f;
 
-    private int puntosEnemigo = 1;
+    private int puntosEnemigo = 0;
     private int puntoRutaActual = 0;
     private float saludActual;
     private Vector3 escalaOriginal;
@@ -65,8 +65,6 @@ public class EnemigoShooter : MonoBehaviour
         // calculamos la distancia respecto al personaje principal
         distanciaAlPersonaje = Vector3.Distance(transform.position, MiniShooter.instance.PersonajePrincipal.position);
 
-
-
         // si el enemigo entra en contacto con el personaje principal, modificamos el booleano que activa la animación de ataque
         if (EnRangoAtaque())
         {
@@ -74,6 +72,11 @@ public class EnemigoShooter : MonoBehaviour
             return;
         }
 
+        // si estamos cerca de un punto de la ruta, obtenemos el siguiente punto de la ruta
+        if (Vector3.Distance(transform.position, puntosRuta[puntoRutaActual]) < 1)
+        {
+            puntoRutaActual = (puntoRutaActual + 1) % puntosRuta.Length;
+        }
 
         //si estamos suficientemente cerca del personaje, empezamos a seguirlo
         if (distanciaAlPersonaje < distanciaSeguimiento)
@@ -83,12 +86,6 @@ public class EnemigoShooter : MonoBehaviour
         // si no estamos cerca del personaje, seguimos la ruta
         else
         {
-            // si estamos cerca de un punto de la ruta, obtenemos el siguiente punto de la ruta
-            if (Vector3.Distance(transform.position, puntosRuta[puntoRutaActual]) < 1)
-            {
-                puntoRutaActual = (puntoRutaActual + 1) % puntosRuta.Length;
-            }
-
             IrADestino(puntosRuta[puntoRutaActual]);
         }
 
@@ -104,24 +101,25 @@ public class EnemigoShooter : MonoBehaviour
     public void Impacto(int puntos)
     {
         if (saludActual > puntos)
-        {
-            //activamos animación de golpe
-            animator.SetBool("golpeado", true);
-
+        {   
             //restamos salud
             saludActual -= puntos;
+
+            //activar animación de impacto
+            animator.SetBool("golpeado", true);
 
             //actualizamos la barra de salud
             ActualizarBarraSalud();
         }
-        else
+        else if(!EstaMuerto())
         {
             // ajustamos salud a 0 si está muerto
             saludActual = 0;
 
-            //MiniShooter.instance.AgregarEnemigoEliminado(this);
-            //enemigoImpactado.Invoke(++puntosEnemigo); // ----> hay que pasarlo en la máquina de estados, o en el mini-shooter
+            // incrementamos la puntuación que obtenemos del enemigo
+            puntosEnemigo++;
 
+            // activamos la animación de muerte
             animator.SetTrigger("muerto");
         }
     }
@@ -139,7 +137,7 @@ public class EnemigoShooter : MonoBehaviour
 
     void RegenerarVida()
     {
-        if (EstaHerido() && !EstaMuerto()) // ----> si está herido y no está muerto, regeneramos vida
+        if (EstaHerido() && !EstaMuerto()) 
         {
             saludActual += regeneracion * Time.deltaTime;
             if (saludActual > saludMaxima) saludActual = saludMaxima;
@@ -245,7 +243,6 @@ public class EnemigoShooter : MonoBehaviour
             if (NavMesh.CalculatePath(transform.position, destino, NavMesh.AllAreas, camino)
                 && camino.status == NavMeshPathStatus.PathComplete)
             {
-                animator.SetBool("bloqueado", false);
                 agente.SetDestination(destino);
             }
             else
