@@ -10,6 +10,7 @@ public class SaludJugadorShooter : MonoBehaviour
 
     private float saludActual;
     private Image[] imagenesSangre;
+    private AudioSource sonidoDolor;
 
 
     void Start()
@@ -20,6 +21,7 @@ public class SaludJugadorShooter : MonoBehaviour
 
         saludActual = saludMaxima;
         imagenesSangre = MiniShooter.instance.ImagenesSangre();
+        sonidoDolor = GetComponent<AudioSource>();
     }
 
     void Update()
@@ -28,9 +30,14 @@ public class SaludJugadorShooter : MonoBehaviour
         {
             MiniShooter.instance.FinPartida();
         }
-        else if (EstaVivo() && EstaHerido())
+        else if (EstaHerido())
         {
             RegenerarVida();
+            if(!sonidoDolor.isPlaying) sonidoDolor.Play();
+        }
+        else if(sonidoDolor.isPlaying)
+        {
+            sonidoDolor.Stop();
         }
     }
 

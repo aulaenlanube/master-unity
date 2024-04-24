@@ -35,7 +35,7 @@ public class MiniShooter : MonoBehaviour
     [SerializeField] private TextMeshProUGUI textoPuntuacion;
     [SerializeField] private TextMeshProUGUI textoOleada;
     [SerializeField] private TextMeshProUGUI textoMunicion;
-    [SerializeField] private Image municionUI;    
+    [SerializeField] private Image municionUI;
     [SerializeField] private Image emblemaUI;
     [SerializeField] private Sprite[] emblemas;
     [SerializeField] private Image[] imagenesSangre;
@@ -54,12 +54,12 @@ public class MiniShooter : MonoBehaviour
 
     [Header("Configuración del disparo")]
     [SerializeField] private int municion = 100;
-    [Range(0.05f, 1f)][SerializeField] private float velocidadDisparo = 1f;    
+    [Range(0.05f, 1f)][SerializeField] private float velocidadDisparo = 1f;
     [Range(1, 500)][SerializeField] private int capacidadCargador = 10;
     [SerializeField] private float fuerzaRetroceso = 5f;
     [SerializeField] private float velocidadRetorno = 25f;
 
-    [Header("Configuración mirilla")]   
+    [Header("Configuración mirilla")]
     [SerializeField] private Image mirillaPrimeraPersona;
     [SerializeField] private Image mirillaZoomPrimeraPersona;
     [SerializeField] private Image mirillaTerceraPersona;
@@ -73,7 +73,7 @@ public class MiniShooter : MonoBehaviour
     [Header("Efectos de sonido")]
     [SerializeField] private AudioClip sonidoDisparo;
     [SerializeField] private AudioClip sonidoRecarga;
-    [SerializeField] private AudioClip sonidoDolorPersonaje;
+    [SerializeField] private AudioClip sonidoDolor;
     [SerializeField] private AudioClip sonidoMuerte;
 
     [Header("Configuraciones adicionales")]
@@ -81,7 +81,7 @@ public class MiniShooter : MonoBehaviour
     [SerializeField] private GameObject arma;
     [SerializeField] private GameObject prefabEnemigoTipo1;
     [SerializeField] private GameObject prefabMarcaDisparo;
-    [SerializeField] private ParticleSystem efectoDisparo; 
+    [SerializeField] private ParticleSystem efectoDisparo;
     [SerializeField] private int ladoZonaRespawn = 40;
     [SerializeField] private float sensibilidadRaton = 10f;
     [SerializeField] private float limiteRotacionVertical = 45.0f;
@@ -112,7 +112,7 @@ public class MiniShooter : MonoBehaviour
     private int enemigosRestantes;
     private float tiempoCorrerRestante;
 
-    
+
 
 
     private void Awake()
@@ -153,20 +153,23 @@ public class MiniShooter : MonoBehaviour
         {
             // aplicar el retroceso hacia arriba
             Camera.main.transform.Rotate(-cantidadRetroceso, 0f, 0f); // aplica el efecto de retroceso
-            cantidadRetroceso -= velocidadRetorno * Time.deltaTime; // reduce gradualmente el efecto de retroceso
+            cantidadRetroceso -= velocidadRetorno * Time.deltaTime;   // reduce gradualmente el efecto de retroceso
         }
     }
 
     public void FinPartida()
     {
-        if (!finPartida)
+        if(!finPartida)
         {
             finPartida = true;
+
             DetenerEfectosDeSonido();
+            SaludJugadorShooter.instance.GetComponent<AudioSource>().Stop();
+
             ReproducirSonidoMuerte();
             textoFinPartida.enabled = true;
             Time.timeScale = 0;
-        }        
+        }       
     }
 
     public void AlternarCamaras()
@@ -227,9 +230,9 @@ public class MiniShooter : MonoBehaviour
 
 
     public void AgregarEnemigoEliminado(EnemigoShooter enemigo)
-    {     
+    {
         enemigosEliminados.Add(enemigo);
-        enemigosRestantes--;        
+        enemigosRestantes--;
         enemigo.gameObject.SetActive(false);
 
         //si se han eliminado todos los enemigos de la oleada
@@ -299,7 +302,7 @@ public class MiniShooter : MonoBehaviour
     }
 
     void ActualizarBalasCargadorUI()
-    {        
+    {
         int municionRestanteCargador = municion % capacidadCargador;
         if (municionRestanteCargador == 0 && municion > 0) municionRestanteCargador = capacidadCargador;
         if (municionRestanteCargador > 9) municionRestanteCargador = 10;
@@ -331,10 +334,10 @@ public class MiniShooter : MonoBehaviour
                 if (hit.collider.gameObject.CompareTag("Marcable"))
                 {
                     MarcarDisparo(hit.point, hit.normal);
-                }     
+                }
             }
 
-            personajePrincipal.GetComponent<Animator>().SetBool("disparando", true);            
+            personajePrincipal.GetComponent<Animator>().SetBool("disparando", true);
             GetComponent<AudioSource>().PlayOneShot(sonidoDisparo);
             AplicarRetroceso();
 
@@ -353,22 +356,22 @@ public class MiniShooter : MonoBehaviour
     }
 
     void AplicarRetroceso()
-    {              
+    {
         cantidadRetroceso += fuerzaRetroceso;
     }
 
     void Recargar()
-    {        
+    {
         personajePrincipal.GetComponent<Animator>().SetBool("recargando", true);
-        recargando = true;   
+        recargando = true;
     }
 
 
     public void CompletarRecarga()
-    {        
+    {
         personajePrincipal.GetComponent<Animator>().SetBool("recargando", false);
         recargando = false;
-        
+
         tiempoUltimoDisparo = velocidadDisparo;
         ActualizarBalasCargadorUI();
     }
@@ -389,12 +392,13 @@ public class MiniShooter : MonoBehaviour
         GetComponent<AudioSource>().PlayOneShot(sonidoRecarga);
     }
 
-    public void ReproducirSonidoDolorPersonaje()
+    public void ReproducirSonidoDolor()
     {
-        GetComponent<AudioSource>().PlayOneShot(sonidoDolorPersonaje);
+        GetComponent<AudioSource>().PlayOneShot(sonidoDolor);
     }
+
     public void ReproducirSonidoMuerte()
-    {        
+    {
         GetComponent<AudioSource>().PlayOneShot(sonidoMuerte);
     }
 
@@ -408,14 +412,10 @@ public class MiniShooter : MonoBehaviour
     //---------------------------------------------
     private void OnEnable()
     {
-        // se suscribe a los eventos de los enemigos
-        EnemigoShooter.enemigoImpactado += ActualizarPuntuacion;
         MonedaShooter.monedaRecogida += IncrementarMunicion;
     }
     private void OnDisable()
     {
-        // se desuscribe a los eventos de los enemigos
-        EnemigoShooter.enemigoImpactado -= ActualizarPuntuacion;
         MonedaShooter.monedaRecogida -= IncrementarMunicion;
     }
 
@@ -561,31 +561,31 @@ public class MiniShooter : MonoBehaviour
         get => (int)capacidadZoom;
     }
 
-    public Image MirillaZoomPrimeraPersona 
-    { 
-        get => mirillaZoomPrimeraPersona; 
-        set => mirillaZoomPrimeraPersona = value; 
+    public Image MirillaZoomPrimeraPersona
+    {
+        get => mirillaZoomPrimeraPersona;
+        set => mirillaZoomPrimeraPersona = value;
     }
 
-    public Image MirillaPrimeraPersona 
-    { 
-        get => mirillaPrimeraPersona; 
-        set => mirillaPrimeraPersona = value; 
+    public Image MirillaPrimeraPersona
+    {
+        get => mirillaPrimeraPersona;
+        set => mirillaPrimeraPersona = value;
     }
 
-    public Image MirillaTerceraPersona 
-    { 
-        get => mirillaTerceraPersona; 
-        set => mirillaTerceraPersona = value; 
+    public Image MirillaTerceraPersona
+    {
+        get => mirillaTerceraPersona;
+        set => mirillaTerceraPersona = value;
     }
-    public bool Recargando 
-    { 
-        get => recargando; 
-        set => recargando = value; 
+    public bool Recargando
+    {
+        get => recargando;
+        set => recargando = value;
     }
-    public GameObject Arma 
-    { 
-        get => arma; 
+    public GameObject Arma
+    {
+        get => arma;
         set => arma = value;
     }
 

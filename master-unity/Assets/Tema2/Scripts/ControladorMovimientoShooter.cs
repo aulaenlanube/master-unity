@@ -187,14 +187,6 @@ public class ControladorMovimientoShooter : MonoBehaviour
         }
     }
 
-    void OnCollisionEnter(Collision collision)
-    {
-        if (collision.gameObject.CompareTag("Enemigo"))
-        {
-            //MiniShooter.instance.FinPartida();
-        }
-    }
-
 
     private void OnControllerColliderHit(ControllerColliderHit hit)
     {

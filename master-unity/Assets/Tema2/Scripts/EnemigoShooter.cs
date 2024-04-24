@@ -32,10 +32,6 @@ public class EnemigoShooter : MonoBehaviour
     private float intervaloActualizacionRuta = .5f;
     private float reloj;
 
-    // evento para actualizar la puntuación
-    public delegate void impacto(int puntos);
-    public static event impacto enemigoImpactado;
-
     // LineRenderer para dibujar la ruta del enemigo
     private LineRenderer lineaAlObjetivo;
 
