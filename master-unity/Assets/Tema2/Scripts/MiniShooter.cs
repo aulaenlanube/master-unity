@@ -35,9 +35,10 @@ public class MiniShooter : MonoBehaviour
     [SerializeField] private TextMeshProUGUI textoPuntuacion;
     [SerializeField] private TextMeshProUGUI textoOleada;
     [SerializeField] private TextMeshProUGUI textoMunicion;
-    [SerializeField] private Image municionUI;
+    [SerializeField] private Image municionUI;    
     [SerializeField] private Image emblemaUI;
     [SerializeField] private Sprite[] emblemas;
+    [SerializeField] private Image[] imagenesSangre;
 
     [Header("Configuración del movimiento")]
     [SerializeField] private float velocidadEnemigos = 5.0f;
@@ -72,6 +73,8 @@ public class MiniShooter : MonoBehaviour
     [Header("Efectos de sonido")]
     [SerializeField] private AudioClip sonidoDisparo;
     [SerializeField] private AudioClip sonidoRecarga;
+    [SerializeField] private AudioClip sonidoDolorPersonaje;
+    [SerializeField] private AudioClip sonidoMuerte;
 
     [Header("Configuraciones adicionales")]
     [SerializeField] private RuntimeAnimatorController animatorEnemigoTipo1;
@@ -89,6 +92,7 @@ public class MiniShooter : MonoBehaviour
 
 
 
+
     //variables de control
     private List<EnemigoShooter> enemigosEliminados = new List<EnemigoShooter>();
     private int puntuacionJugador = 0;
@@ -100,6 +104,7 @@ public class MiniShooter : MonoBehaviour
     private bool barraCorrerVacia = false;
     private bool agachado = false;
     private bool recargando = false;
+    private bool finPartida = false;
 
     //variables de control sin inicializar
     private Vector3[] posicionesCamara;
@@ -154,8 +159,14 @@ public class MiniShooter : MonoBehaviour
 
     public void FinPartida()
     {
-        textoFinPartida.enabled = true;
-        Time.timeScale = 0;
+        if (!finPartida)
+        {
+            finPartida = true;
+            DetenerEfectosDeSonido();
+            ReproducirSonidoMuerte();
+            textoFinPartida.enabled = true;
+            Time.timeScale = 0;
+        }        
     }
 
     public void AlternarCamaras()
@@ -373,10 +384,18 @@ public class MiniShooter : MonoBehaviour
         return posicionActualCamara == 0;
     }
 
-
     public void ReproducirSonidoRecarga()
     {
         GetComponent<AudioSource>().PlayOneShot(sonidoRecarga);
+    }
+
+    public void ReproducirSonidoDolorPersonaje()
+    {
+        GetComponent<AudioSource>().PlayOneShot(sonidoDolorPersonaje);
+    }
+    public void ReproducirSonidoMuerte()
+    {        
+        GetComponent<AudioSource>().PlayOneShot(sonidoMuerte);
     }
 
     public void DetenerEfectosDeSonido()
@@ -574,4 +593,10 @@ public class MiniShooter : MonoBehaviour
     {
         get { return efectoDisparo; }
     }
+
+    public Image[] ImagenesSangre()
+    {
+        return imagenesSangre;
+    }
+
 }

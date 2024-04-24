@@ -214,10 +214,6 @@ public class ControladorMovimientoShooter : MonoBehaviour
             rb.AddForce(direccionDeFuerza * MiniShooter.instance.FuerzaEmpuje);
         }
     }
-
-
-
-
 }
 
 

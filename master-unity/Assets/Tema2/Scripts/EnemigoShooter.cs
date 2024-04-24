@@ -15,6 +15,7 @@ public class EnemigoShooter : MonoBehaviour
 {
     [SerializeField] private GameObject barraDeSalud;
     [SerializeField] private float saludMaxima = 10f;
+    [Range(1, 100)][SerializeField] private float dps = 1f;
     [Range(10, 100)][SerializeField] private float distanciaSeguimiento = 10f;
     [Range(1, 3)][SerializeField] private float distanciaContacto = 1.5f;
     [Range(0, 10)][SerializeField] private float regeneracion = 1f;
@@ -229,8 +230,11 @@ public class EnemigoShooter : MonoBehaviour
             direccionHaciaCorner.y = 0;  // normalizar en el plano horizontal, ignorando la diferencia de altura
 
             // rotar hacia el próximo 'corner'
-            Quaternion rotacionObjetivo = Quaternion.LookRotation(direccionHaciaCorner);
-            transform.rotation = Quaternion.Slerp(transform.rotation, rotacionObjetivo, Time.deltaTime * 2);
+            if(direccionHaciaCorner != Vector3.zero)
+            {
+                Quaternion rotacionObjetivo = Quaternion.LookRotation(direccionHaciaCorner);
+                transform.rotation = Quaternion.Slerp(transform.rotation, rotacionObjetivo, Time.deltaTime * 2);
+            }            
         }
     }
 
@@ -282,5 +286,10 @@ public class EnemigoShooter : MonoBehaviour
     public int PuntosEnemigo
     {
         get { return puntosEnemigo; }
+    }
+
+    public float Dps
+    {
+        get { return dps; }
     }
 }
