@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public enum CapacidadZoom
@@ -145,6 +146,9 @@ public class MiniShooter : MonoBehaviour
             else posicionActualCamara++;
             EstablecerCamara();
         }
+
+        //si la partida ha terminado y se pulsa la tecla R, se reinicia la partida
+        if (finPartida && Input.GetKeyDown(KeyCode.R)) ReiniciarPartida();
     }
 
     private void LateUpdate()
@@ -171,6 +175,15 @@ public class MiniShooter : MonoBehaviour
             Time.timeScale = 0;
         }       
     }
+
+    void ReiniciarPartida()
+    {
+        Time.timeScale = 1;
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+
+    
 
     public void AlternarCamaras()
     {
