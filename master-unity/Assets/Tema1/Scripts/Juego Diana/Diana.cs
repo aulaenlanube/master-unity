@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Diana : MonoBehaviour
 {
@@ -38,7 +39,7 @@ public class Diana : MonoBehaviour
     }
 
     void Update()
-    {        
+    {      
         duracionActual += Time.deltaTime;
         tiempoActualizado?.Invoke(duracionPartida - duracionActual);
 

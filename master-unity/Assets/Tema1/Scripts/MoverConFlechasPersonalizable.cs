@@ -45,4 +45,17 @@ public class MoverConFlechasPersonalizable : MonoBehaviour
         yield return new WaitForSeconds(duracionRalentizacion);
         velocidad = VELOCIDAD_POR_DEFECTO;
     }
+
+    private IEnumerator Acelerar()
+    {
+        velocidad *= 2;
+        yield return new WaitForSeconds(duracionRalentizacion);
+        velocidad = VELOCIDAD_POR_DEFECTO;
+    }
+
+    public void AcelerarCubo()
+    {
+        if (corrutinaActual != null) StopCoroutine(corrutinaActual);
+        corrutinaActual = StartCoroutine(Acelerar());
+    }
 }

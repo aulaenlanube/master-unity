@@ -47,6 +47,7 @@ public class Moneda : MonoBehaviour
         if (Vector3.Distance(transform.position, cubo.transform.position) < distanciaParaRecoger)
         {
             cubo.GetComponent<PuntuacionCubo>().AumentarPuntuacion(puntosMoneda);
+            if (tipoMoneda == TipoMoneda.bronce) Acelerar(cubo);
             if (tipoMoneda == TipoMoneda.oro) Ralentizar(cubo);                
             MoverMoneda();
             ActualizarTipoMoneda();
@@ -57,6 +58,12 @@ public class Moneda : MonoBehaviour
     {
         cubo.GetComponent<MoverConFlechasPersonalizable>().RalentizarCubo();
     }
+
+    private void Acelerar(GameObject cubo)
+    {
+        cubo.GetComponent<MoverConFlechasPersonalizable>().AcelerarCubo();
+    }
+
     private void MoverMoneda()
     {
         Vector3 posicionAleatoria = new Vector3(Random.Range(-distanciaMaximaMoneda, distanciaMaximaMoneda - 1), 0, Random.Range(-distanciaMaximaMoneda, distanciaMaximaMoneda - 1));

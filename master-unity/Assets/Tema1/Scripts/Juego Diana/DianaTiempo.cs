@@ -17,7 +17,7 @@ public class DianaTiempo : MonoBehaviour
     {
         if (tiempo == 0)
         {
-            GetComponent<Text>().text = "Fin de la partida";
+            GetComponent<Text>().text = "Fin de la partida, pulsa 'S' para salir";
         }
         else GetComponent<Text>().text = $"Tiempo restante: {tiempo:F2}";
 

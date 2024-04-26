@@ -23,7 +23,7 @@ public class DianaPuntuaciones : MonoBehaviour
         PuntuacionesJuegoPunteria.Instancia.AgregarPuntuacion(puntuacion);
 
         //mostramos las mejores puntuaciones
-        List<int> mejoresPuntuaciones = PuntuacionesJuegoPunteria.Instancia.ObtenerMejoresPuntuaciones();
+        List<int> mejoresPuntuaciones = PuntuacionesJuegoPunteria.Instancia.ObtenerMejoresPuntuaciones(5);
         string textoMejoresPuntuaciones = "Mejores puntuaciones:\n";
         foreach (int puntuacionActual in mejoresPuntuaciones)
         {
