@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!28 &-986792832518250077
+--- !u!28 &-3417147542401522678
 Texture2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -61,7 +61,7 @@ MonoBehaviour:
   m_Name: Binary SDF
   m_EditorClassIdentifier: 
   hashCode: 1320780958
-  material: {fileID: 1666307706491855964}
+  material: {fileID: 662537341154395846}
   materialHashCode: 781817214
   m_Version: 1.1.0
   m_SourceFontFileGUID: 61ae4b66c7e70874f9645d0e1e987b93
@@ -1385,7 +1385,7 @@ MonoBehaviour:
     m_GlyphIndex: 96
     m_Scale: 1
   m_AtlasTextures:
-  - {fileID: -986792832518250077}
+  - {fileID: -3417147542401522678}
   m_AtlasTextureIndex: 0
   m_IsMultiAtlasTexturesEnabled: 0
   m_ClearDynamicDataOnBuild: 0
@@ -1934,7 +1934,7 @@ MonoBehaviour:
   boldSpacing: 7
   italicStyle: 35
   tabSize: 10
---- !u!21 &1666307706491855964
+--- !u!21 &662537341154395846
 Material:
   serializedVersion: 8
   m_ObjectHideFlags: 0
@@ -1945,7 +1945,9 @@ Material:
   m_Shader: {fileID: 4800000, guid: 68e6db2ebdc24f95958faec2be5558d6, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
-  m_ValidKeywords: []
+  m_ValidKeywords:
+  - GLOW_ON
+  - UNDERLAY_ON
   m_InvalidKeywords: []
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
@@ -1970,7 +1972,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: -986792832518250077}
+        m_Texture: {fileID: -3417147542401522678}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _OutlineTex:
@@ -1990,26 +1992,26 @@ Material:
     - _ColorMask: 15
     - _CullMode: 0
     - _Diffuse: 0.5
-    - _FaceDilate: 1
+    - _FaceDilate: 0.48
     - _FaceUVSpeedX: 0
     - _FaceUVSpeedY: 0
     - _GlowInner: 0.05
     - _GlowOffset: 0
     - _GlowOuter: 0.05
-    - _GlowPower: 0.75
+    - _GlowPower: 1
     - _GradientScale: 6
     - _LightAngle: 3.1416
     - _MaskSoftnessX: 0
     - _MaskSoftnessY: 0
-    - _OutlineSoftness: 0.76
+    - _OutlineSoftness: 0.736
     - _OutlineUVSpeedX: 0
     - _OutlineUVSpeedY: 0
-    - _OutlineWidth: 0.49
+    - _OutlineWidth: 1
     - _PerspectiveFilter: 0.875
     - _Reflectivity: 10
-    - _ScaleRatioA: 0.34188035
-    - _ScaleRatioB: 0
-    - _ScaleRatioC: 0
+    - _ScaleRatioA: 0.34671658
+    - _ScaleRatioB: 0.27708337
+    - _ScaleRatioC: 0.12158111
     - _ScaleX: 1
     - _ScaleY: 1
     - _ShaderFlags: 0
@@ -2022,10 +2024,10 @@ Material:
     - _StencilWriteMask: 255
     - _TextureHeight: 512
     - _TextureWidth: 512
-    - _UnderlayDilate: 0
-    - _UnderlayOffsetX: 0
-    - _UnderlayOffsetY: 0
-    - _UnderlaySoftness: 0
+    - _UnderlayDilate: 1
+    - _UnderlayOffsetX: 0.75
+    - _UnderlayOffsetY: -0.48
+    - _UnderlaySoftness: 0.529
     - _VertexOffsetX: 0
     - _VertexOffsetY: 0
     - _WeightBold: 0.75
@@ -2033,12 +2035,12 @@ Material:
     m_Colors:
     - _ClipRect: {r: -32767, g: -32767, b: 32767, a: 32767}
     - _EnvMatrixRotation: {r: 0, g: 0, b: 0, a: 0}
-    - _FaceColor: {r: 0.6792453, g: 0, b: 0, a: 1}
-    - _GlowColor: {r: 0, g: 1, b: 0, a: 0.5}
+    - _FaceColor: {r: 0.18867922, g: 0, b: 0, a: 1}
+    - _GlowColor: {r: 1, g: 0, b: 0.54197407, a: 0.5}
     - _MaskCoord: {r: 0, g: 0, b: 32767, a: 32767}
-    - _OutlineColor: {r: 0.3679245, g: 0, b: 0, a: 1}
+    - _OutlineColor: {r: 0.754717, g: 0, b: 0, a: 1}
     - _ReflectFaceColor: {r: 0, g: 0, b: 0, a: 1}
     - _ReflectOutlineColor: {r: 0, g: 0, b: 0, a: 1}
     - _SpecularColor: {r: 1, g: 1, b: 1, a: 1}
-    - _UnderlayColor: {r: 0, g: 0, b: 0, a: 0.5}
+    - _UnderlayColor: {r: 0, g: 0, b: 0, a: 1}
   m_BuildTextureStacks: []

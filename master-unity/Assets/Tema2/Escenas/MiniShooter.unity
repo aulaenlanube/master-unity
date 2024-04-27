@@ -8227,11 +8227,10 @@ MonoBehaviour:
   m_text: '<size=200%>HAS MUERTO</size>
 
 
-
     PULSA ''R'' PARA REINICIAR'
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: f2e40a63e48272641bccce813f242ed3, type: 2}
-  m_sharedMaterial: {fileID: 1666307706491855964, guid: f2e40a63e48272641bccce813f242ed3, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 6735925b98cb6a241b76f794c4e13870, type: 2}
+  m_sharedMaterial: {fileID: 662537341154395846, guid: 6735925b98cb6a241b76f794c4e13870, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
