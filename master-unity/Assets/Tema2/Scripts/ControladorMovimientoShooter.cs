@@ -16,6 +16,8 @@ public class ControladorMovimientoShooter : MonoBehaviour
     private float frecuenciaCabeceo = 10f;
     private float tiempoCabeceo = 0f;
 
+    private Animator animatorPivote;
+
     void Start()
     {
         sensibilidadRaton = MiniShooter.instance.SensibilidadRaton;
@@ -23,7 +25,9 @@ public class ControladorMovimientoShooter : MonoBehaviour
         controlador = GetComponent<CharacterController>();
         animator = GetComponent<Animator>();
         puntosTeletransporte = GameObject.FindGameObjectsWithTag("Teletransporte");
-    }
+        animatorPivote = MiniShooter.instance.Pivote.GetComponent<Animator>();
+    
+}
 
     void Update()
     {
@@ -35,25 +39,39 @@ public class ControladorMovimientoShooter : MonoBehaviour
 
     private void SimularCabeceo()
     {
-        // simulamos el cabeceo cuando no está quieto y está en primera persona
-        if (!animator.GetBool("quieto") && MiniShooter.instance.EstaEnPrimeraPersona())
+        if (MiniShooter.instance.EstaEnPrimeraPersona())
         {
-            // cálculo del tiempo para el efecto de cabeceo basado en el movimiento
-            amplitudCabeceo = MiniShooter.instance.VelocidadPersonaje / 50f;
-            frecuenciaCabeceo = MiniShooter.instance.VelocidadPersonaje;
-            tiempoCabeceo += Time.deltaTime * frecuenciaCabeceo;
-            float alturaCabeceo = Mathf.Sin(tiempoCabeceo) * amplitudCabeceo;
-
-            // ajustar la posición de la cámara en el eje Y para simular el cabeceo
-            Camera.main.transform.localPosition = new Vector3(0, alturaCabeceo, 0) + MiniShooter.instance.ObtenerPosicionCamaraActual(); 
-        }       
+            // cuando el personaje está corriendo, no está apuntando y está en primera persona
+            if (MiniShooter.instance.EstaCorriendo() && !Input.GetMouseButton(1))
+            {
+                animatorPivote.SetBool("caminando", true);
+                animatorPivote.SetBool("corriendo", true);
+            }
+            // cuando el personaje no está quieto, no está corriendo y está en primera persona
+            else if (!animator.GetBool("quieto") && !MiniShooter.instance.EstaCorriendo())
+            {
+                animatorPivote.SetBool("corriendo", false);
+                animatorPivote.SetBool("caminando", true);
+            }
+            // cuando el personaje está quieto y está en primera persona
+            else if (animator.GetBool("quieto"))
+            {
+                animatorPivote.SetBool("caminando", false);
+            }
+        }
     }
 
-    void ControlMovimiento()
+void ControlMovimiento()
     {
-        //controlamos si está corriendo
-        if (Input.GetKey(KeyCode.LeftShift)) MiniShooter.instance.Correr();
-        else MiniShooter.instance.Caminar();
+        //controlamos si está corriendo y si no está apuntando
+        if (Input.GetKey(KeyCode.LeftShift) && !Input.GetMouseButton(1))
+        {
+            MiniShooter.instance.Correr();
+        }
+        else
+        {
+            MiniShooter.instance.Caminar();
+        }
 
         //controlamos si está agachado
         if (Input.GetKeyDown(KeyCode.X))

@@ -79,10 +79,13 @@ public class MiniShooter : MonoBehaviour
 
     [Header("Configuraciones adicionales")]
     [SerializeField] private RuntimeAnimatorController animatorEnemigoTipo1;
+    [SerializeField] private GameObject pivote;
     [SerializeField] private GameObject arma;
+    [SerializeField] private GameObject armaPrimeraPersona;
     [SerializeField] private GameObject prefabEnemigoTipo1;
     [SerializeField] private GameObject prefabMarcaDisparo;
     [SerializeField] private ParticleSystem efectoDisparo;
+    [SerializeField] private ParticleSystem efectoDisparoPrimeraPersona;
     [SerializeField] private int ladoZonaRespawn = 40;
     [SerializeField] private float sensibilidadRaton = 10f;
     [SerializeField] private float limiteRotacionVertical = 45.0f;
@@ -200,8 +203,16 @@ public class MiniShooter : MonoBehaviour
     void EstablecerCamara()
     {
         //alternamos la culling mask de la cámara para renderizar o no el personaje
-        if (posicionActualCamara == 0) EliminarCapaDeCullingMask(Camera.main, "JugadorPrimeraPersona");
-        if (posicionActualCamara == 1) AgregarCapaACullingMask(Camera.main, "JugadorPrimeraPersona");
+        if (posicionActualCamara == 0)
+        {
+            EliminarCapaDeCullingMask(Camera.main, "JugadorPrimeraPersona");
+            AgregarCapaACullingMask(Camera.main, "Pivote");
+        }
+        if (posicionActualCamara == 1)
+        {
+            AgregarCapaACullingMask(Camera.main, "JugadorPrimeraPersona");
+            EliminarCapaDeCullingMask(Camera.main, "Pivote");
+        }
 
         //establecemos la posición de la cámara
         Camera.main.transform.localPosition = posicionesCamara[posicionActualCamara];
@@ -373,6 +384,7 @@ public class MiniShooter : MonoBehaviour
     void Recargar()
     {
         personajePrincipal.GetComponent<Animator>().SetBool("recargando", true);
+        ArmaPrimeraPersona.GetComponent<Animator>().SetBool("recargando", true);
         recargando = true;
     }
 
@@ -380,6 +392,7 @@ public class MiniShooter : MonoBehaviour
     public void CompletarRecarga()
     {
         personajePrincipal.GetComponent<Animator>().SetBool("recargando", false);
+        ArmaPrimeraPersona.GetComponent<Animator>().SetBool("recargando", false);
         recargando = false;
 
         tiempoUltimoDisparo = velocidadDisparo;
@@ -607,6 +620,21 @@ public class MiniShooter : MonoBehaviour
     public Image[] ImagenesSangre()
     {
         return imagenesSangre;
+    }
+
+    public GameObject Pivote
+    {
+        get { return pivote; }
+    }
+
+    public GameObject ArmaPrimeraPersona
+    {
+        get { return armaPrimeraPersona; }
+    }
+
+    public ParticleSystem EfectoDisparoPrimeraPersona
+    {
+        get { return efectoDisparoPrimeraPersona; }
     }
 
 }

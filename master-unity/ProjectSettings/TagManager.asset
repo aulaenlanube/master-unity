@@ -12,6 +12,7 @@ TagManager:
   - Interactuable
   - Personaje
   - Marcable
+  - FxTemporaire
   layers:
   - Default
   - TransparentFX
@@ -19,7 +20,7 @@ TagManager:
   - JugadorPrimeraPersona
   - Water
   - UI
-  - 
+  - Pivote
   - 
   - 
   - 

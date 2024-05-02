@@ -5,24 +5,29 @@ public class MirillaMiniShooter : MonoBehaviour
 {
     private Vector2 escalaOriginalMirilla;
     private Vector2 escalaZoomMirilla;
+    private Animator pivote;
 
     private void Start()
     {
         escalaOriginalMirilla = MiniShooter.instance.ObtenerEscalaOriginalMirilla();
         escalaZoomMirilla = escalaOriginalMirilla * .5f;
+        pivote = MiniShooter.instance.Pivote.GetComponent<Animator>();
     }
 
     void Update()
     {
-        if (Input.GetMouseButton(1)) //botón derecho del mouse
+        // si el jugador no está corriendo y se mantiene presionado el botón derecho del mouse
+        if (Input.GetMouseButton(1) && !MiniShooter.instance.EstaCorriendo())
         {
             // apuntamos con la mirilla
             Apuntar();
+            pivote.SetBool("apuntando", true);
         }
         else
         {  
             // desapuntamos con la mirilla
             Desapuntar();
+            pivote.SetBool("apuntando", false);
         }
     }
 
