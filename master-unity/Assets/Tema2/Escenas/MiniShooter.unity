@@ -299,7 +299,7 @@ GameObject:
   - component: {fileID: 33082247}
   - component: {fileID: 33082246}
   - component: {fileID: 33082248}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: MiniShooter
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -318,7 +318,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f34a59230387fe48893b587f00902b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  personajePrincipal: {fileID: 713642509}
+  personajeTerceraPersona: {fileID: 713642509}
+  personajePrimeraPersona: {fileID: 1946330831}
   textoFinPartida: {fileID: 1148293117}
   textoPuntuacion: {fileID: 780885784}
   textoOleada: {fileID: 100126617}
@@ -370,12 +371,11 @@ MonoBehaviour:
   sonidoDolor: {fileID: 8300000, guid: 940784f0ef28abf4293c51d274277e09, type: 3}
   sonidoMuerte: {fileID: 8300000, guid: d4cc29ffd14431d46ac9227f4ed289d5, type: 3}
   animatorEnemigoTipo1: {fileID: 9100000, guid: 7c2d6132d6350e44eacce7a1a672dfe6, type: 2}
-  pivote: {fileID: 1946330830}
-  arma: {fileID: 1583369399}
+  armaTerceraPersona: {fileID: 1583369399}
   armaPrimeraPersona: {fileID: 9193197605422871720}
   prefabEnemigoTipo1: {fileID: 1662588743686254262, guid: 8cc93a7dcaea9144abf4fe221b9d286f, type: 3}
   prefabMarcaDisparo: {fileID: 2972319133925494431, guid: e9ea869b4f7d31d439e79dc17237391c, type: 3}
-  efectoDisparo: {fileID: 1609875145}
+  efectoDisparoTerceraPersona: {fileID: 1609875145}
   efectoDisparoPrimeraPersona: {fileID: 1343584088}
   ladoZonaRespawn: 40
   sensibilidadRaton: 300
@@ -12376,7 +12376,7 @@ GameObject:
   - component: {fileID: 1946330831}
   - component: {fileID: 1946330832}
   m_Layer: 6
-  m_Name: Pivote
+  m_Name: PersonajePrimeraPersona
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -13209,7 +13209,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 100006, guid: 30b4cc2728d8cec499fad63ba93785a4, type: 3}
       propertyPath: m_Name
-      value: WFX_MF FPS RIFLE1
+      value: EfectoDisparoPrimeraPersona
       objectReference: {fileID: 0}
     - target: {fileID: 100006, guid: 30b4cc2728d8cec499fad63ba93785a4, type: 3}
       propertyPath: m_Layer
@@ -14477,9 +14477,13 @@ PrefabInstance:
       propertyPath: m_Controller
       value: 
       objectReference: {fileID: 9100000, guid: 76ae9e73b5eff8c43937d35e366b8a4e, type: 2}
+    - target: {fileID: 7072837740560899468, guid: 9f001fbd3bc7d29448b21ca112f2e3d2, type: 3}
+      propertyPath: m_Name
+      value: EfectoDisparoTerceraPersona
+      objectReference: {fileID: 0}
     - target: {fileID: 7196121880341258520, guid: 9f001fbd3bc7d29448b21ca112f2e3d2, type: 3}
       propertyPath: m_Name
-      value: PersonajePrincipal
+      value: PersonajeTerceraPersona
       objectReference: {fileID: 0}
     - target: {fileID: 7536230910750391202, guid: 9f001fbd3bc7d29448b21ca112f2e3d2, type: 3}
       propertyPath: m_LocalPosition.x
@@ -14520,6 +14524,10 @@ PrefabInstance:
     - target: {fileID: 7536230910750391202, guid: 9f001fbd3bc7d29448b21ca112f2e3d2, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8006382428908816913, guid: 9f001fbd3bc7d29448b21ca112f2e3d2, type: 3}
+      propertyPath: m_Name
+      value: ArmaTerceraPersona
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

@@ -29,7 +29,8 @@ public class MiniShooter : MonoBehaviour
     public static MiniShooter instance;
 
     [Header("Personaje Principal")]
-    [SerializeField] private Transform personajePrincipal;
+    [SerializeField] private Transform personajeTerceraPersona;
+    [SerializeField] private Transform personajePrimeraPersona;
 
     [Header("UI")]
     [SerializeField] private TextMeshProUGUI textoFinPartida;
@@ -78,13 +79,12 @@ public class MiniShooter : MonoBehaviour
     [SerializeField] private AudioClip sonidoMuerte;
 
     [Header("Configuraciones adicionales")]
-    [SerializeField] private RuntimeAnimatorController animatorEnemigoTipo1;
-    [SerializeField] private GameObject pivote;
-    [SerializeField] private GameObject arma;
+    [SerializeField] private RuntimeAnimatorController animatorEnemigoTipo1;    
+    [SerializeField] private GameObject armaTerceraPersona;
     [SerializeField] private GameObject armaPrimeraPersona;
     [SerializeField] private GameObject prefabEnemigoTipo1;
     [SerializeField] private GameObject prefabMarcaDisparo;
-    [SerializeField] private ParticleSystem efectoDisparo;
+    [SerializeField] private ParticleSystem efectoDisparoTerceraPersona;
     [SerializeField] private ParticleSystem efectoDisparoPrimeraPersona;
     [SerializeField] private int ladoZonaRespawn = 40;
     [SerializeField] private float sensibilidadRaton = 10f;
@@ -202,16 +202,17 @@ public class MiniShooter : MonoBehaviour
 
     void EstablecerCamara()
     {
-        //alternamos la culling mask de la cámara para renderizar o no el personaje
-        if (posicionActualCamara == 0)
+        //alternamos la culling mask de la cámara para renderizar las manos y el arma en primera persona
+        if (EstaEnPrimeraPersona())
         {
-            EliminarCapaDeCullingMask(Camera.main, "JugadorPrimeraPersona");
-            AgregarCapaACullingMask(Camera.main, "Pivote");
-        }
-        if (posicionActualCamara == 1)
-        {
+            EliminarCapaDeCullingMask(Camera.main, "JugadorTerceraPersona");
             AgregarCapaACullingMask(Camera.main, "JugadorPrimeraPersona");
-            EliminarCapaDeCullingMask(Camera.main, "Pivote");
+        }
+        //alternamos la culling mask de la cámara para renderizar el personaje en tercera persona
+        else
+        {
+            AgregarCapaACullingMask(Camera.main, "JugadorTerceraPersona");
+            EliminarCapaDeCullingMask(Camera.main, "JugadorPrimeraPersona");
         }
 
         //establecemos la posición de la cámara
@@ -358,7 +359,7 @@ public class MiniShooter : MonoBehaviour
                 }
             }
 
-            personajePrincipal.GetComponent<Animator>().SetBool("disparando", true);
+            personajeTerceraPersona.GetComponent<Animator>().SetBool("disparando", true);
             GetComponent<AudioSource>().PlayOneShot(sonidoDisparo);
             AplicarRetroceso();
 
@@ -383,7 +384,7 @@ public class MiniShooter : MonoBehaviour
 
     void Recargar()
     {
-        personajePrincipal.GetComponent<Animator>().SetBool("recargando", true);
+        personajeTerceraPersona.GetComponent<Animator>().SetBool("recargando", true);
         ArmaPrimeraPersona.GetComponent<Animator>().SetBool("recargando", true);
         recargando = true;
     }
@@ -391,7 +392,7 @@ public class MiniShooter : MonoBehaviour
 
     public void CompletarRecarga()
     {
-        personajePrincipal.GetComponent<Animator>().SetBool("recargando", false);
+        personajeTerceraPersona.GetComponent<Animator>().SetBool("recargando", false);
         ArmaPrimeraPersona.GetComponent<Animator>().SetBool("recargando", false);
         recargando = false;
 
@@ -475,15 +476,11 @@ public class MiniShooter : MonoBehaviour
     //---------- GETTERS Y SETTERS ----------------
     //---------------------------------------------
 
-    public Transform PersonajePrincipal
+    public Transform PersonajeTerceraPersona
     {
-        get { return personajePrincipal.transform; }
+        get { return personajeTerceraPersona.transform; }
     }
 
-    public float VelocidadEnemigos
-    {
-        get { return velocidadEnemigos; }
-    }
 
     public int LadoZonaRespawn
     {
@@ -606,15 +603,15 @@ public class MiniShooter : MonoBehaviour
         get => recargando;
         set => recargando = value;
     }
-    public GameObject Arma
+    public GameObject ArmaTerceraPersona
     {
-        get => arma;
-        set => arma = value;
+        get => armaTerceraPersona;
+        set => armaTerceraPersona = value;
     }
 
-    public ParticleSystem EfectoDisparo
+    public ParticleSystem EfectoDisparoTerceraPersona
     {
-        get { return efectoDisparo; }
+        get { return efectoDisparoTerceraPersona; }
     }
 
     public Image[] ImagenesSangre()
@@ -622,9 +619,9 @@ public class MiniShooter : MonoBehaviour
         return imagenesSangre;
     }
 
-    public GameObject Pivote
+    public Transform PersonajePrimeraPersona
     {
-        get { return pivote; }
+        get { return personajePrimeraPersona; }
     }
 
     public GameObject ArmaPrimeraPersona

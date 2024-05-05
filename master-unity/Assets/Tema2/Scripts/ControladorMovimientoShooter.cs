@@ -9,23 +9,17 @@ public class ControladorMovimientoShooter : MonoBehaviour
     private GameObject[] puntosTeletransporte;
     private CharacterController controlador;
     private Vector3 velocidadJugador;
-    private Animator animator;
-
-    // variables para el cabeceo
-    private float amplitudCabeceo = 0.05f;
-    private float frecuenciaCabeceo = 10f;
-    private float tiempoCabeceo = 0f;
-
-    private Animator animatorPivote;
+    private Animator animatorTerceraPersona;
+    private Animator animatorPrimeraPersona;
 
     void Start()
     {
         sensibilidadRaton = MiniShooter.instance.SensibilidadRaton;
         limiteRotacionVertical = MiniShooter.instance.LimiteRotacionVertical;
         controlador = GetComponent<CharacterController>();
-        animator = GetComponent<Animator>();
+        animatorTerceraPersona = GetComponent<Animator>();
         puntosTeletransporte = GameObject.FindGameObjectsWithTag("Teletransporte");
-        animatorPivote = MiniShooter.instance.Pivote.GetComponent<Animator>();
+        animatorPrimeraPersona = MiniShooter.instance.PersonajePrimeraPersona.GetComponent<Animator>();
     
 }
 
@@ -42,28 +36,28 @@ public class ControladorMovimientoShooter : MonoBehaviour
         if (MiniShooter.instance.EstaEnPrimeraPersona())
         {
             // cuando el personaje está corriendo, no está apuntando y está en primera persona
-            if (MiniShooter.instance.EstaCorriendo() && !Input.GetMouseButton(1))
+            if (MiniShooter.instance.EstaCorriendo())
             {
-                animatorPivote.SetBool("caminando", true);
-                animatorPivote.SetBool("corriendo", true);
+                animatorPrimeraPersona.SetBool("caminando", true);
+                animatorPrimeraPersona.SetBool("corriendo", true);
             }
             // cuando el personaje no está quieto, no está corriendo y está en primera persona
-            else if (!animator.GetBool("quieto") && !MiniShooter.instance.EstaCorriendo())
+            else if (!animatorTerceraPersona.GetBool("quieto"))
             {
-                animatorPivote.SetBool("corriendo", false);
-                animatorPivote.SetBool("caminando", true);
+                animatorPrimeraPersona.SetBool("corriendo", false);
+                animatorPrimeraPersona.SetBool("caminando", true);
             }
             // cuando el personaje está quieto y está en primera persona
-            else if (animator.GetBool("quieto"))
+            else
             {
-                animatorPivote.SetBool("caminando", false);
+                animatorPrimeraPersona.SetBool("caminando", false);
             }
         }
     }
 
 void ControlMovimiento()
     {
-        //controlamos si está corriendo y si no está apuntando
+        //puede correr al pulsar shift izquierdo, si no está apuntando
         if (Input.GetKey(KeyCode.LeftShift) && !Input.GetMouseButton(1))
         {
             MiniShooter.instance.Correr();
@@ -76,9 +70,9 @@ void ControlMovimiento()
         //controlamos si está agachado
         if (Input.GetKeyDown(KeyCode.X))
         {
-            if (!animator.GetBool("agachado"))
+            if (!animatorTerceraPersona.GetBool("agachado"))
             {
-                animator.SetBool("agachado", true);
+                animatorTerceraPersona.SetBool("agachado", true);
                 MiniShooter.instance.Agachado = true;
                 controlador.height = 1f;
                 controlador.center = new Vector3(0, 0.6f, 0);
@@ -88,7 +82,7 @@ void ControlMovimiento()
             {
                 if (PuedeLevantarse())
                 {
-                    animator.SetBool("agachado", false);
+                    animatorTerceraPersona.SetBool("agachado", false);
                     MiniShooter.instance.Agachado = false;
                     controlador.height = 1.4f;
                     controlador.center = new Vector3(0, 0.8f, 0);
@@ -124,30 +118,30 @@ void ControlMovimiento()
         //--ANIMACIONES--
 
         //configurar animaciones
-        animator.SetFloat("movimientoX", movimientoX * MiniShooter.instance.VelocidadPersonaje);
-        animator.SetFloat("movimientoZ", movimientoZ * MiniShooter.instance.VelocidadPersonaje);
+        animatorTerceraPersona.SetFloat("movimientoX", movimientoX * MiniShooter.instance.VelocidadPersonaje);
+        animatorTerceraPersona.SetFloat("movimientoZ", movimientoZ * MiniShooter.instance.VelocidadPersonaje);
 
         //quieto o movimiento
-        if (movimientoX == 0 && movimientoZ == 0) animator.SetBool("quieto", true);
-        else animator.SetBool("quieto", false);
+        if (movimientoX == 0 && movimientoZ == 0) animatorTerceraPersona.SetBool("quieto", true);
+        else animatorTerceraPersona.SetBool("quieto", false);
 
         //detener salto
-        if (animator.GetBool("saltando") && controlador.isGrounded) animator.SetBool("saltando", false);
+        if (animatorTerceraPersona.GetBool("saltando") && controlador.isGrounded) animatorTerceraPersona.SetBool("saltando", false);
 
         //salto
         if (Input.GetKeyDown(KeyCode.Space) && controlador.isGrounded)
         {
-            if (animator.GetBool("quieto")) Invoke("Saltar", .01f);
+            if (animatorTerceraPersona.GetBool("quieto")) Invoke("Saltar", .01f);
             else Saltar();
 
-            animator.SetBool("saltando", true);
+            animatorTerceraPersona.SetBool("saltando", true);
         }
     }
 
     void Saltar()
     {
         velocidadJugador.y = Mathf.Sqrt(MiniShooter.instance.AlturaSalto * -2f * MiniShooter.instance.Gravedad);
-        animator.SetBool("saltando", true);
+        animatorTerceraPersona.SetBool("saltando", true);
     }
 
 
@@ -173,13 +167,13 @@ void ControlMovimiento()
 
     private void ControlDisparo()
     {
-        if (Input.GetMouseButton(0) && !MiniShooter.instance.Recargando)
+        if (Input.GetMouseButton(0) && !MiniShooter.instance.Recargando && !MiniShooter.instance.EstaCorriendo())
         {
             MiniShooter.instance.Disparar();
         }
         else
         {
-            animator.SetBool("disparando", false);
+            animatorTerceraPersona.SetBool("disparando", false);
         }
     }
 

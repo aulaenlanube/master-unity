@@ -12,7 +12,7 @@ public class AnimacionEnemigoTipo1 : StateMachineBehaviour
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {   
         // mientras ataca el enemigo, este mira al personaje principal
-        animator.gameObject.transform.LookAt(MiniShooter.instance.PersonajePrincipal);
+        animator.gameObject.transform.LookAt(MiniShooter.instance.PersonajeTerceraPersona);
 
         // si el personaje se aleja, modificamos el booleano que desactiva la animación de ataque
         if(!animator.gameObject.GetComponent<EnemigoShooter>().EnRangoAtaque())
@@ -27,6 +27,6 @@ public class AnimacionEnemigoTipo1 : StateMachineBehaviour
         animator.gameObject.GetComponent<NavMeshAgent>().isStopped = false;
 
         // volvemos a seguir al personaje principal
-        animator.gameObject.GetComponent<EnemigoShooter>().IrADestino(MiniShooter.instance.PersonajePrincipal.position);
+        animator.gameObject.GetComponent<EnemigoShooter>().IrADestino(MiniShooter.instance.PersonajeTerceraPersona.position);
     }
 }

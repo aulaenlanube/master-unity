@@ -60,7 +60,7 @@ public class EnemigoShooter : MonoBehaviour
         RegenerarVida();
 
         // calculamos la distancia respecto al personaje principal
-        distanciaAlPersonaje = Vector3.Distance(transform.position, MiniShooter.instance.PersonajePrincipal.position);
+        distanciaAlPersonaje = Vector3.Distance(transform.position, MiniShooter.instance.PersonajeTerceraPersona.position);
 
         // si el enemigo entra en contacto con el personaje principal, modificamos el booleano que activa la animación de ataque
         if (EnRangoAtaque())
@@ -78,7 +78,7 @@ public class EnemigoShooter : MonoBehaviour
         //si estamos suficientemente cerca del personaje, empezamos a seguirlo
         if (distanciaAlPersonaje < distanciaSeguimiento)
         {
-            IrADestino(MiniShooter.instance.PersonajePrincipal.position);
+            IrADestino(MiniShooter.instance.PersonajeTerceraPersona.position);
         }
         // si no estamos cerca del personaje, seguimos la ruta
         else

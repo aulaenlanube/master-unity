@@ -17,10 +17,10 @@ TagManager:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - JugadorPrimeraPersona
+  - JugadorTerceraPersona
   - Water
   - UI
-  - Pivote
+  - JugadorPrimeraPersona
   - 
   - 
   - 

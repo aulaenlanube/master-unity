@@ -17,7 +17,7 @@ public class BarraSaludEnemigos : MonoBehaviour
         if(enemigo.EstaHerido() && !enemigo.EstaMuerto())
         {
             barraSaludEnemigo.SetActive(true);
-            transform.LookAt(MiniShooter.instance.PersonajePrincipal.position);
+            transform.LookAt(MiniShooter.instance.PersonajeTerceraPersona.position);
         }
         else
         {
