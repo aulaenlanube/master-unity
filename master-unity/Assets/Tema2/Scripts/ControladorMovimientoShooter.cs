@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 public class ControladorMovimientoShooter : MonoBehaviour
 {
@@ -20,45 +20,29 @@ public class ControladorMovimientoShooter : MonoBehaviour
         animatorTerceraPersona = GetComponent<Animator>();
         puntosTeletransporte = GameObject.FindGameObjectsWithTag("Teletransporte");
         animatorPrimeraPersona = MiniShooter.instance.PersonajePrimeraPersona.GetComponent<Animator>();
-    
-}
+    }
 
     void Update()
     {
         ControlMovimiento();
-        SimularCabeceo();
-        ControlRotacion();        
-        ControlDisparo();        
+        ControlCabeceo();
+        ControlRotacion();
+        ControlDisparo();
     }
 
-    private void SimularCabeceo()
+    // █▀▀ █▀█ █▄░█ ▀█▀ █▀█ █▀█ █░░   █▀▄▀█ █▀█ █░█ █ █▀▄▀█ █ █▀▀ █▄░█ ▀█▀ █▀█
+    // █▄▄ █▄█ █░▀█ ░█░ █▀▄ █▄█ █▄▄   █░▀░█ █▄█ ▀▄▀ █ █░▀░█ █ ██▄ █░▀█ ░█░ █▄█
+
+    void ControlMovimiento()
     {
-        if (MiniShooter.instance.EstaEnPrimeraPersona())
-        {
-            // cuando el personaje est� corriendo, no est� apuntando y est� en primera persona
-            if (MiniShooter.instance.EstaCorriendo())
-            {
-                animatorPrimeraPersona.SetBool("caminando", true);
-                animatorPrimeraPersona.SetBool("corriendo", true);
-            }
-            // cuando el personaje no est� quieto, no est� corriendo y est� en primera persona
-            else if (!animatorTerceraPersona.GetBool("quieto"))
-            {
-                animatorPrimeraPersona.SetBool("corriendo", false);
-                animatorPrimeraPersona.SetBool("caminando", true);
-            }
-            // cuando el personaje est� quieto y est� en primera persona
-            else
-            {
-                animatorPrimeraPersona.SetBool("caminando", false);
-            }
-        }
+        ControlCaminarCorrer();
+        ControlAgacharseLevantarse();
+        MoverPersonaje();
     }
 
-void ControlMovimiento()
-    {
-        //puede correr al pulsar shift izquierdo, si no est� apuntando
-        if (Input.GetKey(KeyCode.LeftShift) && !Input.GetMouseButton(1))
+    void ControlCaminarCorrer()
+    {        
+        if (PulsamosBotonCorrer() && !PulsamosBotonApuntar())
         {
             MiniShooter.instance.Correr();
         }
@@ -66,9 +50,11 @@ void ControlMovimiento()
         {
             MiniShooter.instance.Caminar();
         }
+    }
 
-        //controlamos si est� agachado
-        if (Input.GetKeyDown(KeyCode.X))
+    void ControlAgacharseLevantarse()
+    {       
+        if (PulsamosBotonAgacharse())
         {
             if (!animatorTerceraPersona.GetBool("agachado"))
             {
@@ -90,7 +76,6 @@ void ControlMovimiento()
                 }
             }
         }
-        MoverPersonaje();
     }
 
     bool PuedeLevantarse()
@@ -101,7 +86,6 @@ void ControlMovimiento()
         if (Physics.Raycast(limiteSuperiorPosicion, Vector3.up, 1f)) return false;
         return true;
     }
-
 
     void MoverPersonaje()
     {
@@ -145,29 +129,59 @@ void ControlMovimiento()
     }
 
 
+    // █▀▀ █▀█ █▄░█ ▀█▀ █▀█ █▀█ █░░   █▀▀ ▄▀█ █▄▄ █▀▀ █▀▀ █▀▀ █▀█
+    // █▄▄ █▄█ █░▀█ ░█░ █▀▄ █▄█ █▄▄   █▄▄ █▀█ █▄█ ██▄ █▄▄ ██▄ █▄█
+
+    private void ControlCabeceo()
+    {
+        if (MiniShooter.instance.EstaEnPrimeraPersona())
+        {
+            // cuando el personaje está corriendo, no está apuntando y está en primera persona
+            if (MiniShooter.instance.EstaCorriendo())
+            {
+                animatorPrimeraPersona.SetBool("caminando", true);
+                animatorPrimeraPersona.SetBool("corriendo", true);
+            }
+            // cuando el personaje no está quieto, no está corriendo y está en primera persona
+            else if (!animatorTerceraPersona.GetBool("quieto"))
+            {
+                animatorPrimeraPersona.SetBool("corriendo", false);
+                animatorPrimeraPersona.SetBool("caminando", true);
+            }
+            // cuando el personaje está quieto y está en primera persona
+            else
+            {
+                animatorPrimeraPersona.SetBool("caminando", false);
+            }
+        }
+    }
+
+    // █▀▀ █▀█ █▄░█ ▀█▀ █▀█ █▀█ █░░   █▀█ █▀█ ▀█▀ ▄▀█ █▀▀ █ █▀█ █▄░█
+    // █▄▄ █▄█ █░▀█ ░█░ █▀▄ █▄█ █▄▄   █▀▄ █▄█ ░█░ █▀█ █▄▄ █ █▄█ █░▀█
+
     private void ControlRotacion()
     {
-        // obtener movimiento del rat�n con sensibilidad
+        // obtener movimiento del ratón con sensibilidad
         Vector2 mouseDelta = new Vector2(Input.GetAxisRaw("Mouse X"), Input.GetAxisRaw("Mouse Y")) * sensibilidadRaton;
 
-        // suavizar la rotaci�n
+        // suavizar la rotación
         velocidadRotacion.x = Mathf.Lerp(velocidadRotacion.x, velocidadRotacion.x + mouseDelta.x, suavizado * Time.deltaTime);
         velocidadRotacion.y = Mathf.Lerp(velocidadRotacion.y, velocidadRotacion.y + mouseDelta.y, suavizado * Time.deltaTime);
 
-        // limitamos rotaci�n vertical
+        // limitamos rotación vertical
         velocidadRotacion.y = Mathf.Clamp(velocidadRotacion.y, -limiteRotacionVertical, limiteRotacionVertical);
 
-        //rotaci�n personaje y c�mara
+        //rotación personaje y cámara
         Camera.main.transform.localRotation = Quaternion.AngleAxis(-velocidadRotacion.y, Vector3.right);
         transform.localRotation = Quaternion.AngleAxis(velocidadRotacion.x, Vector3.up);
     }
 
-
-
+    // █▀▀ █▀█ █▄░█ ▀█▀ █▀█ █▀█ █░░   █▀▄ █ █▀ █▀█ ▄▀█ █▀█ █▀█
+    // █▄▄ █▄█ █░▀█ ░█░ █▀▄ █▄█ █▄▄   █▄▀ █ ▄█ █▀▀ █▀█ █▀▄ █▄█
 
     private void ControlDisparo()
     {
-        if (Input.GetMouseButton(0) && !MiniShooter.instance.Recargando && !MiniShooter.instance.EstaCorriendo())
+        if (PulsamosBotonDisparar() && !MiniShooter.instance.Recargando && !MiniShooter.instance.EstaCorriendo())
         {
             MiniShooter.instance.Disparar();
         }
@@ -176,6 +190,9 @@ void ControlMovimiento()
             animatorTerceraPersona.SetBool("disparando", false);
         }
     }
+
+    // █▀▀ █▀█ █░░ █ █▀ █ █▀█ █▄░█ █▀▀ █▀
+    // █▄▄ █▄█ █▄▄ █ ▄█ █ █▄█ █░▀█ ██▄ ▄█
 
     private void OnTriggerEnter(Collider collider)
     {
@@ -199,27 +216,51 @@ void ControlMovimiento()
         }
     }
 
-
     private void OnControllerColliderHit(ControllerColliderHit hit)
     {
         // referencia al Rigidbody del objeto con el que se colisiona
         Rigidbody rb = hit.collider.attachedRigidbody;
-        // si no hay Rigidbody o el Rigidbody es kinem�tico, no hacemos nada
+
+        // si no hay Rigidbody o el Rigidbody es kinemático, no hacemos nada
         if (rb == null || rb.isKinematic) return;
+
         // si colisionamos con un objeto que podemos interaccionar
         if (hit.gameObject.CompareTag("Interactuable"))
         {
-            // calculamos la direcci�n y la fuerza del empuje
+            // calculamos la dirección y la fuerza del empuje
             Vector3 direccionDeFuerza = hit.gameObject.transform.position - transform.position;
-            // normalizamos la direcci�n para tener una magnitud de 1
+
+            // normalizamos la dirección para tener una magnitud de 1
             direccionDeFuerza.y = 0; // esto asegura que la fuerza se aplique horizontalmente
             direccionDeFuerza.Normalize();
+
             // aplicamos la fuerza al Rigidbody
             rb.AddForce(direccionDeFuerza * MiniShooter.instance.FuerzaEmpuje);
         }
     }
+
+    // █▀▀ █▀█ █▄░█ █▀▄ █ █▀▀ █ █▀█ █▄░█ █▀▀ █▀
+    // █▄▄ █▄█ █░▀█ █▄▀ █ █▄▄ █ █▄█ █░▀█ ██▄ ▄█
+
+    bool PulsamosBotonApuntar()
+    {
+        return Input.GetMouseButton(1);
+    }
+
+    bool PulsamosBotonDisparar()
+    {
+        return Input.GetMouseButton(0);
+    }
+
+    bool PulsamosBotonAgacharse()
+    {
+        return Input.GetKeyDown(KeyCode.X);
+    }
+
+    bool PulsamosBotonCorrer()
+    {
+        return Input.GetKey(KeyCode.LeftShift);
+    }
 }
-
-
 
 
