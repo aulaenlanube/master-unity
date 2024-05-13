@@ -1,7 +1,12 @@
-﻿using UnityEngine;
+﻿// ---------------------------------------------------------------------
+// Generador ASCII utilizado: https://fsymbols.com/es/generadores/tarty/
+// ---------------------------------------------------------------------
+
+using UnityEngine;
 
 public class ControladorMovimientoShooter : MonoBehaviour
 {
+    // variables de control
     private float sensibilidadRaton;
     private float limiteRotacionVertical;
     private Vector2 velocidadRotacion;
@@ -30,8 +35,10 @@ public class ControladorMovimientoShooter : MonoBehaviour
         ControlDisparo();
     }
 
+    // ------------------------------------------------------------------------------------
     // █▀▀ █▀█ █▄░█ ▀█▀ █▀█ █▀█ █░░   █▀▄▀█ █▀█ █░█ █ █▀▄▀█ █ █▀▀ █▄░█ ▀█▀ █▀█
     // █▄▄ █▄█ █░▀█ ░█░ █▀▄ █▄█ █▄▄   █░▀░█ █▄█ ▀▄▀ █ █░▀░█ █ ██▄ █░▀█ ░█░ █▄█
+    // ------------------------------------------------------------------------------------
 
     void ControlMovimiento()
     {
@@ -39,7 +46,7 @@ public class ControladorMovimientoShooter : MonoBehaviour
         ControlAgacharseLevantarse();
         MoverPersonaje();
     }
-
+    
     void ControlCaminarCorrer()
     {        
         if (PulsamosBotonCorrer() && !PulsamosBotonApuntar())
@@ -56,7 +63,7 @@ public class ControladorMovimientoShooter : MonoBehaviour
     {       
         if (PulsamosBotonAgacharse())
         {
-            if (!animatorTerceraPersona.GetBool("agachado"))
+            if (!EstaAgachado())
             {
                 animatorTerceraPersona.SetBool("agachado", true);
                 MiniShooter.instance.Agachado = true;
@@ -128,27 +135,29 @@ public class ControladorMovimientoShooter : MonoBehaviour
         animatorTerceraPersona.SetBool("saltando", true);
     }
 
-
+    // ---------------------------------------------------------------------
     // █▀▀ █▀█ █▄░█ ▀█▀ █▀█ █▀█ █░░   █▀▀ ▄▀█ █▄▄ █▀▀ █▀▀ █▀▀ █▀█
     // █▄▄ █▄█ █░▀█ ░█░ █▀▄ █▄█ █▄▄   █▄▄ █▀█ █▄█ ██▄ █▄▄ ██▄ █▄█
+    // ---------------------------------------------------------------------
 
     private void ControlCabeceo()
-    {
+    {        
+        // cuando el personaje está en primera persona
         if (MiniShooter.instance.EstaEnPrimeraPersona())
         {
-            // cuando el personaje está corriendo, no está apuntando y está en primera persona
+            // cuando el personaje está corriendo
             if (MiniShooter.instance.EstaCorriendo())
             {
                 animatorPrimeraPersona.SetBool("caminando", true);
                 animatorPrimeraPersona.SetBool("corriendo", true);
             }
-            // cuando el personaje no está quieto, no está corriendo y está en primera persona
+            // cuando el personaje no está corriendo y no está quieto
             else if (!animatorTerceraPersona.GetBool("quieto"))
             {
                 animatorPrimeraPersona.SetBool("corriendo", false);
                 animatorPrimeraPersona.SetBool("caminando", true);
             }
-            // cuando el personaje está quieto y está en primera persona
+            // cuando el personaje está quieto
             else
             {
                 animatorPrimeraPersona.SetBool("caminando", false);
@@ -156,8 +165,10 @@ public class ControladorMovimientoShooter : MonoBehaviour
         }
     }
 
+    // -------------------------------------------------------------------------
     // █▀▀ █▀█ █▄░█ ▀█▀ █▀█ █▀█ █░░   █▀█ █▀█ ▀█▀ ▄▀█ █▀▀ █ █▀█ █▄░█
     // █▄▄ █▄█ █░▀█ ░█░ █▀▄ █▄█ █▄▄   █▀▄ █▄█ ░█░ █▀█ █▄▄ █ █▄█ █░▀█
+    // -------------------------------------------------------------------------
 
     private void ControlRotacion()
     {
@@ -171,13 +182,15 @@ public class ControladorMovimientoShooter : MonoBehaviour
         // limitamos rotación vertical
         velocidadRotacion.y = Mathf.Clamp(velocidadRotacion.y, -limiteRotacionVertical, limiteRotacionVertical);
 
-        //rotación personaje y cámara
+        // rotación personaje y cámara
         Camera.main.transform.localRotation = Quaternion.AngleAxis(-velocidadRotacion.y, Vector3.right);
         transform.localRotation = Quaternion.AngleAxis(velocidadRotacion.x, Vector3.up);
     }
 
+    // ------------------------------------------------------------------
     // █▀▀ █▀█ █▄░█ ▀█▀ █▀█ █▀█ █░░   █▀▄ █ █▀ █▀█ ▄▀█ █▀█ █▀█
     // █▄▄ █▄█ █░▀█ ░█░ █▀▄ █▄█ █▄▄   █▄▀ █ ▄█ █▀▀ █▀█ █▀▄ █▄█
+    // ------------------------------------------------------------------
 
     private void ControlDisparo()
     {
@@ -191,15 +204,20 @@ public class ControladorMovimientoShooter : MonoBehaviour
         }
     }
 
+    // ------------------------------------------
     // █▀▀ █▀█ █░░ █ █▀ █ █▀█ █▄░█ █▀▀ █▀
     // █▄▄ █▄█ █▄▄ █ ▄█ █ █▄█ █░▀█ ██▄ ▄█
+    // ------------------------------------------
 
     private void OnTriggerEnter(Collider collider)
     {
+        // si colisionamos con una moneda
         if (collider.CompareTag("Moneda"))
         {
             collider.GetComponent<MonedaShooter>().RecolectarMoneda();
         }
+
+        // si colisionamos con un teletransporte
         if (collider.gameObject.CompareTag("Teletransporte"))
         {
             controlador.enabled = false;
@@ -239,8 +257,10 @@ public class ControladorMovimientoShooter : MonoBehaviour
         }
     }
 
+    // ------------------------------------------------
     // █▀▀ █▀█ █▄░█ █▀▄ █ █▀▀ █ █▀█ █▄░█ █▀▀ █▀
     // █▄▄ █▄█ █░▀█ █▄▀ █ █▄▄ █ █▄█ █░▀█ ██▄ ▄█
+    // ------------------------------------------------
 
     bool PulsamosBotonApuntar()
     {
@@ -260,6 +280,11 @@ public class ControladorMovimientoShooter : MonoBehaviour
     bool PulsamosBotonCorrer()
     {
         return Input.GetKey(KeyCode.LeftShift);
+    }
+
+    bool EstaAgachado()
+    {
+        return animatorTerceraPersona.GetBool("agachado");
     }
 }
 
