@@ -47,7 +47,7 @@ public class MirillaMiniShooter : MonoBehaviour
             //si está en primera persona, cambiamos el sprite de la mirilla
             if (MiniShooter.instance.EstaEnPrimeraPersona())
             {
-                MiniShooter.instance.MirillaZoomPrimeraPersona.enabled = true;
+                
                 MiniShooter.instance.MirillaPrimeraPersona.enabled = false;
             }
 
@@ -65,8 +65,7 @@ public class MirillaMiniShooter : MonoBehaviour
 
         //si está en primera persona, cambiamos el sprite de la mirilla
         if (MiniShooter.instance.EstaEnPrimeraPersona())
-        {
-            MiniShooter.instance.MirillaZoomPrimeraPersona.enabled = false;
+        {            
             MiniShooter.instance.MirillaPrimeraPersona.enabled = true;
         }
 

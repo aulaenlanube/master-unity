@@ -62,8 +62,8 @@ public class MiniShooter : MonoBehaviour
     [SerializeField] private float velocidadRetorno = 25f;
 
     [Header("Configuración mirilla")]
+    [SerializeField] private GameObject mirillaArma;
     [SerializeField] private Image mirillaPrimeraPersona;
-    [SerializeField] private Image mirillaZoomPrimeraPersona;
     [SerializeField] private Image mirillaTerceraPersona;
     [SerializeField] private VelocidadZoom velocidadZoom;
     [SerializeField] private CapacidadZoom capacidadZoom;
@@ -231,7 +231,6 @@ public class MiniShooter : MonoBehaviour
         {
             MirillaTerceraPersona.enabled = true;
             MirillaPrimeraPersona.enabled = false;
-            MirillaZoomPrimeraPersona.enabled = false;
         }
     }
 
@@ -342,7 +341,16 @@ public class MiniShooter : MonoBehaviour
             //actualizamos las balas del cargador            
             ActualizarBalasCargadorUI();
 
-            Ray rayo = Camera.main.ScreenPointToRay(Input.mousePosition);
+            //obtenemos la posición del centro de la pantalla   
+            Vector3 puntoPantalla = Input.mousePosition;
+
+            //si estamos apuntando en primera persona, obtenemos la posición en pantalla a través de la mirilla
+            if(Input.GetMouseButton(1) && EstaEnPrimeraPersona())
+            {
+                puntoPantalla = Camera.main.WorldToScreenPoint(mirillaArma.transform.position);
+            }
+
+            Ray rayo = Camera.main.ScreenPointToRay(puntoPantalla);
             RaycastHit hit;
             if (Physics.Raycast(rayo, out hit))
             {
@@ -579,12 +587,6 @@ public class MiniShooter : MonoBehaviour
     public int CapacidadZoom
     {
         get => (int)capacidadZoom;
-    }
-
-    public Image MirillaZoomPrimeraPersona
-    {
-        get => mirillaZoomPrimeraPersona;
-        set => mirillaZoomPrimeraPersona = value;
     }
 
     public Image MirillaPrimeraPersona
