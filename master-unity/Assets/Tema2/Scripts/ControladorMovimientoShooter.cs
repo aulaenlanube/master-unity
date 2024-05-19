@@ -15,7 +15,6 @@ public class ControladorMovimientoShooter : MonoBehaviour
     private CharacterController controlador;
     private Vector3 velocidadJugador;
     private Animator animatorTerceraPersona;
-    private Animator animatorPrimeraPersona;
 
     void Start()
     {
@@ -23,9 +22,7 @@ public class ControladorMovimientoShooter : MonoBehaviour
         limiteRotacionVertical = MiniShooter.instance.LimiteRotacionVertical;
         controlador = GetComponent<CharacterController>();
         animatorTerceraPersona = GetComponent<Animator>();
-        puntosTeletransporte = GameObject.FindGameObjectsWithTag("Teletransporte");
-        animatorPrimeraPersona = MiniShooter.instance.PersonajePrimeraPersona.GetComponent<Animator>();
-    }
+        puntosTeletransporte = GameObject.FindGameObjectsWithTag("Teletransporte"); }
 
     void Update()
     {
@@ -142,27 +139,7 @@ public class ControladorMovimientoShooter : MonoBehaviour
 
     private void ControlCabeceo()
     {        
-        // cuando el personaje está en primera persona
-        if (MiniShooter.instance.EstaEnPrimeraPersona())
-        {
-            // cuando el personaje está corriendo
-            if (MiniShooter.instance.EstaCorriendo())
-            {
-                animatorPrimeraPersona.SetBool("caminando", true);
-                animatorPrimeraPersona.SetBool("corriendo", true);
-            }
-            // cuando el personaje no está corriendo y no está quieto
-            else if (!animatorTerceraPersona.GetBool("quieto"))
-            {
-                animatorPrimeraPersona.SetBool("corriendo", false);
-                animatorPrimeraPersona.SetBool("caminando", true);
-            }
-            // cuando el personaje está quieto
-            else
-            {
-                animatorPrimeraPersona.SetBool("caminando", false);
-            }
-        }
+
     }
 
     // -------------------------------------------------------------------------

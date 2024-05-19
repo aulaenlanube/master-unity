@@ -30,7 +30,6 @@ public class MiniShooter : MonoBehaviour
 
     [Header("Personaje Principal")]
     [SerializeField] private Transform personajeTerceraPersona;
-    [SerializeField] private Transform personajePrimeraPersona;
 
     [Header("UI")]
     [SerializeField] private TextMeshProUGUI textoFinPartida;
@@ -81,11 +80,9 @@ public class MiniShooter : MonoBehaviour
     [Header("Configuraciones adicionales")]
     [SerializeField] private RuntimeAnimatorController animatorEnemigoTipo1;    
     [SerializeField] private GameObject armaTerceraPersona;
-    [SerializeField] private GameObject armaPrimeraPersona;
     [SerializeField] private GameObject prefabEnemigoTipo1;
     [SerializeField] private GameObject prefabMarcaDisparo;
     [SerializeField] private ParticleSystem efectoDisparoTerceraPersona;
-    [SerializeField] private ParticleSystem efectoDisparoPrimeraPersona;
     [SerializeField] private int ladoZonaRespawn = 40;
     [SerializeField] private float sensibilidadRaton = 10f;
     [SerializeField] private float limiteRotacionVertical = 45.0f;
@@ -95,7 +92,10 @@ public class MiniShooter : MonoBehaviour
     [SerializeField] public GameObject suelo;
 
 
-
+    [Header("Configuraciones de las mallas")]
+    [SerializeField] private SkinnedMeshRenderer meshPersonaje;
+    [SerializeField] private Mesh mallaBrazos;
+    [SerializeField] private Mesh mallaCompleta;
 
     //variables de control
     private List<EnemigoShooter> enemigosEliminados = new List<EnemigoShooter>();
@@ -217,22 +217,27 @@ public class MiniShooter : MonoBehaviour
 
         //establecemos la posición de la cámara
         Camera.main.transform.localPosition = posicionesCamara[posicionActualCamara];
-        ActualizarMirillas();
+        ActualizacionesFinalesCamara();        
     }
 
-    public void ActualizarMirillas()
+    public void ActualizacionesFinalesCamara()
     {
         if (EstaEnPrimeraPersona())
         {
             MirillaPrimeraPersona.enabled = true;
             MirillaTerceraPersona.enabled = false;
+
+            meshPersonaje.sharedMesh = mallaBrazos;
         }
         else
         {
             MirillaTerceraPersona.enabled = true;
             MirillaPrimeraPersona.enabled = false;
+
+            meshPersonaje.sharedMesh = mallaCompleta;
         }
     }
+
 
 
     // agrega una capa a la Culling Mask de la cámara
@@ -393,7 +398,6 @@ public class MiniShooter : MonoBehaviour
     void Recargar()
     {
         personajeTerceraPersona.GetComponent<Animator>().SetBool("recargando", true);
-        ArmaPrimeraPersona.GetComponent<Animator>().SetBool("recargando", true);
         recargando = true;
     }
 
@@ -401,7 +405,6 @@ public class MiniShooter : MonoBehaviour
     public void CompletarRecarga()
     {
         personajeTerceraPersona.GetComponent<Animator>().SetBool("recargando", false);
-        ArmaPrimeraPersona.GetComponent<Animator>().SetBool("recargando", false);
         recargando = false;
 
         tiempoUltimoDisparo = velocidadDisparo;
@@ -619,21 +622,6 @@ public class MiniShooter : MonoBehaviour
     public Image[] ImagenesSangre()
     {
         return imagenesSangre;
-    }
-
-    public Transform PersonajePrimeraPersona
-    {
-        get { return personajePrimeraPersona; }
-    }
-
-    public GameObject ArmaPrimeraPersona
-    {
-        get { return armaPrimeraPersona; }
-    }
-
-    public ParticleSystem EfectoDisparoPrimeraPersona
-    {
-        get { return efectoDisparoPrimeraPersona; }
     }
 
 }
