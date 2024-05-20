@@ -9,51 +9,25 @@ public class MirillaMiniShooter : MonoBehaviour
     public Camera camaraPrincipal;
     public Camera camaraApuntado;
 
-    private bool enTransicion = false;
-    private float tiempoTransicion = 1.0f; // Duración de la transición en segundos
-    private float tiempoTranscurrido = 0.0f;
-    private float campoDeVisionInicial;
-    private float campoDeVisionObjetivo;
-
     private void Start()
-    {
-        // Asegúrate de que la cámara principal sea la activa al comienzo
+    {        
         camaraPrincipal.enabled = true;
         camaraApuntado.enabled = false;
-
-        // Establecer la etiqueta MainCamera en la cámara principal
-        camaraPrincipal.tag = "MainCamera";
-        camaraApuntado.tag = "Untagged";
 
         escalaOriginalMirilla = MiniShooter.instance.ObtenerEscalaOriginalMirilla();
         escalaZoomMirilla = escalaOriginalMirilla * 0.5f;
     }
 
     void Update()
-    {
-        if (enTransicion)
-        {
-            tiempoTranscurrido += Time.deltaTime;
-            float t = Mathf.Clamp01(tiempoTranscurrido / tiempoTransicion);
-
-            Camera.main.fieldOfView = Mathf.Lerp(campoDeVisionInicial, campoDeVisionObjetivo, t);
-
-            if (t >= 1.0f)
-            {
-                enTransicion = false;
-            }
-        }
-
+    {     
         // Si el jugador no está corriendo y se mantiene presionado el botón derecho del mouse
         if (Input.GetMouseButton(1) && !MiniShooter.instance.EstaCorriendo())
         {
-            CambiarACamaraApuntado();
             Apuntar();
         }
         else
         {
             Desapuntar();
-            CambiarACamaraPrincipal();
         }
     }
 
@@ -67,71 +41,52 @@ public class MirillaMiniShooter : MonoBehaviour
         // Cambiar al sprite de zoom si la escala está al 90% del tamaño objetivo
         if (escalaZoomMirilla.x / mirilla.rectTransform.sizeDelta.x > 0.9f)
         {
-            // Si está en primera persona, cambiamos el sprite de la mirilla
+            // en primera persona, cambiamos el sprite de la mirilla y la cámara
             if (MiniShooter.instance.EstaEnPrimeraPersona())
             {
                 MiniShooter.instance.MirillaPrimeraPersona.enabled = false;
+                CambiarACamaraApuntado();
             }
+            else
+            {
+                //en tercera persona capacidad zoom, por defecto es X2
+                int capacidadZoom = MiniShooter.instance.EstaEnPrimeraPersona() ? MiniShooter.instance.CapacidadZoom : (int)CapacidadZoom.X2;
+                Camera.main.fieldOfView = Mathf.Lerp(Camera.main.fieldOfView, capacidadZoom, Time.deltaTime * MiniShooter.instance.VelocidadZoom);
 
-            int capacidadZoom = MiniShooter.instance.EstaEnPrimeraPersona() ? MiniShooter.instance.CapacidadZoom : (int)CapacidadZoom.X2;
-
-            // Zoom de la cámara
-            Camera.main.fieldOfView = Mathf.Lerp(Camera.main.fieldOfView, capacidadZoom, Time.deltaTime * MiniShooter.instance.VelocidadZoom);
+            }
         }
     }
 
     public void Desapuntar()
     {
-        // Si está en primera persona, cambiamos el sprite de la mirilla
+        // en primera persona, cambiamos el sprite de la mirilla y la cámara
         if (MiniShooter.instance.EstaEnPrimeraPersona())
         {
             MiniShooter.instance.MirillaPrimeraPersona.enabled = true;
+            CambiarACamaraPrincipal();
         }
+        else
+        {
+            // retornar suavemente la mirilla a su escala y capacidad de zoom original
+            Camera.main.fieldOfView = Mathf.Lerp(Camera.main.fieldOfView, (float)CapacidadZoom.SinZoom, Time.deltaTime * MiniShooter.instance.VelocidadZoom);
 
-        // Retornar suavemente la mirilla a su escala original
-        Camera.main.fieldOfView = Mathf.Lerp(Camera.main.fieldOfView, (float)CapacidadZoom.SinZoom, Time.deltaTime * MiniShooter.instance.VelocidadZoom);
+            Image mirilla = MiniShooter.instance.MirillaActual();
+            mirilla.rectTransform.sizeDelta = Vector2.Lerp(mirilla.rectTransform.sizeDelta, escalaOriginalMirilla, Time.deltaTime * MiniShooter.instance.VelocidadZoom);
 
-        Image mirilla = MiniShooter.instance.MirillaActual();
-        mirilla.rectTransform.sizeDelta = Vector2.Lerp(mirilla.rectTransform.sizeDelta, escalaOriginalMirilla, Time.deltaTime * MiniShooter.instance.VelocidadZoom);
+        }
     }
 
     void CambiarACamaraApuntado()
-    {
-        if (camaraPrincipal.enabled)
-        {
-            enTransicion = true;
-            tiempoTranscurrido = 0.0f;
-            campoDeVisionInicial = camaraPrincipal.fieldOfView;
-            campoDeVisionObjetivo = camaraApuntado.fieldOfView;
-        }
-
+    {     
         camaraPrincipal.enabled = false;
-
         camaraApuntado.enabled = true;
-        camaraApuntado.GetComponent<Animator>().enabled = true;
-
-        // Cambiar la etiqueta MainCamera a la cámara de apuntado
-        camaraPrincipal.tag = "Untagged";
-        camaraApuntado.tag = "MainCamera";
+        camaraApuntado.gameObject.GetComponent<Animator>().SetBool("apuntar", true);       
     }
 
     void CambiarACamaraPrincipal()
     {
-        if (camaraApuntado.enabled)
-        {
-            enTransicion = true;
-            tiempoTranscurrido = 0.0f;
-            campoDeVisionInicial = camaraApuntado.fieldOfView;
-            campoDeVisionObjetivo = camaraPrincipal.fieldOfView;
-        }
-
+        camaraApuntado.gameObject.GetComponent<Animator>().SetBool("apuntar", false);
         camaraApuntado.enabled = false;
-        camaraApuntado.GetComponent<Animator>().enabled = false;
-
-        camaraPrincipal.enabled = true;
-
-        // Cambiar la etiqueta MainCamera a la cámara principal
-        camaraApuntado.tag = "Untagged";
-        camaraPrincipal.tag = "MainCamera";
+        camaraPrincipal.enabled = true;  
     }
 }
