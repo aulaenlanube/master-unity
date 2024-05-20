@@ -6,11 +6,14 @@ public class MirillaMiniShooter : MonoBehaviour
     private Vector2 escalaOriginalMirilla;
     private Vector2 escalaZoomMirilla;
 
-    public Camera camaraPrincipal;
-    public Camera camaraApuntado;
+    private Camera camaraPrincipal;
+    private Camera camaraApuntado;
 
     private void Start()
-    {        
+    {
+        camaraPrincipal = MiniShooter.instance.CamaraPrincipal;
+        camaraApuntado = MiniShooter.instance.CamaraApuntando;
+
         camaraPrincipal.enabled = true;
         camaraApuntado.enabled = false;
 
@@ -77,16 +80,12 @@ public class MirillaMiniShooter : MonoBehaviour
     }
 
     void CambiarACamaraApuntado()
-    {     
-        camaraPrincipal.enabled = false;
-        camaraApuntado.enabled = true;
+    {             
         camaraApuntado.gameObject.GetComponent<Animator>().SetBool("apuntar", true);       
     }
 
     void CambiarACamaraPrincipal()
     {
-        camaraApuntado.gameObject.GetComponent<Animator>().SetBool("apuntar", false);
-        camaraApuntado.enabled = false;
-        camaraPrincipal.enabled = true;  
+        camaraApuntado.gameObject.GetComponent<Animator>().SetBool("apuntar", false);      
     }
 }

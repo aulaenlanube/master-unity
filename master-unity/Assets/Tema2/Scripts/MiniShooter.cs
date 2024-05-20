@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -70,6 +71,8 @@ public class MiniShooter : MonoBehaviour
     [Header("Configuraciones cámara")]
     [SerializeField] private Vector3[] posicionesCamaraDePie;
     [SerializeField] private Vector3[] posicionesCamaraAgachado;
+    [SerializeField] private Camera camaraPrincipal;
+    [SerializeField] private Camera camaraApuntando;
 
     [Header("Efectos de sonido")]
     [SerializeField] private AudioClip sonidoDisparo;
@@ -624,4 +627,13 @@ public class MiniShooter : MonoBehaviour
         return imagenesSangre;
     }
 
+    public Camera CamaraPrincipal
+    {
+        get { return camaraPrincipal; }
+    }
+
+    public Camera CamaraApuntando
+    {
+        get { return camaraApuntando; }
+    }
 }

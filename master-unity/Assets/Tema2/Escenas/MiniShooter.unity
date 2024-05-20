@@ -365,6 +365,8 @@ MonoBehaviour:
   posicionesCamaraAgachado:
   - {x: 0, y: 0.8, z: 0}
   - {x: 1, y: 0.8, z: -2}
+  camaraPrincipal: {fileID: 3801124970108002452}
+  camaraApuntando: {fileID: 1953971051}
   sonidoDisparo: {fileID: 8300000, guid: ca5bef4dfb4371841b803d1cccb7def4, type: 3}
   sonidoRecarga: {fileID: 8300000, guid: 97549cbd423367f45a4552c1fb2d8f82, type: 3}
   sonidoDolor: {fileID: 8300000, guid: 940784f0ef28abf4293c51d274277e09, type: 3}
@@ -36169,8 +36171,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d8541752a5433d84f9a76835076caf0d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  camaraPrincipal: {fileID: 3801124970108002452}
-  camaraApuntado: {fileID: 1953971051}
 --- !u!1001 &1770877870
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -42707,8 +42707,9 @@ GameObject:
   - component: {fileID: 1953971049}
   - component: {fileID: 1953971051}
   - component: {fileID: 1953971050}
+  - component: {fileID: 1953971052}
   m_Layer: 0
-  m_Name: CamaraZoom
+  m_Name: CamaraApuntando
   m_TagString: MainCamera
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -42722,13 +42723,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1953971048}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.004490062, y: -0.02148476, z: 0.027719762, w: -0.99937475}
+  m_LocalRotation: {x: -0.0059286864, y: 0.07353635, z: -0.02744583, w: 0.9968972}
   m_LocalPosition: {x: -1.2110089, y: 1.4212861, z: -4.4865875}
   m_LocalScale: {x: 9.0909, y: 9.090906, z: 9.090915}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5577552247597949095}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -0.446, y: 8.45, z: -3.187}
 --- !u!95 &1953971050
 Animator:
   serializedVersion: 5
@@ -42801,6 +42802,18 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
+--- !u!114 &1953971052
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1953971048}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 020bc073a6b0ccf489752ae08cce8d8f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!43 &1996461089
 Mesh:
   m_ObjectHideFlags: 0
