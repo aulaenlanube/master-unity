@@ -18,16 +18,15 @@ public class ControladorMovimientoShooter : MonoBehaviour
 
     void Start()
     {
-        sensibilidadRaton = MiniShooter.instance.SensibilidadRaton;
-        limiteRotacionVertical = MiniShooter.instance.LimiteRotacionVertical;
+        sensibilidadRaton = MiniShooter.instance.SensibilidadRaton;        
         controlador = GetComponent<CharacterController>();
         animatorTerceraPersona = GetComponent<Animator>();
-        puntosTeletransporte = GameObject.FindGameObjectsWithTag("Teletransporte"); }
+        puntosTeletransporte = GameObject.FindGameObjectsWithTag("Teletransporte"); 
+    }
 
     void Update()
     {
         ControlMovimiento();
-        ControlCabeceo();
         ControlRotacion();
         ControlDisparo();
     }
@@ -132,16 +131,6 @@ public class ControladorMovimientoShooter : MonoBehaviour
         animatorTerceraPersona.SetBool("saltando", true);
     }
 
-    // ---------------------------------------------------------------------
-    // █▀▀ █▀█ █▄░█ ▀█▀ █▀█ █▀█ █░░   █▀▀ ▄▀█ █▄▄ █▀▀ █▀▀ █▀▀ █▀█
-    // █▄▄ █▄█ █░▀█ ░█░ █▀▄ █▄█ █▄▄   █▄▄ █▀█ █▄█ ██▄ █▄▄ ██▄ █▄█
-    // ---------------------------------------------------------------------
-
-    private void ControlCabeceo()
-    {        
-
-    }
-
     // -------------------------------------------------------------------------
     // █▀▀ █▀█ █▄░█ ▀█▀ █▀█ █▀█ █░░   █▀█ █▀█ ▀█▀ ▄▀█ █▀▀ █ █▀█ █▄░█
     // █▄▄ █▄█ █░▀█ ░█░ █▀▄ █▄█ █▄▄   █▀▄ █▄█ ░█░ █▀█ █▄▄ █ █▄█ █░▀█
@@ -157,11 +146,19 @@ public class ControladorMovimientoShooter : MonoBehaviour
         velocidadRotacion.y = Mathf.Lerp(velocidadRotacion.y, velocidadRotacion.y + mouseDelta.y, suavizado * Time.deltaTime);
 
         // limitamos rotación vertical
-        velocidadRotacion.y = Mathf.Clamp(velocidadRotacion.y, -limiteRotacionVertical, limiteRotacionVertical);
+        limiteRotacionVertical = MiniShooter.instance.LimiteRotacionVertical();
+        velocidadRotacion.y = Mathf.Clamp(velocidadRotacion.y, -limiteRotacionVertical, limiteRotacionVertical);        
 
         // rotación personaje y cámara
         Camera.main.transform.localRotation = Quaternion.AngleAxis(-velocidadRotacion.y, Vector3.right);
         transform.localRotation = Quaternion.AngleAxis(velocidadRotacion.x, Vector3.up);
+
+        // si está en primera persona, rotamos también el personaje para simular la rotación de la mirilla
+        if (MiniShooter.instance.EstaEnPrimeraPersona())
+        {
+            transform.localRotation *= Quaternion.AngleAxis(-velocidadRotacion.y, Vector3.right);
+        }
+        
     }
 
     // ------------------------------------------------------------------
@@ -199,7 +196,7 @@ public class ControladorMovimientoShooter : MonoBehaviour
         {
             controlador.enabled = false;
             int indice;
-            Vector3 pos = new Vector3();
+            Vector3 pos;
             do
             {
                 indice = Random.Range(0, puntosTeletransporte.Length);

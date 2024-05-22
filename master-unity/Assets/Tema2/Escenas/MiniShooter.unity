@@ -378,7 +378,8 @@ MonoBehaviour:
   efectoDisparoTerceraPersona: {fileID: 4634604643232078068}
   ladoZonaRespawn: 40
   sensibilidadRaton: 300
-  limiteRotacionVertical: 10
+  limiteRotacionVerticalPrimeraPersona: 20
+  limiteRotacionVerticalTerceraPersona: 10
   colorOro: {r: 1, g: 0, b: 0.73333335, a: 0}
   colorPlata: {r: 0.098039225, g: 0.3529412, b: 1, a: 0}
   colorBronce: {r: 0.44151616, g: 1, b: 0, a: 0}
@@ -42814,6 +42815,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 020bc073a6b0ccf489752ae08cce8d8f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  posicionInicial: {x: 0, y: 0, z: 0}
+  posicionFinal: {x: 0, y: 0, z: 0}
+  duracion: 0.1
 --- !u!43 &1996461089
 Mesh:
   m_ObjectHideFlags: 0

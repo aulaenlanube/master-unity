@@ -88,7 +88,8 @@ public class MiniShooter : MonoBehaviour
     [SerializeField] private ParticleSystem efectoDisparoTerceraPersona;
     [SerializeField] private int ladoZonaRespawn = 40;
     [SerializeField] private float sensibilidadRaton = 10f;
-    [SerializeField] private float limiteRotacionVertical = 45.0f;
+    [SerializeField] private float limiteRotacionVerticalPrimeraPersona = 10.0f;
+    [SerializeField] private float limiteRotacionVerticalTerceraPersona = 45.0f;
     [SerializeField] private Color colorOro;
     [SerializeField] private Color colorPlata;
     [SerializeField] private Color colorBronce;
@@ -491,6 +492,11 @@ public class MiniShooter : MonoBehaviour
         return MirillaActual().rectTransform.sizeDelta;
     }
 
+    public float LimiteRotacionVertical()
+    {
+        return EstaEnPrimeraPersona() ? limiteRotacionVerticalPrimeraPersona : limiteRotacionVerticalTerceraPersona;
+    }
+
 
     //---------------------------------------------
     //---------- GETTERS Y SETTERS ----------------
@@ -515,11 +521,6 @@ public class MiniShooter : MonoBehaviour
     public float SensibilidadRaton
     {
         get { return sensibilidadRaton; }
-    }
-
-    public float LimiteRotacionVertical
-    {
-        get { return limiteRotacionVertical; }
     }
 
     public Color ColorOro
