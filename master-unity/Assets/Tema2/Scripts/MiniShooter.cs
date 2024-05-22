@@ -241,6 +241,12 @@ public class MiniShooter : MonoBehaviour
         }
     }
 
+    public Vector3 PosCamaraActual()
+    {
+        return posicionesCamara[posicionActualCamara];
+
+    }
+
 
 
     // agrega una capa a la Culling Mask de la cámara
