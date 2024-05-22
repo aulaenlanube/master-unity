@@ -22,7 +22,7 @@ public class MirillaMiniShooter : MonoBehaviour
     }
 
     void Update()
-    {     
+    {
         // Si el jugador no está corriendo y se mantiene presionado el botón derecho del mouse
         if (Input.GetMouseButton(1) && !MiniShooter.instance.EstaCorriendo())
         {
@@ -68,24 +68,22 @@ public class MirillaMiniShooter : MonoBehaviour
             MiniShooter.instance.MirillaPrimeraPersona.enabled = true;
             CambiarACamaraPrincipal();
         }
-        else
-        {
-            // retornar suavemente la mirilla a su escala y capacidad de zoom original
-            Camera.main.fieldOfView = Mathf.Lerp(Camera.main.fieldOfView, (float)CapacidadZoom.SinZoom, Time.deltaTime * MiniShooter.instance.VelocidadZoom);
 
-            Image mirilla = MiniShooter.instance.MirillaActual();
-            mirilla.rectTransform.sizeDelta = Vector2.Lerp(mirilla.rectTransform.sizeDelta, escalaOriginalMirilla, Time.deltaTime * MiniShooter.instance.VelocidadZoom);
+        // retornar suavemente la mirilla a su escala y capacidad de zoom original
+        Camera.main.fieldOfView = Mathf.Lerp(Camera.main.fieldOfView, (float)CapacidadZoom.SinZoom, Time.deltaTime * MiniShooter.instance.VelocidadZoom);
 
-        }
+        Image mirilla = MiniShooter.instance.MirillaActual();
+        mirilla.rectTransform.sizeDelta = Vector2.Lerp(mirilla.rectTransform.sizeDelta, escalaOriginalMirilla, Time.deltaTime * MiniShooter.instance.VelocidadZoom);
+
     }
 
     void CambiarACamaraApuntado()
-    {             
-        camaraApuntado.gameObject.GetComponent<Animator>().SetBool("apuntar", true);       
+    {
+        camaraApuntado.gameObject.GetComponent<Animator>().SetBool("apuntar", true);
     }
 
     void CambiarACamaraPrincipal()
     {
-        camaraApuntado.gameObject.GetComponent<Animator>().SetBool("apuntar", false);      
+        camaraApuntado.gameObject.GetComponent<Animator>().SetBool("apuntar", false);
     }
 }
